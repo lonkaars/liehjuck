@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(pws-engine VERSION 1.0)
-add_executable(pws-engine test.cpp)
+add_executable(pws-engine main.cpp)
 
 # c++ standard
 set(CMAKE_CXX_STANDARD 11)
