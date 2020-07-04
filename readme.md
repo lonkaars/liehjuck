@@ -7,7 +7,7 @@ Dit is de repository voor de engine
 ```
 mkdir build
 cd build
-cmake ../src
+cmake ..
 cmake --build .
-./pws-engine
+./src/pws-engine
 ```
