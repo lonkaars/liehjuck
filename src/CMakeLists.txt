@@ -1,5 +1,6 @@
 add_executable(pws-engine 
     main.cpp
+    Scene.cpp
 )
 
 target_include_directories(pws-engine
