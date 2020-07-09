@@ -12,7 +12,8 @@ struct Position
     float y;
     float z;
 
-    Position(float X, float Y, float Z);
+    Position(float px, float py, float pz);
+    Position(); // This is only needed because it has to have a default constructor
 };
 
 // Orientation does contains some behavior, mainly that an orientation
@@ -26,40 +27,48 @@ class Orientation
     public:
         static float toDegrees(float degrees);
 
-        Orientation(float X, float Y, float Z);
+        Orientation(float ox, float oy, float oz);
+        Orientation(); // This is only needed because it has to have a default constructor
 
-        // I'm not sure if it makes sense for these to be defined in 
-        // the header or the normal file
-        float getX();
-        float getY();
-        float getZ();
-        void setX();
-        void setY();
-        void setZ();
+        float getX() {return x;}
+        float getY() {return y;}
+        float getZ() {return z;}
+        void setX(float degrees) {x = toDegrees(degrees);}
+        void setY(float degrees) {y = toDegrees(degrees);}
+        void setZ(float degrees) {z = toDegrees(degrees);}
 
 };
 
 // Each color must be between 0 and 255
+// Used an unsigned char to have a number between 0 and 255
+// I'm not sure if this is beautiful or really, really bad
+// This class might be replacable by something in X11
 class Color
 {
-    int red;
-    int green;
-    int blue;
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
 
     public:
-        Color(int Red, int Green, int Blue);
+        Color(unsigned char cRed, unsigned char cGreen, unsigned char cBlue);
 
-        float getX();
-        float getY();
-        float getZ();
-        void setX();
-        void setY();
-        void setZ();
+        unsigned char getRed();
+        unsigned char getGreen();
+        unsigned char getBlue();
+        void setRed(unsigned char Red);
+        void setGreen(unsigned char Green);
+        void setBlue(unsigned char Blue);
 };
 
 class Camera
 {
+    Position position;
+    Orientation orientation;
+    float focalLength;
 
+    public:
+        Camera(Position pos, Orientation orent, float focalLen);
+        Camera(Position pos, Orientation orent);
 };
 
 class Light
