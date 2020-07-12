@@ -25,7 +25,8 @@ Orientation::Orientation(float ox, float oy, float oz)
     z = toDegrees(oz);
 }
 
-// For color class
+
+// For color class 
 
 // In case of a color being bigger than 255 or smaller than 0, it should either:
 // 1. Throw an exception
@@ -37,7 +38,9 @@ Color::Color(unsigned char cRed, unsigned char cGreen, unsigned char cBlue)
     blue = cBlue;
 }
 
+
 // For camera class
+
 Camera::Camera(Position pos, Orientation orent, float focalLen)
 {
     position = pos;
@@ -50,4 +53,27 @@ Camera::Camera(Position pos, Orientation orent)
     position = pos;
     orientation = orent;
     focalLength = 35;
+}
+
+
+// For scale class
+
+float Scale::toScaleFactor(float scale)
+{
+    if(scale < 0)
+    {
+        return scale * -1;
+    }
+    else
+    {
+        return scale;
+    }
+    
+}
+
+Scale::Scale(float sx, float sy, float sz)
+{
+    x = sx;
+    y = sy;
+    z = sz;
 }
