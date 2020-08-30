@@ -1,0 +1,14 @@
+---
+AccessModifierOffset: 0
+BasedOnStyle: LLVM
+BreakBeforeBraces: Linux
+ColumnLimit: 100
+IndentWidth: '4'
+Language: Cpp
+Standard: Cpp11
+TabWidth: '4'
+UseTab: Always
+
+...
+
+# vim: ft=yaml

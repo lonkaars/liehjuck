@@ -1,7 +1,11 @@
 BIN := pws-engine
 SRCS := \
 	src/main.cpp \
+	src/import.cpp \
 	src/scene.cpp
+HEADERS := \
+	src/scene.h \
+	src/import.h
 
 OBJDIR := .o
 DEPDIR := .d
@@ -19,7 +23,7 @@ LD=g++
 CXXFLAGS := -std=c++20
 LDFLAGS :=
 
-LDLIBS :=
+LDLIBS := -lX11
 
 DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
 
@@ -45,6 +49,9 @@ install: $(BIN)
 .PHONY: uninstall
 uninstall:
 	sudo rm /bin/$(BIN)
+
+format:
+	clang-format -i $(SRCS) $(HEADERS)
 
 $(BIN): $(OBJS)
 	$(LINK.o) $^
