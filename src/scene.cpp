@@ -1,77 +1,113 @@
 #include <math.h>
+#include <vector>
+#include <string>
 
-// For position class
-Position::Position(float px, float py, float pz)
-{
-    x = px;
-    y = py;
-    z = pz;
-}
+// these stucts can be converted to classes if necessary
+namespace jdscn {
+	struct position {
+		float x;
+		float y;
+		float z;
+	};
 
+	struct position2D {
+		float x;
+		float y;
+		float z;
+	};
 
-// For orientation class
-float Orientation::toDegrees(float degrees)
-{
-    float result = fmod(degrees, 360);
-    return result;
-}
+	struct orientation {
+		float x;
+		float y;
+		float z;
+	};
 
-Orientation::Orientation(float ox, float oy, float oz)
-{
-    x = toDegrees(ox);
-    y = toDegrees(oy);
-    z = toDegrees(oz);
-}
+	struct scale {
+		float x;
+		float y;
+		float z;
+	};
+	
+	class angle {
+		public:
+			float angle;
+			// float [0 -> 360]
+	};
 
+	struct color {
+		int r;
+		int g;
+		int b;
+		// int [0 -> 255]
+	};
 
-// For color class 
+	class percentage {
+		public:
+			float percentage;
+			// float [0 -> 1]
+	};
 
-// In case of a color being bigger than 255 or smaller than 0, it should either:
-// 1. Throw an exception
-// 2. Default to a value of 0, which will result in a black
-Color::Color(unsigned char cRed, unsigned char cGreen, unsigned char cBlue)
-{
-    red = cRed;
-    green = cGreen;
-    blue = cBlue;
-}
+	struct meta {
+		std::string name;
+	};
 
+	struct material {
+		struct color color;
+		percentage roughness;
+		percentage metallic;
+		percentage transparency;
+		struct meta meta;
+	};
 
-// For camera class
+	class uv {
+		public:
+			std::vector<position2D[3]> uv;
+	};
 
-Camera::Camera(Position pos, Orientation orent, float focalLen)
-{
-    position = pos;
-    orientation = orent;
-    focalLength = focalLen;
-}
+	struct texture { //TODO: not yet implemented in the python plugin
+		struct meta meta;
+		std::string path;
+		struct uv uv;
+	};
 
-Camera::Camera(Position pos, Orientation orent)
-{
-    position = pos;
-    orientation = orent;
-    focalLength = 35;
-}
+	struct camera {
+		struct position position;
+		struct orientation orientation;
+		struct meta meta;
+		float focalLength;
+	};
 
+	struct light {
+		std::string type;
+		struct meta meta;
+		struct orientation orientation;
+		struct color color;
+		struct position position;
+		float power;
+		float radius;
+		angle cone;
+	};
 
-// For scale class
+	struct object {
+		struct orientation orientation;
+		struct position position;
+		struct scale scale;
+		struct meta meta;
+		struct material material;
+		std::vector<struct position[3]> vertices;
+		struct texture texture;
+	};
 
-float Scale::toScaleFactor(float scale)
-{
-    if(scale < 0)
-    {
-        return scale * -1;
-    }
-    else
-    {
-        return scale;
-    }
-    
-}
+	struct sceneMeta {
+		std::string version;
+		std::string generator;
+	};
 
-Scale::Scale(float sx, float sy, float sz)
-{
-    x = sx;
-    y = sy;
-    z = sz;
-}
+	struct scene {
+		sceneMeta meta;
+		struct camera camera;
+		std::vector<light> lights;
+		std::vector<object> objects;
+	};
+};
+

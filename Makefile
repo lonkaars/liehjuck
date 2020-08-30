@@ -19,7 +19,7 @@ LD=g++
 CXXFLAGS := -std=c++20
 LDFLAGS :=
 
-LDLIBS :=
+LDLIBS := -lX11
 
 DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
 
