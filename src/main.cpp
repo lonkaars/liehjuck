@@ -1,8 +1,8 @@
-#include <iostream>
-#include <string>
-#include <nlohmann/json.hpp>
-#include "scene.h"
 #include "import.h"
+#include "scene.h"
+#include <iostream>
+#include <nlohmann/json.hpp>
+#include <string>
 
 int main()
 {

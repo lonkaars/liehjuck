@@ -1,14 +1,17 @@
 #pragma once
+#include "scene.h"
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <nlohmann/json.hpp>
-#include "scene.h"
+#include <string>
 
 namespace fs = std::filesystem;
 
-namespace import {
-	std::string readFile(fs::path path);
-	jdscn::scene importScene(nlohmann::json sceneJSON);
-}
+namespace import
+{
+
+std::string readFile(fs::path path);
+jdscn::scene importScene(nlohmann::json sceneJSON);
+
+} // namespace import

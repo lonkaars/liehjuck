@@ -1,5 +1,4 @@
-#include <math.h>
-#include <vector>
-#include <string>
 #include "scene.h"
-
+#include <math.h>
+#include <string>
+#include <vector>

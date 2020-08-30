@@ -3,6 +3,9 @@ SRCS := \
 	src/main.cpp \
 	src/import.cpp \
 	src/scene.cpp
+HEADERS := \
+	src/scene.h \
+	src/import.h
 
 OBJDIR := .o
 DEPDIR := .d
@@ -46,6 +49,9 @@ install: $(BIN)
 .PHONY: uninstall
 uninstall:
 	sudo rm /bin/$(BIN)
+
+format:
+	clang-format -i $(SRCS) $(HEADERS)
 
 $(BIN): $(OBJS)
 	$(LINK.o) $^
