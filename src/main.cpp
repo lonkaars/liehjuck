@@ -5,8 +5,8 @@
 #include <X11/Xos.h>
 #include <X11/Xutil.h>
 
-#include "json.hpp"
-#include "Scene.h"
+#include <nlohmann/json.hpp>
+#include "scene.cpp"
 
 int main()
 {

@@ -1,5 +1,3 @@
-#include "Scene.h"
-
 #include <math.h>
 
 // For position class

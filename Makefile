@@ -1,7 +1,7 @@
 BIN := pws-engine
 SRCS := \
 	src/main.cpp \
-	src/Scene.cpp
+	src/scene.cpp
 
 OBJDIR := .o
 DEPDIR := .d
