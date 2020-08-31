@@ -13,10 +13,11 @@ struct position {
 	float z;
 };
 
+// typedef float[3] position;
+
 struct position2D {
-	float x;
-	float y;
-	float z;
+	int x;
+	int y;
 };
 
 struct orientation {
@@ -31,12 +32,8 @@ struct scale {
 	float z;
 };
 
-class angle
-{
-	public:
-	float angle;
-	// float [0 -> 360]
-};
+// [0 -> 360]
+typedef float angle;
 
 struct color {
 	int r;
@@ -45,12 +42,8 @@ struct color {
 	// int [0 -> 255]
 };
 
-class percentage
-{
-	public:
-	float percentage;
-	// float [0 -> 1]
-};
+// [0 -> 1]
+typedef float percentage;
 
 struct meta {
 	std::string name;
