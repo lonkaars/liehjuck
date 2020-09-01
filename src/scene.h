@@ -7,7 +7,9 @@
 namespace jdscn
 {
 
-struct position {
+class position
+{
+	public:
 	float x;
 	float y;
 	float z;
@@ -15,45 +17,51 @@ struct position {
 
 // typedef float[3] position;
 
-struct position2D {
+class position2D
+{
+	public:
 	int x;
 	int y;
 };
 
-struct orientation {
+class orientation
+{
+	public:
 	float x;
 	float y;
 	float z;
 };
 
-struct scale {
+class scale
+{
+	public:
 	float x;
 	float y;
 	float z;
 };
 
-// [0 -> 360]
-typedef float angle;
-
-struct color {
+class color
+{
+	public:
 	int r;
 	int g;
 	int b;
 	// int [0 -> 255]
 };
 
-// [0 -> 1]
-typedef float percentage;
-
-struct meta {
+class meta
+{
+	public:
 	std::string name;
 };
 
-struct material {
+class material
+{
+	public:
 	struct color color;
-	percentage roughness;
-	percentage metallic;
-	percentage transparency;
+	float roughness;
+	float metallic;
+	float transparency;
 	struct meta meta;
 };
 
@@ -63,20 +71,26 @@ class uv
 	std::vector<position2D[3]> uv;
 };
 
-struct texture { // TODO: not yet implemented in the python plugin
+class texture
+{ // TODO: not yet implemented in the python plugin
+	public:
 	struct meta meta;
 	std::string path;
 	struct uv uv;
 };
 
-struct camera {
+class camera
+{
+	public:
 	struct position position;
 	struct orientation orientation;
 	struct meta meta;
 	float focalLength;
 };
 
-struct light {
+class light
+{
+	public:
 	std::string type;
 	struct meta meta;
 	struct orientation orientation;
@@ -84,10 +98,12 @@ struct light {
 	struct position position;
 	float power;
 	float radius;
-	angle cone;
+	float cone;
 };
 
-struct object {
+class object
+{
+	public:
 	struct orientation orientation;
 	struct position position;
 	struct scale scale;
@@ -97,12 +113,16 @@ struct object {
 	struct texture texture;
 };
 
-struct sceneMeta {
+class sceneMeta
+{
+	public:
 	std::string version;
 	std::string generator;
 };
 
-struct scene {
+class scene
+{
+	public:
 	sceneMeta meta;
 	struct camera camera;
 	std::vector<light> lights;
