@@ -1,8 +1,8 @@
 # PWS Engine
 
-Dit is de repository voor de engine
+This is the repository for the engine itself.
 
-## Bouwen
+## Building
 
 ```
 make
