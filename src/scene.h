@@ -7,37 +7,22 @@
 namespace jdscn
 {
 
-class position
-{
+class floatXYZ {
 	public:
 	float x;
 	float y;
 	float z;
 };
 
-// typedef float[3] position;
+class scale : public floatXYZ {};
+class position : public floatXYZ {};
+class orientation : public floatXYZ {};
 
 class position2D
 {
 	public:
 	int x;
 	int y;
-};
-
-class orientation
-{
-	public:
-	float x;
-	float y;
-	float z;
-};
-
-class scale
-{
-	public:
-	float x;
-	float y;
-	float z;
 };
 
 class color
@@ -58,11 +43,11 @@ class meta
 class material
 {
 	public:
-	struct color color;
+	class color color;
 	float roughness;
 	float metallic;
 	float transparency;
-	struct meta meta;
+	class meta meta;
 };
 
 class uv
@@ -74,17 +59,17 @@ class uv
 class texture
 { // TODO: not yet implemented in the python plugin
 	public:
-	struct meta meta;
+	class meta meta;
 	std::string path;
-	struct uv uv;
+	class uv uv;
 };
 
 class camera
 {
 	public:
-	struct position position;
-	struct orientation orientation;
-	struct meta meta;
+	class position position;
+	class orientation orientation;
+	class meta meta;
 	float focalLength;
 };
 
@@ -92,10 +77,10 @@ class light
 {
 	public:
 	std::string type;
-	struct meta meta;
-	struct orientation orientation;
-	struct color color;
-	struct position position;
+	class meta meta;
+	class orientation orientation;
+	class color color;
+	class position position;
 	float power;
 	float radius;
 	float cone;
@@ -104,13 +89,13 @@ class light
 class object
 {
 	public:
-	struct orientation orientation;
-	struct position position;
-	struct scale scale;
-	struct meta meta;
-	struct material material;
-	std::vector<struct position[3]> vertices;
-	struct texture texture;
+	class orientation orientation;
+	class position position;
+	class scale scale;
+	class meta meta;
+	class material material;
+	std::vector<class position[3]> vertices;
+	class texture texture;
 };
 
 class sceneMeta
@@ -123,8 +108,8 @@ class sceneMeta
 class scene
 {
 	public:
-	sceneMeta meta;
-	struct camera camera;
+	class sceneMeta meta;
+	class camera camera;
 	std::vector<light> lights;
 	std::vector<object> objects;
 };
