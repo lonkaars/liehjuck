@@ -7,25 +7,25 @@
 namespace jdscn
 {
 
-class floatXYZ {
+class FloatXYZ {
 	public:
 	float x;
 	float y;
 	float z;
 };
 
-typedef floatXYZ pos;
-typedef floatXYZ scl;
-typedef floatXYZ ort;
+typedef FloatXYZ Position;
+typedef FloatXYZ Scale;
+typedef FloatXYZ Orientation;
 
-class position2D
+class Position2D
 {
 	public:
 	int x;
 	int y;
 };
 
-class color
+class Color
 {
 	public:
 	int r;
@@ -34,84 +34,84 @@ class color
 	// int [0 -> 255]
 };
 
-class meta
+class Meta
 {
 	public:
 	std::string name;
 };
 
-class material
+class Material
 {
 	public:
-	class color color;
+	Color color;
 	float roughness;
 	float metallic;
 	float transparency;
-	class meta meta;
+	Meta meta;
 };
 
-class uv
+class UV
 {
 	public:
-	std::vector<class position2D[3]> uv;
+	std::vector<Position2D[3]> uv;
 };
 
-class texture
+class Texture
 { // TODO: not yet implemented in the python plugin
 	public:
-	class meta meta;
+	Meta meta;
 	std::string path;
-	class uv uv;
+	UV uv;
 };
 
-class camera
+class Camera
 {
 	public:
-	pos position;
-	typedef ort orientation;
-	class meta meta;
+	Position position;
+	Orientation orientation;
+	Meta meta;
 	float focalLength;
 };
 
-class light
+class Light
 {
 	public:
 	std::string type;
-	class meta meta;
-	typedef ort orientation;
-	class color color;
-	typedef pos position;
+	Meta meta;
+	Orientation orientation;
+	Color color;
+	Position position;
 	float power;
 	float radius;
 	float cone;
 };
 
-class object
+class Object
 {
 	public:
-	typedef ort orientation;
-	typedef pos position;
-	typedef scl scale;
-	std::vector<pos[3]> vertices;
-	class meta meta;
-	class material material;
-	class texture texture;
+	Orientation orientation;
+	Position position;
+	Scale scale;
+	std::vector<Position[3]> vertices;
+	Meta meta;
+	Material material;
+	Texture texture;
 };
 
-class sceneMeta
+class SceneMeta
 {
 	public:
 	std::string version;
 	std::string generator;
 };
 
-class scene
+class Scene
 {
 	public:
-	class sceneMeta meta;
-	class camera camera;
-	std::vector<light> lights;
-	std::vector<object> objects;
+	SceneMeta meta;
+	Camera camera;
+	std::vector<Light> lights;
+	std::vector<Object> objects;
 };
 
 }; // namespace jdscn

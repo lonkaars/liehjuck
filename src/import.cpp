@@ -8,18 +8,18 @@
 namespace nlohmann
 {
 
-template <> struct adl_serializer<jdscn::sceneMeta> {
-	static jdscn::sceneMeta from_json(const json &j)
+template <> struct adl_serializer<jdscn::SceneMeta> {
+	static jdscn::SceneMeta from_json(const json &j)
 	{
-		jdscn::sceneMeta metaOut{j["version"], j["generator"]};
+		jdscn::SceneMeta metaOut{j["version"], j["generator"]};
 		return metaOut;
 	}
 };
 
-template <> struct adl_serializer<jdscn::floatXYZ> {
-	static jdscn::floatXYZ from_json(const json &j)
+template <> struct adl_serializer<jdscn::FloatXYZ> {
+	static jdscn::FloatXYZ from_json(const json &j)
 	{
-		jdscn::floatXYZ out{j["x"], j["y"], j["z"]};
+		jdscn::FloatXYZ out{j["x"], j["y"], j["z"]};
 		return out;
 	}
 };
@@ -37,12 +37,12 @@ std::string readFile(std::filesystem::path path)
 	return fileString;
 }
 
-jdscn::scene importScene(nlohmann::json sceneJSON)
+jdscn::Scene importScene(nlohmann::json sceneJSON)
 {
-	jdscn::scene sceneOut;
+	jdscn::Scene sceneOut;
 
-	sceneOut.meta = sceneJSON["meta"].get<jdscn::sceneMeta>();
-	sceneOut.camera.position = sceneJSON["camera"]["position"].get<jdscn::floatXYZ>();
+	sceneOut.meta = sceneJSON["meta"].get<jdscn::SceneMeta>();
+	sceneOut.camera.position = sceneJSON["camera"]["position"].get<jdscn::FloatXYZ>();
 
 	return sceneOut;
 }
