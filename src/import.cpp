@@ -16,6 +16,14 @@ template <> struct adl_serializer<jdscn::sceneMeta> {
 	}
 };
 
+template <> struct adl_serializer<jdscn::floatXYZ> {
+	static jdscn::floatXYZ from_json(const json &j)
+	{
+		jdscn::floatXYZ out{j["x"], j["y"], j["z"]};
+		return out;
+	}
+};
+
 } // namespace nlohmann
 
 namespace import
@@ -34,6 +42,7 @@ jdscn::scene importScene(nlohmann::json sceneJSON)
 	jdscn::scene sceneOut;
 
 	sceneOut.meta = sceneJSON["meta"].get<jdscn::sceneMeta>();
+	sceneOut.camera.position = sceneJSON["camera"]["position"].get<jdscn::floatXYZ>();
 
 	return sceneOut;
 }

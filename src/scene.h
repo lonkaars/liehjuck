@@ -14,9 +14,9 @@ class floatXYZ {
 	float z;
 };
 
-class scale : public floatXYZ {};
-class position : public floatXYZ {};
-class orientation : public floatXYZ {};
+typedef floatXYZ pos;
+typedef floatXYZ scl;
+typedef floatXYZ ort;
 
 class position2D
 {
@@ -53,7 +53,7 @@ class material
 class uv
 {
 	public:
-	std::vector<position2D[3]> uv;
+	std::vector<class position2D[3]> uv;
 };
 
 class texture
@@ -67,8 +67,8 @@ class texture
 class camera
 {
 	public:
-	class position position;
-	class orientation orientation;
+	pos position;
+	typedef ort orientation;
 	class meta meta;
 	float focalLength;
 };
@@ -78,9 +78,9 @@ class light
 	public:
 	std::string type;
 	class meta meta;
-	class orientation orientation;
+	typedef ort orientation;
 	class color color;
-	class position position;
+	typedef pos position;
 	float power;
 	float radius;
 	float cone;
@@ -89,12 +89,12 @@ class light
 class object
 {
 	public:
-	class orientation orientation;
-	class position position;
-	class scale scale;
+	typedef ort orientation;
+	typedef pos position;
+	typedef scl scale;
+	std::vector<pos[3]> vertices;
 	class meta meta;
 	class material material;
-	std::vector<class position[3]> vertices;
 	class texture texture;
 };
 
