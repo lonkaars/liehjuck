@@ -19,7 +19,7 @@ template <> struct adl_serializer<jdscn::SceneMeta> {
 template <> struct adl_serializer<jdscn::FloatXYZ> {
 	static jdscn::FloatXYZ from_json(const json &j)
 	{
-		jdscn::FloatXYZ out{j["x"], j["y"], j["z"]};
+		jdscn::FloatXYZ out{j[0], j[1], j[2]};
 		return out;
 	}
 };

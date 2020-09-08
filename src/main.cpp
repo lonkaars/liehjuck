@@ -11,5 +11,6 @@ int main()
 	std::string default_scene_file = import::readFile("./test/default_scene.jdscn");
 	nlohmann::json default_scene_json = nlohmann::json::parse(default_scene_file);
 	jdscn::Scene default_scene = import::importScene(default_scene_json);
-	cout << default_scene.camera.orientation.x << endl;
+	cout << default_scene.meta.version << endl;
+	cout << default_scene.camera.position.x << endl;
 }
