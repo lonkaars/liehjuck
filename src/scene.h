@@ -14,9 +14,9 @@ class FloatXYZ {
 	float z;
 };
 
-typedef FloatXYZ Position;
-typedef FloatXYZ Scale;
-typedef FloatXYZ Orientation;
+using Position = FloatXYZ;
+using Scale = FloatXYZ;
+using Orientation = FloatXYZ;
 
 class Position2D
 {
