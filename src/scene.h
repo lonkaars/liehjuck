@@ -2,6 +2,7 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 // these stucts can be converted to classes if necessary
 namespace jdscn
@@ -13,6 +14,7 @@ class FloatXYZ {
 	float y;
 	float z;
 };
+void from_json(const nlohmann::json&, FloatXYZ&);
 
 using Position = FloatXYZ;
 using Scale = FloatXYZ;
@@ -24,6 +26,7 @@ class Position2D
 	int x;
 	int y;
 };
+void from_json(const nlohmann::json&, Position2D&);
 
 class Color
 {
@@ -33,12 +36,14 @@ class Color
 	int b;
 	// int [0 -> 255]
 };
+void from_json(const nlohmann::json&, Color&);
 
 class Meta
 {
 	public:
 	std::string name;
 };
+void from_json(const nlohmann::json&, Meta&);
 
 class Material
 {
@@ -49,12 +54,14 @@ class Material
 	float transparency;
 	Meta meta;
 };
+void from_json(const nlohmann::json&, Material&);
 
 class UV
 {
 	public:
 	std::vector<Position2D[3]> uv;
 };
+void from_json(const nlohmann::json&, UV&);
 
 class Texture
 { // TODO: not yet implemented in the python plugin
@@ -63,6 +70,7 @@ class Texture
 	std::string path;
 	UV uv;
 };
+void from_json(const nlohmann::json&, Texture&);
 
 class Camera
 {
@@ -72,6 +80,7 @@ class Camera
 	Meta meta;
 	float focalLength;
 };
+void from_json(const nlohmann::json&, Camera&);
 
 class Light
 {
@@ -85,6 +94,7 @@ class Light
 	float radius;
 	float cone;
 };
+void from_json(const nlohmann::json&, Light&);
 
 class Object
 {
@@ -97,6 +107,7 @@ class Object
 	Material material;
 	Texture texture;
 };
+void from_json(const nlohmann::json&, Object&);
 
 class SceneMeta
 {
@@ -104,6 +115,7 @@ class SceneMeta
 	std::string version;
 	std::string generator;
 };
+void from_json(const nlohmann::json&, SceneMeta&);
 
 class Scene
 {
@@ -113,5 +125,6 @@ class Scene
 	std::vector<Light> lights;
 	std::vector<Object> objects;
 };
+void from_json(const nlohmann::json&, Scene&);
 
 }; // namespace jdscn
