@@ -1,16 +1,16 @@
 #pragma once
+#include <array>
 #include <math.h>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
-#include <array>
-#include <nlohmann/json.hpp>
 
 namespace jdscn
 {
 
 using FloatXYZ = std::array<double, 3>;
-using Position = FloatXYZ; // [<-, ->]
-using Scale = FloatXYZ; // [<-, ->]
+using Position = FloatXYZ;	  // [<-, ->]
+using Scale = FloatXYZ;		  // [<-, ->]
 using Orientation = FloatXYZ; // [0, 360]
 
 using Position2D = std::array<int, 2>; // [<-, ->]
@@ -67,7 +67,8 @@ class Light
 	float power;
 	float radius;
 	float cone;
-	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Light, type, meta, orientation, color, position, power, radius, cone);
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Light, type, meta, orientation, color, position, power, radius,
+								   cone);
 };
 
 class Object
