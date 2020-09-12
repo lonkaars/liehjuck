@@ -13,5 +13,7 @@ class testClass {
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(testClass, foo, bar);
 };
 
+using gert = testClass;
+
 };
 

@@ -2,107 +2,86 @@
 #include <math.h>
 #include <string>
 #include <vector>
+#include <array>
 #include <nlohmann/json.hpp>
 
 namespace jdscn
 {
 
-/* class FloatXYZ { */
-/* 	public: */
-/* 	float x; */
-/* 	float y; */
-/* 	float z; */
-/* }; */
-/* void from_json(const nlohmann::json&, FloatXYZ&); */
+using FloatXYZ = std::array<double, 3>;
+using Position = FloatXYZ; // [<-, ->]
+using Scale = FloatXYZ; // [<-, ->]
+using Orientation = FloatXYZ; // [0, 360]
 
-/* using Position = FloatXYZ; */
-/* using Scale = FloatXYZ; */
-/* using Orientation = FloatXYZ; */
+using Position2D = std::array<int, 2>; // [<-, ->]
 
-/* class Position2D */
-/* { */
-/* 	public: */
-/* 	int x; */
-/* 	int y; */
-/* }; */
-/* void from_json(const nlohmann::json&, Position2D&); */
+using Color = std::array<int, 3>; // int [0, 255]
 
-/* class Color */
-/* { */
-/* 	public: */
-/* 	int r; */
-/* 	int g; */
-/* 	int b; */
-/* 	// int [0 -> 255] */
-/* }; */
-/* void from_json(const nlohmann::json&, Color&); */
+class Meta
+{
+	public:
+	std::string name;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Meta, name);
+};
 
-/* class Meta */
-/* { */
-/* 	public: */
-/* 	std::string name; */
-/* 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Meta, name); */
-/* }; */
+class Material
+{
+	public:
+	Color color;
+	float roughness;
+	float metallic;
+	float transparency;
+	Meta meta;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Material, color, roughness, metallic, transparency, meta);
+};
 
-/* class Material */
-/* { */
-/* 	public: */
-/* 	Color color; */
-/* 	float roughness; */
-/* 	float metallic; */
-/* 	float transparency; */
-/* 	Meta meta; */
-/* }; */
+using UV = std::vector<std::array<Position2D, 3>>;
 
-/* class UV */
-/* { */
-/* 	public: */
-/* 	std::vector<Position2D[3]> uv; */
-/* }; */
-/* void from_json(const nlohmann::json&, UV&); */
+class Texture
+{ // TODO: not yet implemented in the python plugin
+	public:
+	Meta meta;
+	std::string path;
+	UV uv;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Texture, meta, path, uv);
+};
 
-/* class Texture */
-/* { // TODO: not yet implemented in the python plugin */
-/* 	public: */
-/* 	Meta meta; */
-/* 	std::string path; */
-/* 	UV uv; */
-/* }; */
+class Camera
+{
+	public:
+	Position position;
+	Orientation orientation;
+	Meta meta;
+	float focalLength;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Camera, position, orientation, meta, focalLength);
+};
 
-/* class Camera */
-/* { */
-/* 	public: */
-/* 	Position position; */
-/* 	Orientation orientation; */
-/* 	Meta meta; */
-/* 	float focalLength; */
-/* }; */
+class Light
+{
+	public:
+	std::string type;
+	Meta meta;
+	Orientation orientation;
+	Color color;
+	Position position;
+	float power;
+	float radius;
+	float cone;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Light, type, meta, orientation, color, position, power, radius, cone);
+};
 
-/* class Light */
-/* { */
-/* 	public: */
-/* 	std::string type; */
-/* 	Meta meta; */
-/* 	Orientation orientation; */
-/* 	Color color; */
-/* 	Position position; */
-/* 	float power; */
-/* 	float radius; */
-/* 	float cone; */
-/* }; */
-
-/* class Object */
-/* { */
-/* 	public: */
-/* 	Orientation orientation; */
-/* 	Position position; */
-/* 	Scale scale; */
-/* 	std::vector<Position[3]> vertices; */
-/* 	Meta meta; */
-/* 	Material material; */
-/* 	Texture texture; */
-/* }; */
-/* void from_json(const nlohmann::json&, Object&); */
+class Object
+{
+	public:
+	Orientation orientation;
+	Position position;
+	Scale scale;
+	std::vector<std::array<Position, 3>> vertices;
+	Meta meta;
+	Material material;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
+	/* Texture texture; */
+};
 
 class SceneMeta
 {
@@ -112,13 +91,14 @@ class SceneMeta
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SceneMeta, version, generator);
 };
 
-/* class Scene */
-/* { */
-/* 	public: */
-/* 	SceneMeta meta; */
-/* 	Camera camera; */
-/* 	std::vector<Light> lights; */
-/* 	std::vector<Object> objects; */
-/* }; */
+class Scene
+{
+	public:
+	SceneMeta meta;
+	Camera camera;
+	std::vector<Light> lights;
+	std::vector<Object> objects;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Scene, meta, camera, lights, objects);
+};
 
 }; // namespace jdscn

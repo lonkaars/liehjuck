@@ -11,7 +11,8 @@ int main() {
 
 	json jsonAsJson = json::parse(jsonString);
 
-	gert::testClass gert = jsonAsJson.get<gert::testClass>();
+	gert::testClass banaan1 = jsonAsJson.get<gert::testClass>();
+	gert::gert banaan2 = jsonAsJson.get<gert::gert>();
 	
 	return 0;
 }

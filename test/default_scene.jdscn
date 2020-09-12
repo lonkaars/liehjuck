@@ -1,19 +1,20 @@
 {
     "meta": {
-        "version": "1.4",
+        "version": "1.5",
         "generator": "Blender jdscn export plugin"
     },
     "lights": [
         {
             "position": [4.076245307922363, 1.0054539442062378, 5.903861999511719],
-            "orientation": [37.261048582966964, 3.1637075516133524, 106.93631715536021],
+            "orientation": [0.6503279805183411, 0.055217113345861435, 1.8663908243179321],
             "meta": {
                 "name": "Light"
             },
             "power": 1000.0,
             "type": "point",
             "radius": 0.10000000149011612,
-            "spot": 0
+            "color": [255, 255, 255],
+			"cone": 0
         }
     ],
     "objects": [
@@ -89,17 +90,17 @@
             "material": {
                 "color": [204, 204, 204],
                 "roughness": 0.4000000059604645,
+                "metallic": 0.0,
                 "transparency": 1.0,
                 "meta": {
                     "name": "Material"
-                },
-                "metallic": 0.0
+                }
             }
         }
     ],
     "camera": {
         "position": [7.358891487121582, -6.925790786743164, 4.958309173583984],
-        "orientation": [63.55929520841579, 0.0, 46.69194497758338],
+        "orientation": [1.1093189716339111, 0.0, 0.8149281740188599],
         "meta": {
             "name": "Camera"
         },

@@ -10,5 +10,5 @@ int main()
 {
 	std::string default_scene_file = import::readFile("./test/default_scene.jdscn");
 	nlohmann::json default_scene_json = nlohmann::json::parse(default_scene_file);
-	import::importScene(default_scene_json);
+	jdscn::Scene default_scene_jdscn = import::importScene(default_scene_json);
 }

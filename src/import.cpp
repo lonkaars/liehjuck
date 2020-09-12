@@ -16,14 +16,9 @@ std::string readFile(std::filesystem::path path)
 	return fileString;
 }
 
-void importScene(nlohmann::json sceneJSON)
+jdscn::Scene importScene(nlohmann::json sceneJSON)
 {
-	jdscn::SceneMeta metaTest;
-
-	metaTest = sceneJSON["meta"].get<jdscn::SceneMeta>();
-
-	std::cout << metaTest.version << std::endl;
-	std::cout << metaTest.generator << std::endl;
+	return sceneJSON.get<jdscn::Scene>();
 }
 
 } // namespace import

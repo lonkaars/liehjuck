@@ -12,6 +12,6 @@ namespace import
 {
 
 std::string readFile(fs::path path);
-void importScene(nlohmann::json sceneJSON);
+jdscn::Scene importScene(nlohmann::json sceneJSON);
 
 } // namespace import
