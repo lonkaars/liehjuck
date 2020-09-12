@@ -1,43 +1,27 @@
 #pragma once
+#include <array>
 #include <math.h>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 
-// these stucts can be converted to classes if necessary
 namespace jdscn
 {
 
-class FloatXYZ {
-	public:
-	float x;
-	float y;
-	float z;
-};
+using FloatXYZ = std::array<double, 3>;
+using Position = FloatXYZ;	  // [<-, ->]
+using Scale = FloatXYZ;		  // [<-, ->]
+using Orientation = FloatXYZ; // [0, 360]
 
-using Position = FloatXYZ;
-using Scale = FloatXYZ;
-using Orientation = FloatXYZ;
+using Position2D = std::array<int, 2>; // [<-, ->]
 
-class Position2D
-{
-	public:
-	int x;
-	int y;
-};
-
-class Color
-{
-	public:
-	int r;
-	int g;
-	int b;
-	// int [0 -> 255]
-};
+using Color = std::array<int, 3>; // int [0, 255]
 
 class Meta
 {
 	public:
 	std::string name;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Meta, name);
 };
 
 class Material
@@ -48,13 +32,10 @@ class Material
 	float metallic;
 	float transparency;
 	Meta meta;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Material, color, roughness, metallic, transparency, meta);
 };
 
-class UV
-{
-	public:
-	std::vector<Position2D[3]> uv;
-};
+using UV = std::vector<std::array<Position2D, 3>>;
 
 class Texture
 { // TODO: not yet implemented in the python plugin
@@ -62,6 +43,7 @@ class Texture
 	Meta meta;
 	std::string path;
 	UV uv;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Texture, meta, path, uv);
 };
 
 class Camera
@@ -71,6 +53,7 @@ class Camera
 	Orientation orientation;
 	Meta meta;
 	float focalLength;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Camera, position, orientation, meta, focalLength);
 };
 
 class Light
@@ -84,6 +67,8 @@ class Light
 	float power;
 	float radius;
 	float cone;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Light, type, meta, orientation, color, position, power, radius,
+								   cone);
 };
 
 class Object
@@ -92,10 +77,11 @@ class Object
 	Orientation orientation;
 	Position position;
 	Scale scale;
-	std::vector<Position[3]> vertices;
+	std::vector<std::array<Position, 3>> vertices;
 	Meta meta;
 	Material material;
-	Texture texture;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
+	/* Texture texture; */
 };
 
 class SceneMeta
@@ -103,6 +89,7 @@ class SceneMeta
 	public:
 	std::string version;
 	std::string generator;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SceneMeta, version, generator);
 };
 
 class Scene
@@ -112,6 +99,7 @@ class Scene
 	Camera camera;
 	std::vector<Light> lights;
 	std::vector<Object> objects;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Scene, meta, camera, lights, objects);
 };
 
 }; // namespace jdscn

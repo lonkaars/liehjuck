@@ -5,27 +5,6 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-namespace nlohmann
-{
-
-template <> struct adl_serializer<jdscn::SceneMeta> {
-	static jdscn::SceneMeta from_json(const json &j)
-	{
-		jdscn::SceneMeta metaOut{j["version"], j["generator"]};
-		return metaOut;
-	}
-};
-
-template <> struct adl_serializer<jdscn::FloatXYZ> {
-	static jdscn::FloatXYZ from_json(const json &j)
-	{
-		jdscn::FloatXYZ out{j[0], j[1], j[2]};
-		return out;
-	}
-};
-
-} // namespace nlohmann
-
 namespace import
 {
 
@@ -37,14 +16,6 @@ std::string readFile(std::filesystem::path path)
 	return fileString;
 }
 
-jdscn::Scene importScene(nlohmann::json sceneJSON)
-{
-	jdscn::Scene sceneOut;
-
-	sceneOut.meta = sceneJSON["meta"].get<jdscn::SceneMeta>();
-	sceneOut.camera.position = sceneJSON["camera"]["position"].get<jdscn::FloatXYZ>();
-
-	return sceneOut;
-}
+jdscn::Scene importScene(nlohmann::json sceneJSON) { return sceneJSON.get<jdscn::Scene>(); }
 
 } // namespace import
