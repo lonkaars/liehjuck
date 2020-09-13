@@ -2,9 +2,11 @@ BIN := pws-engine
 SRCS := \
 	src/main.cpp \
 	src/import.cpp \
-	src/scene.cpp
+	src/scene.cpp \
+	src/argparse.cpp
 HEADERS := \
 	src/scene.h \
+	src/argparse.h \
 	src/import.h
 
 OBJDIR := .o

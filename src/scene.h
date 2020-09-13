@@ -11,7 +11,7 @@ namespace jdscn
 using FloatXYZ = std::array<double, 3>;
 using Position = FloatXYZ;	  // [<-, ->]
 using Scale = FloatXYZ;		  // [<-, ->]
-using Orientation = FloatXYZ; // [0, 360]
+using Orientation = FloatXYZ; // [0, pi]
 
 using Position2D = std::array<int, 2>; // [<-, ->]
 
