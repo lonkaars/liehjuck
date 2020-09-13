@@ -1,6 +1,6 @@
+#include "argparse.h"
 #include "import.h"
 #include "scene.h"
-#include "argparse.h"
 #include <array>
 #include <iostream>
 #include <nlohmann/json.hpp>

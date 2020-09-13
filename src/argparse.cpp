@@ -5,7 +5,8 @@
 
 using namespace std;
 
-namespace argparse {
+namespace argparse
+{
 // std::string::ends_with replacement for c++ 17 because ubuntu 20.04 poopy
 static bool endsWith(const std::string &str, const std::string &suffix)
 {
@@ -13,8 +14,8 @@ static bool endsWith(const std::string &str, const std::string &suffix)
 		   0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
 }
 
-
-Args parseArgs(int argc, char* argv[]) {
+Args parseArgs(int argc, char *argv[])
+{
 	Args out;
 	argagg::parser argparser{{{"help", {"-h", "--help"}, "shows this help message", 0}}};
 
@@ -50,8 +51,8 @@ Args parseArgs(int argc, char* argv[]) {
 		cout << usage.str();
 		exit(EXIT_FAILURE);
 	}
-	
+
 	return out;
 }
 
-}
+} // namespace argparse
