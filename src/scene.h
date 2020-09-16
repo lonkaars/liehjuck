@@ -1,119 +1,105 @@
 #pragma once
+#include <array>
 #include <math.h>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 
-// these stucts can be converted to classes if necessary
 namespace jdscn
 {
 
-struct position {
-	float x;
-	float y;
-	float z;
-};
+using FloatXYZ = std::array<double, 3>;
+using Position = FloatXYZ;	  // [<-, ->]
+using Scale = FloatXYZ;		  // [<-, ->]
+using Orientation = FloatXYZ; // [0, pi]
 
-struct position2D {
-	float x;
-	float y;
-	float z;
-};
+using Position2D = std::array<int, 2>; // [<-, ->]
 
-struct orientation {
-	float x;
-	float y;
-	float z;
-};
+using Color = std::array<int, 3>; // int [0, 255]
 
-struct scale {
-	float x;
-	float y;
-	float z;
-};
-
-class angle
+class Meta
 {
 	public:
-	float angle;
-	// float [0 -> 360]
-};
-
-struct color {
-	int r;
-	int g;
-	int b;
-	// int [0 -> 255]
-};
-
-class percentage
-{
-	public:
-	float percentage;
-	// float [0 -> 1]
-};
-
-struct meta {
 	std::string name;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Meta, name);
 };
 
-struct material {
-	struct color color;
-	percentage roughness;
-	percentage metallic;
-	percentage transparency;
-	struct meta meta;
-};
-
-class uv
+class Material
 {
 	public:
-	std::vector<position2D[3]> uv;
+	Color color;
+	float roughness;
+	float metallic;
+	float transparency;
+	Meta meta;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Material, color, roughness, metallic, transparency, meta);
 };
 
-struct texture { // TODO: not yet implemented in the python plugin
-	struct meta meta;
+using UV = std::vector<std::array<Position2D, 3>>;
+
+class Texture
+{ // TODO: not yet implemented in the python plugin
+	public:
+	Meta meta;
 	std::string path;
-	struct uv uv;
+	UV uv;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Texture, meta, path, uv);
 };
 
-struct camera {
-	struct position position;
-	struct orientation orientation;
-	struct meta meta;
+class Camera
+{
+	public:
+	Position position;
+	Orientation orientation;
+	Meta meta;
 	float focalLength;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Camera, position, orientation, meta, focalLength);
 };
 
-struct light {
+class Light
+{
+	public:
 	std::string type;
-	struct meta meta;
-	struct orientation orientation;
-	struct color color;
-	struct position position;
+	Meta meta;
+	Orientation orientation;
+	Color color;
+	Position position;
 	float power;
 	float radius;
-	angle cone;
+	float cone;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Light, type, meta, orientation, color, position, power, radius,
+								   cone);
 };
 
-struct object {
-	struct orientation orientation;
-	struct position position;
-	struct scale scale;
-	struct meta meta;
-	struct material material;
-	std::vector<struct position[3]> vertices;
-	struct texture texture;
+class Object
+{
+	public:
+	Orientation orientation;
+	Position position;
+	Scale scale;
+	std::vector<std::array<Position, 3>> vertices;
+	Meta meta;
+	Material material;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
+	/* Texture texture; */
 };
 
-struct sceneMeta {
+class SceneMeta
+{
+	public:
 	std::string version;
 	std::string generator;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(SceneMeta, version, generator);
 };
 
-struct scene {
-	sceneMeta meta;
-	struct camera camera;
-	std::vector<light> lights;
-	std::vector<object> objects;
+class Scene
+{
+	public:
+	SceneMeta meta;
+	Camera camera;
+	std::vector<Light> lights;
+	std::vector<Object> objects;
+	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Scene, meta, camera, lights, objects);
 };
 
 }; // namespace jdscn

@@ -16,11 +16,6 @@ std::string readFile(std::filesystem::path path)
 	return fileString;
 }
 
-jdscn::scene importScene(nlohmann::json sceneJSON)
-{
-	jdscn::scene sceneOut;
-
-	return sceneOut;
-}
+jdscn::Scene importScene(nlohmann::json sceneJSON) { return sceneJSON.get<jdscn::Scene>(); }
 
 } // namespace import
