@@ -1,6 +1,8 @@
 #include "argparse.h"
 #include "import.h"
 #include "scene.h"
+#include "win.h"
+
 #include <array>
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -23,6 +25,7 @@ int main(int argc, char *argv[])
 		cout << "light: " << light.meta.name << endl;
 	for (jdscn::Object object : scene_jdscn.objects)
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
-
+	
+	win::makeWindow();
 	return EXIT_SUCCESS;
 }

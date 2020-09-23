@@ -3,11 +3,13 @@ SRCS := \
 	src/main.cpp \
 	src/import.cpp \
 	src/scene.cpp \
+	src/win.cpp \
 	src/argparse.cpp
 HEADERS := \
 	src/scene.h \
 	src/argparse.h \
-	src/import.h
+	src/import.h \
+	src/win.h \
 
 OBJDIR := .o
 DEPDIR := .d
@@ -30,7 +32,7 @@ LDLIBS := -lX11
 DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
 
 COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
-LINK.o = $(LD) $(LDFLAGS) $(LDLIBS) -o $@
+LINK.o = $(LD) $(LDFLAGS) -o $@
 PRECOMPILE =
 POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
 
@@ -56,7 +58,7 @@ format:
 	clang-format -i $(SRCS) $(HEADERS)
 
 $(BIN): $(OBJS)
-	$(LINK.o) $^
+	$(LINK.o) $^ $(LDLIBS) 
 
 $(OBJDIR)/%.o: %.c
 $(OBJDIR)/%.o: %.c $(DEPDIR)/%.d
