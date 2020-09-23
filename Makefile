@@ -4,12 +4,14 @@ SRCS := \
 	src/import.cpp \
 	src/scene.cpp \
 	src/win.cpp \
-	src/argparse.cpp
+	src/argparse.cpp \
+	lib/gfx/gfx.c
 HEADERS := \
 	src/scene.h \
 	src/argparse.h \
 	src/import.h \
 	src/win.h \
+	lib/gfx/gfx.h
 
 OBJDIR := .o
 DEPDIR := .d
@@ -22,6 +24,7 @@ $(shell mkdir -p $(dir $(OBJS)) >/dev/null)
 $(shell mkdir -p $(dir $(DEPS)) >/dev/null)
 
 CXX=g++
+CC=gcc
 LD=g++
 
 CXXFLAGS := -std=c++17
