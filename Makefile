@@ -5,13 +5,14 @@ SRCS := \
 	src/scene.cpp \
 	src/win.cpp \
 	src/argparse.cpp \
-#	lib/gfx/gfx.c
+	lib/gfx/gfx.cpp
+
 HEADERS := \
 	src/scene.h \
 	src/argparse.h \
 	src/import.h \
 	src/win.h \
-#	lib/gfx/gfx.h
+	lib/gfx/gfx.h
 
 OBJDIR := .o
 DEPDIR := .d

@@ -25,14 +25,15 @@ int main(int argc, char *argv[])
 		cout << "light: " << light.meta.name << endl;
 	for (jdscn::Object object : scene_jdscn.objects)
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
-	
-	Canvas c;
-	
+
+	const char* windowTitle = "cool window";
+	Win::Canvas canvas(1280, 720, windowTitle);
+	jdscn::Color color = {255, 255, 255};
+
 	sleep(2);
 
-	for(int i = 100; i < 1000; i++)
-	{
-		c.Drawpixel({i, 100});
+	for (int i = 100; i < 1000; i++) {
+		canvas.draw(i, 100, color);
 	}
 
 	sleep(10);
