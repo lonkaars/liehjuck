@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	for (jdscn::Object object : scene_jdscn.objects)
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
 
-	const char* windowTitle = "[floating] cool window";
+	const char *windowTitle = "[floating] cool window";
 	Win::Canvas canvas(1280, 720, windowTitle);
 	jdscn::Color color = {255, 255, 255};
 
