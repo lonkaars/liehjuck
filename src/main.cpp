@@ -7,6 +7,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <math.h>
 
 using namespace std;
 
@@ -34,6 +35,11 @@ int main(int argc, char *argv[])
 
 	for (int i = 100; i < 1000; i++) {
 		canvas.draw(i, 100, color);
+	}
+
+	color = {255, 0, 255};
+	for(float x = 0; x < 2 * M_PI; x += 0.01) {
+		canvas.draw(sin(x) * 100 + (canvas.width / 2), cos(x) * 100 + (canvas.height / 2), color);
 	}
 
 	sleep(10);

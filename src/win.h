@@ -18,6 +18,9 @@ namespace Win
 class Canvas
 {
 	public:
+	int width;
+	int height;
+	const char* title;
 	Canvas(int, int, const char *);
 	void draw(int, int, jdscn::Color);
 };

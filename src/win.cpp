@@ -15,7 +15,12 @@
 namespace Win
 {
 
-Canvas::Canvas(int width, int height, const char *title) { gfx_open(width, height, title); }
+Canvas::Canvas(int width, int height, const char *title) {
+	this->width = width;
+	this->height = height;
+	this->title = title;
+	gfx_open(width, height, title);
+}
 
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
