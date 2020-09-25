@@ -10,50 +10,20 @@
 
 #include <sys/utsname.h>
 
-namespace win
-{
 
-class Win
+class Canvas
 {
 	public:
 	Window window;
-	Display *display;
+	Display *dpy;
+	GC gc;
 	int screen;
-	
-	Win()
-	{
-		display = XOpenDisplay(NULL);
-		if (display == NULL) {
-			fprintf(stderr, "Cannot open display\n");
-			exit(1);
-		}
+	int blackColor;// = BlackPixel(dpy, DefaultScreen(dpy));
+    int whiteColor;// = WhitePixel(dpy, DefaultScreen(dpy));
 
-		int screen = DefaultScreen(display);
-		window = XCreateSimpleWindow(display, RootWindow(display, screen), 10, 10, 660, 200, 1,
-										 BlackPixel(display, screen), WhitePixel(display, screen));
-		XSelectInput(display, window, ExposureMask | KeyPressMask);
-		XMapWindow(display, window);
+	Canvas();
 
-		Atom WM_DELETE_WINDOW = XInternAtom(display, "WM_DELETE_WINDOW", False);
-		XSetWMProtocols(display, window, &WM_DELETE_WINDOW, 1);
-
-		XEvent e;
-		while (1) {
-			XNextEvent(display, &e);
-
-			if ((e.type == ClientMessage) &&
-				(static_cast<unsigned int>(e.xclient.data.l[0]) == WM_DELETE_WINDOW)) {
-				break;
-			}
-		}
-
-		XDestroyWindow(display, window);
-		XCloseDisplay(display);
-	}
-
-	void Drawpixel(jdscn::Position2D pos)
-	{
-		XDrawPoint(display, window, DefaultGC(display, screen), pos[0], pos[1]);
-	}
+	void Drawpixel(jdscn::Position2D pos);
 };
-} // namespace win
+
+

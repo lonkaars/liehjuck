@@ -5,13 +5,13 @@ SRCS := \
 	src/scene.cpp \
 	src/win.cpp \
 	src/argparse.cpp \
-	lib/gfx/gfx.c
+#	lib/gfx/gfx.c
 HEADERS := \
 	src/scene.h \
 	src/argparse.h \
 	src/import.h \
 	src/win.h \
-	lib/gfx/gfx.h
+#	lib/gfx/gfx.h
 
 OBJDIR := .o
 DEPDIR := .d
@@ -63,11 +63,11 @@ format:
 $(BIN): $(OBJS)
 	$(LINK.o) $^ $(LDLIBS) 
 
-$(OBJDIR)/%.o: %.c
-$(OBJDIR)/%.o: %.c $(DEPDIR)/%.d
-	$(PRECOMPILE)
-	$(COMPILE.c) $<
-	$(POSTCOMPILE)
+#$(OBJDIR)/%.o: %.c
+#$(OBJDIR)/%.o: %.c $(DEPDIR)/%.d
+#	$(PRECOMPILE)
+#	$(COMPILE.c) $<
+#	$(POSTCOMPILE)
 
 $(OBJDIR)/%.o: %.cpp
 $(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.d

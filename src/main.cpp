@@ -25,9 +25,16 @@ int main(int argc, char *argv[])
 		cout << "light: " << light.meta.name << endl;
 	for (jdscn::Object object : scene_jdscn.objects)
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
+	
+	Canvas c;
+	
+	sleep(2);
 
-	win::Win window;
-	cout << "hi" << endl;
-	window.Drawpixel({100, 100});
+	for(int i = 100; i < 1000; i++)
+	{
+		c.Drawpixel({i, 100});
+	}
+
+	sleep(10);
 	return EXIT_SUCCESS;
 }
