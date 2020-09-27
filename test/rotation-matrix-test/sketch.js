@@ -126,7 +126,6 @@ function draw() {
 	coolbox.scale(100);
 	coolbox.translate(0, 0, 0);
 	coolbox.draw();
-	// coolbox.rotation += 0.001;
 }
 
 
