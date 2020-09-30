@@ -1,4 +1,4 @@
-function rotateAroundOrigin(point, angle) {
+function rotate2D(point, angle) {
 	newCoords = [0, 0];
 	newCoords[0] = Math.cos(angle) * point[0] - Math.sin(angle) * point[1];
 	newCoords[1] = Math.sin(angle) * point[0] + Math.cos(angle) * point[1];
@@ -7,7 +7,7 @@ function rotateAroundOrigin(point, angle) {
 
 class box {
 	constructor() {
-		this.rotation = 0;
+		this.rotation = [0, 0, 0];
 		this.vertices = [
 			[
 				[-1.0, 1.0, 1.0],
@@ -83,8 +83,8 @@ class box {
 		// https://en.wikipedia.org/wiki/3D_projection#Perspective_projection
 		var pos = [x, y, z]
 		var camera = {
-			displaySurface: [0, 0, -20-mouseX],
-			position: [0, windowHeight/2-mouseY, -mouseX]
+			displaySurface: [0, 0, -400],
+			position: [0, 0, -500]
 		}
 		var d = pos.map((p, i) => p-camera.position[i]);
 		return [
@@ -102,12 +102,23 @@ class box {
 		});
 	}
 
-	// rotate(rotation) {
-	// 	this.rotation += rotation;
-	// 	this.vertices.forEach((val, i) => {
-	// 		this.vertices[i] = rotateAroundOrigin(val, rotation);
-	// 	})
-	// }
+	rotate(rotation) {
+		this.rotation = this.rotation.map((r, i) => r += rotation[i]);
+		this.vertices = this.vertices.map(tri => {
+			return tri.map(pos => {
+				var rz = rotate2D([pos[0], pos[1]], rotation[2])
+				pos = [rz[0], rz[1], pos[2]];
+
+				var ry = rotate2D([pos[0], pos[2]], rotation[1])
+				pos = [ry[0], pos[1], ry[1]];
+
+				var rx = rotate2D([pos[1], pos[2]], rotation[0])
+				pos = [pos[0], rx[0], rx[1]];
+
+				return pos;
+			})
+		});
+	}
 }
 
 var coolbox;
@@ -123,8 +134,8 @@ function draw() {
 	strokeWeight(10);
 	strokeWeight(1);
 	coolbox = new box();
+	coolbox.rotate([frameCount / 100, mouseY / 100, mouseX / 100]);
 	coolbox.scale(100);
-	coolbox.translate(0, 0, 0);
 	coolbox.draw();
 }
 
