@@ -44,10 +44,9 @@ class box {
 			z: Math.cos(o.z)
 		}
 
-		// var d = a.map((p, i) => p-c[i]); // only works if no rotation
-
+		// camera transform
 		var d = {
-			x: c.y*(s.x*y + c.z*x) - s.y*z,
+			x: c.y*(s.z*y + c.z*x) - s.y*z,
 			y: s.x*(c.y*z + s.y*(s.z*y + c.z*x)) + c.x*(c.z*y - s.z*x),
 			z: c.x*(c.y*z + s.y*(s.z*y + c.z*x)) - s.x*(c.z*y - s.z*x),
 		}
@@ -66,6 +65,7 @@ class box {
 		strokeWeight(1);
 		this.vertices.forEach(tri => {
 			tri.forEach((pos, i) => {
+				stroke(i * 120 + 120, 100, 100)
 				line(...this._3DcoordTo2D(tri[i]), ...this._3DcoordTo2D(tri[(i+1)%tri.length]))
 				// point(...this._3DcoordTo2D(...pos))
 			})
