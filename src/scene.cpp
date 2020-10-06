@@ -9,7 +9,6 @@
 void jdscn::Scene::draw()
 {
 	for (jdscn::Object object : this->objects) {
-		// object.project()
 		object.transformScale({5, 15, 3});
 		std::cout << object.vertices[0][0][0] << std::endl;
 		std::cout << object.vertices[0][0][1] << std::endl;
@@ -65,4 +64,40 @@ void jdscn::Object::transformRotation(std::array<float, 3> rotation)
 		});
 	for (int a = 0; a < this->orientation.size(); a++)
 		this->orientation[a] += rotation[a];
+}
+
+std::vector<std::array<jdscn::FloatXY, 3>> jdscn::Object::projectVertices(jdscn::Camera camera)
+{
+	std::vector<std::array<jdscn::FloatXY, 3>> projectedVertices;
+	std::for_each(
+		this->vertices.begin(), this->vertices.end(),
+		[&camera, &projectedVertices](std::array<jdscn::Position, 3> &vertex) {
+			std::array<jdscn::FloatXY, 3> outVert;
+			for (int p = 0; p < vertex.size(); p++) {
+				// https://en.wikipedia.org/wiki/3D_projection#Perspective_projection
+				jdscn::Position a = vertex[p];			   // point
+				jdscn::Position c0 = camera.position;	   // camera pos
+				jdscn::Position e = {0, 0, -200};		   // display surface
+				jdscn::Orientation o = camera.orientation; // camera rotation
+
+				// wikipedia abbreviations
+				float x = a[0] - c0[0];
+				float y = a[1] - c0[1];
+				float z = a[2] - c0[2];
+				jdscn::Position s = {std::sin(o[0]), std::sin(o[1]), std::sin(o[2])};
+				jdscn::Position c = {std::cos(o[0]), std::cos(o[1]), std::cos(o[2])};
+
+				// camera transform
+				jdscn::Position d = {
+					c[1] * (s[2] * y + c[2] * x) - s[1] * z,
+					s[0] * (c[1] * z + s[1] * (s[2] * y + c[2] * x)) + c[0] * (c[2] * y - s[2] * x),
+					c[0] * (c[1] * z + s[1] * (s[2] * y + c[2] * x)) - s[0] * (c[2] * y - s[2] * x),
+				};
+
+				// screen coordinates
+				outVert[p] = {(e[2] / d[2]) * d[0] + e[0], (e[2] / d[2]) * d[1] + e[1]};
+			}
+			projectedVertices.push_back(outVert);
+		});
+	return projectedVertices;
 }

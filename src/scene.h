@@ -9,13 +9,14 @@ namespace jdscn
 {
 
 using FloatXYZ = std::array<float, 3>;
+using FloatXY = std::array<float, 2>;
+
 using Position = FloatXYZ;	  // [<-, ->]
 using Scale = FloatXYZ;		  // [<-, ->]
 using Orientation = FloatXYZ; // [0, pi]
 
 using Position2D = std::array<int, 2>; // [<-, ->]
-
-using Color = std::array<int, 3>; // int [0, 255]
+using Color = std::array<int, 3>;	   // int [0, 255]
 
 class Meta
 {
@@ -83,7 +84,7 @@ class Object
 	void transformScale(std::array<float, 3>);
 	void transformRotation(std::array<float, 3>);
 	void transformPosition(std::array<float, 3>);
-	std::vector<std::array<Position2D, 3>> projectVertices(Camera);
+	std::vector<std::array<FloatXY, 3>> projectVertices(Camera);
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
 	/* Texture texture; */
 };
