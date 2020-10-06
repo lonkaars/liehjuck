@@ -21,6 +21,7 @@ class Canvas
 	int width;
 	int height;
 	const char* title;
+	Canvas();
 	Canvas(int, int, const char *);
 	void draw(int, int, jdscn::Color);
 };
