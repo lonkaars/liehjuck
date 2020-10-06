@@ -15,7 +15,8 @@
 namespace Win
 {
 
-Canvas::Canvas(int width, int height, const char *title) {
+Canvas::Canvas(int width, int height, const char *title)
+{
 	this->width = width;
 	this->height = height;
 	this->title = title;

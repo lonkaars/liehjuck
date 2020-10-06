@@ -20,7 +20,7 @@ class Canvas
 	public:
 	int width;
 	int height;
-	const char* title;
+	const char *title;
 	Canvas(int, int, const char *);
 	void draw(int, int, jdscn::Color);
 };

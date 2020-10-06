@@ -23,9 +23,9 @@ class box {
 	_3DcoordTo2D(input) {
 		// https://en.wikipedia.org/wiki/3D_projection#Perspective_projection
 		var a = { x:input[0], y:input[1], z:input[2] } // point
-		var c0 = { x:0, y:0, z:-500 } // camera pos
-		var e = { x:0, y:0, z:-900 } // display surface
-		var o = { x:(mouseY - (windowHeight / 2)) / 500, y:(mouseX - (windowWidth / 2)) / 500, z:0 } // camera rotation
+		var c0 = { x:0, y:0, z:-150 } // camera pos
+		var e = { x:0, y:0, z:-200 } // display surface
+		var o = { x:0, y:0, z:0 } // camera rotation
 
 		// wikipedia abbreviations
 		var x = a.x - c0.x
@@ -65,9 +65,8 @@ class box {
 		strokeWeight(1);
 		this.vertices.forEach(tri => {
 			tri.forEach((pos, i) => {
-				stroke(i * 120 + 120, 100, 100)
-				line(...this._3DcoordTo2D(tri[i]), ...this._3DcoordTo2D(tri[(i+1)%tri.length]))
-				// point(...this._3DcoordTo2D(...pos))
+				// line(...this._3DcoordTo2D(tri[i]), ...this._3DcoordTo2D(tri[(i+1)%tri.length]))
+				point(...this._3DcoordTo2D(pos))
 			})
 		});
 	}
@@ -105,7 +104,7 @@ function draw() {
 	strokeWeight(1);
 	coolbox = new box();
 	coolbox.scale(100);
-	coolbox.rotate([1, 0, 0]);
+	coolbox.rotate([1, 0, frameCount / 50]);
 	coolbox.draw();
 }
 

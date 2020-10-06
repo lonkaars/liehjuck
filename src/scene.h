@@ -8,7 +8,7 @@
 namespace jdscn
 {
 
-using FloatXYZ = std::array<double, 3>;
+using FloatXYZ = std::array<float, 3>;
 using Position = FloatXYZ;	  // [<-, ->]
 using Scale = FloatXYZ;		  // [<-, ->]
 using Orientation = FloatXYZ; // [0, pi]
@@ -80,6 +80,10 @@ class Object
 	std::vector<std::array<Position, 3>> vertices;
 	Meta meta;
 	Material material;
+	void transformScale(std::array<float, 3>);
+	void transformRotation(std::array<float, 3>);
+	void transformPosition(std::array<float, 3>);
+	std::vector<std::array<Position2D, 3>> projectVertices(Camera);
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
 	/* Texture texture; */
 };
@@ -99,6 +103,7 @@ class Scene
 	Camera camera;
 	std::vector<Light> lights;
 	std::vector<Object> objects;
+	void draw();
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Scene, meta, camera, lights, objects);
 };
 
