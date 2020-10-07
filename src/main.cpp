@@ -29,10 +29,12 @@ int main(int argc, char *argv[])
 
 	const char *windowTitle = "[floating] cool window";
 	Win::Canvas canvas(1280, 720, windowTitle);
-	jdscn::Color color = {255, 255, 255};
 
-	scene_jdscn.draw(canvas);
+	int frame = 0;
+	while(true){
+		scene_jdscn.draw(canvas, frame);
+		frame++;
+	}
 
-	sleep(10);
 	return EXIT_SUCCESS;
 }

@@ -103,8 +103,9 @@ function draw() {
 	strokeWeight(10);
 	strokeWeight(1);
 	coolbox = new box();
-	coolbox.scale(100);
+	coolbox.scale(mouseY);
 	coolbox.rotate([1, 0, frameCount / 50]);
+	coolbox.translate(mouseX, 0, 0);
 	coolbox.draw();
 }
 

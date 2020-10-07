@@ -6,19 +6,25 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
+#include <thread>
 
-void jdscn::Scene::draw(Win::Canvas canvas)
+void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 {
 	for (jdscn::Object object : this->objects) {
+		/* object.transformScale(object.scale, false); */
+		object.transformRotate(jdscn::Orientation({0, float(frame) / 100, 0}), false);
+		object.transformTranslate(object.position, false);
 		jdscn::UVFloat projection = object.projectVertices(this->camera);
 		for (jdscn::TriXY tri : projection)
 			for (jdscn::FloatXY pos : tri)
-				canvas.draw(pos[0], pos[1], object.material.color);
+				canvas.draw(-pos[0], -pos[1], object.material.color);
 	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
+	canvas.clear();
 }
 
 // FIXME: Alsmost duplicate functions
-void jdscn::Object::transformScale(jdscn::Scale scaleFactor)
+void jdscn::Object::transformScale(jdscn::Scale scaleFactor, bool apply = true)
 {
 	std::for_each(this->vertices.begin(), this->vertices.end(), [&scaleFactor](jdscn::Tri &tri) {
 		std::for_each(tri.begin(), tri.end(), [&scaleFactor](jdscn::Position &pos) {
@@ -26,11 +32,12 @@ void jdscn::Object::transformScale(jdscn::Scale scaleFactor)
 				pos[i] *= scaleFactor[i];
 		});
 	});
-	for (int a = 0; a < this->scale.size(); a++)
-		this->scale[a] += scaleFactor[a];
+	if(apply)
+		for (int a = 0; a < this->scale.size(); a++)
+			this->scale[a] += scaleFactor[a];
 }
 
-void jdscn::Object::transformTranslate(jdscn::Position positionShift)
+void jdscn::Object::transformTranslate(jdscn::Position positionShift, bool apply = true)
 {
 	std::for_each(this->vertices.begin(), this->vertices.end(), [&positionShift](jdscn::Tri &tri) {
 		std::for_each(tri.begin(), tri.end(), [&positionShift](jdscn::Position &pos) {
@@ -38,11 +45,12 @@ void jdscn::Object::transformTranslate(jdscn::Position positionShift)
 				pos[i] += positionShift[i];
 		});
 	});
-	for (int a = 0; a < this->scale.size(); a++)
-		this->position[a] += positionShift[a];
+	if(apply)
+		for (int a = 0; a < this->scale.size(); a++)
+			this->position[a] += positionShift[a];
 }
 
-void jdscn::Object::transformRotate(jdscn::Orientation rotation)
+void jdscn::Object::transformRotate(jdscn::Orientation rotation, bool apply = true)
 {
 	std::for_each(this->vertices.begin(), this->vertices.end(), [&rotation](jdscn::Tri &tri) {
 		std::for_each(tri.begin(), tri.end(), [&rotation](jdscn::Position &pos) {
@@ -54,8 +62,9 @@ void jdscn::Object::transformRotate(jdscn::Orientation rotation)
 			pos = {pos[0], rx[0], rx[1]};
 		});
 	});
-	for (int a = 0; a < this->orientation.size(); a++)
-		this->orientation[a] += rotation[a];
+	if(apply)
+		for (int a = 0; a < this->orientation.size(); a++)
+			this->orientation[a] += rotation[a];
 }
 
 jdscn::UVFloat jdscn::Object::projectVertices(jdscn::Camera camera)
@@ -69,7 +78,7 @@ jdscn::UVFloat jdscn::Object::projectVertices(jdscn::Camera camera)
 				// https://en.wikipedia.org/wiki/3D_projection#Perspective_projection
 				jdscn::Position a = tri[p];				   // point
 				jdscn::Position c0 = camera.position;	   // camera pos
-				jdscn::Position e = {0, 0, -200};		   // display surface
+				jdscn::Position e = {0, 0, camera.focalLength * float(35.6)};		   // display surface
 				jdscn::Orientation o = camera.orientation; // camera rotation
 
 				// wikipedia abbreviations
