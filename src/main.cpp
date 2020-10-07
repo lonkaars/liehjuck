@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	Win::Canvas canvas(1280, 720, windowTitle);
 	jdscn::Color color = {255, 255, 255};
 
-	scene_jdscn.draw();
+	scene_jdscn.draw(canvas);
 
 	sleep(10);
 	return EXIT_SUCCESS;

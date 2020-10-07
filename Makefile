@@ -14,6 +14,7 @@ HEADERS := \
 	src/import.h \
 	src/win.h \
 	src/utility.h \
+	src/jdscn_types.h \
 	lib/gfx/gfx.h
 
 OBJDIR := .o

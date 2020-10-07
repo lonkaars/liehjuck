@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 namespace import
 {
 
-std::string readFile(fs::path path);
-jdscn::Scene importScene(nlohmann::json sceneJSON);
+std::string readFile(fs::path);
+jdscn::Scene importScene(nlohmann::json);
 
 } // namespace import

@@ -1,15 +1,13 @@
 #pragma once
 #include "../lib/gfx/gfx.h"
-#include "scene.h"
+#include "jdscn_types.h"
 #include <X11/Xlib.h>
 #include <X11/Xos.h>
 #include <X11/Xutil.h>
-
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <iostream>
 #include <sys/utsname.h>
 
 namespace Win
