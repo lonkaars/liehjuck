@@ -24,6 +24,7 @@ class Canvas
 	Canvas();
 	Canvas(int, int, const char *);
 	void draw(int, int, jdscn::Color);
+	void clear();
 };
 
 }; // namespace Win

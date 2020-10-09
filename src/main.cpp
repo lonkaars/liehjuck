@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 		canvas.draw(sin(x) * 100 + (canvas.width / 2), cos(x) * 100 + (canvas.height / 2), color);
 	}*/
 	
-	draw::Drawloop drawloop(canvas, scene_jdscn, 10.0f);
+	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
 	drawloop.startLoop();
 
 	sleep(10);
