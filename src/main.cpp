@@ -30,11 +30,14 @@ int main(int argc, char *argv[])
 	const char *windowTitle = "[floating] cool window";
 	Win::Canvas canvas(1280, 720, windowTitle);
 
-	int frame = 0;
-	while(true){
-		scene_jdscn.draw(canvas, frame);
-		frame++;
-	}
+	scene_jdscn.draw(canvas, 0);
+	sleep(10);
+
+	/* int frame = 0; */
+	/* while(true){ */
+	/* 	scene_jdscn.draw(canvas, frame); */
+	/* 	frame++; */
+	/* } */
 
 	return EXIT_SUCCESS;
 }
