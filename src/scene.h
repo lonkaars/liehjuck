@@ -71,9 +71,9 @@ class Object
 	Vertices vertices;
 	Meta meta;
 	Material material;
-	void transformScale(std::array<float, 3>, bool);
-	void transformRotate(std::array<float, 3>, bool);
-	void transformTranslate(std::array<float, 3>, bool);
+	void transformScale(jdscn::Scale, bool);
+	void transformRotate(jdscn::Orientation, bool);
+	void transformTranslate(jdscn::Position, bool);
 	UVFloat projectVertices(Camera);
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
 	/* Texture texture; */
