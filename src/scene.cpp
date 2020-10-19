@@ -1,13 +1,13 @@
 #include "scene.h"
+#include "../lib/gfx/gfx.h"
 #include "utility.h"
 #include "win.h"
 #include <iostream>
 #include <math.h>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <vector>
 #include <thread>
-#include "../lib/gfx/gfx.h"
+#include <vector>
 
 void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 {
@@ -33,7 +33,7 @@ void jdscn::Object::transformScale(jdscn::Scale scaleFactor, bool apply = true)
 				pos[i] *= scaleFactor[i];
 		});
 	});
-	if(apply)
+	if (apply)
 		for (int a = 0; a < this->scale.size(); a++)
 			this->scale[a] += scaleFactor[a];
 }
@@ -46,7 +46,7 @@ void jdscn::Object::transformTranslate(jdscn::Position positionShift, bool apply
 				pos[i] += positionShift[i];
 		});
 	});
-	if(apply)
+	if (apply)
 		for (int a = 0; a < this->scale.size(); a++)
 			this->position[a] += positionShift[a];
 }
@@ -63,7 +63,7 @@ void jdscn::Object::transformRotate(jdscn::Orientation rotation, bool apply = tr
 			pos = {rz[0], rz[1], pos[2]};
 		});
 	});
-	if(apply)
+	if (apply)
 		for (int a = 0; a < this->orientation.size(); a++)
 			this->orientation[a] += rotation[a];
 }
@@ -77,10 +77,10 @@ jdscn::UVFloat jdscn::Object::projectVertices(jdscn::Camera camera)
 			std::array<jdscn::FloatXY, 3> outVert;
 			for (int p = 0; p < tri.size(); p++) {
 				// https://en.wikipedia.org/wiki/3D_projection#Perspective_projection
-				jdscn::Position a = tri[p];				   // point
-				jdscn::Position c0 = camera.position;	   // camera pos
-				jdscn::Position e = {0, 0, camera.focalLength * float(35.6)};		   // display surface
-				jdscn::Orientation o = camera.orientation; // camera rotation
+				jdscn::Position a = tri[p];									  // point
+				jdscn::Position c0 = camera.position;						  // camera pos
+				jdscn::Position e = {0, 0, camera.focalLength * float(35.6)}; // display surface
+				jdscn::Orientation o = camera.orientation;					  // camera rotation
 
 				// wikipedia abbreviations
 				float x = a[0] - c0[0];

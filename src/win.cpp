@@ -31,9 +31,6 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 	gfx_point(x, y);
 }
 
-void Canvas::clear()
-{
-	gfx_clear();
-}
+void Canvas::clear() { gfx_clear(); }
 
 }; // namespace Win
