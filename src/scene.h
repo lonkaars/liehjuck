@@ -1,4 +1,6 @@
 #pragma once
+#include "jdscn_types.h"
+#include "win.h"
 #include <array>
 #include <math.h>
 #include <nlohmann/json.hpp>
@@ -7,15 +9,6 @@
 
 namespace jdscn
 {
-
-using FloatXYZ = std::array<double, 3>;
-using Position = FloatXYZ;	  // [<-, ->]
-using Scale = FloatXYZ;		  // [<-, ->]
-using Orientation = FloatXYZ; // [0, pi]
-
-using Position2D = std::array<int, 2>; // [<-, ->]
-
-using Color = std::array<int, 3>; // int [0, 255]
 
 class Meta
 {
@@ -34,8 +27,6 @@ class Material
 	Meta meta;
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Material, color, roughness, metallic, transparency, meta);
 };
-
-using UV = std::vector<std::array<Position2D, 3>>;
 
 class Texture
 { // TODO: not yet implemented in the python plugin
@@ -77,9 +68,14 @@ class Object
 	Orientation orientation;
 	Position position;
 	Scale scale;
-	std::vector<std::array<Position, 3>> vertices;
+	Vertices vertices;
 	Meta meta;
 	Material material;
+	void transform(std::function<jdscn::Position(jdscn::Position)>);
+	void transformScale(jdscn::Scale, bool);
+	void transformRotate(jdscn::Orientation, bool);
+	void transformTranslate(jdscn::Position, bool);
+	UVFloat projectVertices(Camera);
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
 	/* Texture texture; */
 };
@@ -99,6 +95,7 @@ class Scene
 	Camera camera;
 	std::vector<Light> lights;
 	std::vector<Object> objects;
+	void draw(Win::Canvas, int);
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Scene, meta, camera, lights, objects);
 };
 

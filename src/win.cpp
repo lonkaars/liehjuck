@@ -18,7 +18,8 @@ Canvas::Canvas() {
 
 }
 
-Canvas::Canvas(int width, int height, const char *title) {
+Canvas::Canvas(int width, int height, const char *title)
+{
 	this->width = width;
 	this->height = height;
 	this->title = title;
@@ -27,13 +28,12 @@ Canvas::Canvas(int width, int height, const char *title) {
 
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
+	x = this->width / 2 + x;
+	y = this->height / 2 - y;
 	gfx_color(c[0], c[1], c[2]);
 	gfx_point(x, y);
 }
 
-void Canvas::clear()
-{
-	gfx_clear();
-}
+void Canvas::clear() { gfx_clear(); }
 
 }; // namespace Win

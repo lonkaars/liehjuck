@@ -6,6 +6,7 @@ SRCS := \
 	src/win.cpp \
 	src/draw.cpp \
 	src/argparse.cpp \
+	src/utility.cpp \
 	lib/gfx/gfx.cpp
 
 HEADERS := \
@@ -13,6 +14,8 @@ HEADERS := \
 	src/argparse.h \
 	src/import.h \
 	src/win.h \
+	src/utility.h \
+	src/jdscn_types.h \
 	src/draw.h \
 	lib/gfx/gfx.h
 

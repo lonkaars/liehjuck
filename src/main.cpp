@@ -6,9 +6,9 @@
 
 #include <array>
 #include <iostream>
+#include <math.h>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <math.h>
 
 using namespace std;
 
@@ -30,20 +30,12 @@ int main(int argc, char *argv[])
 
 	const char *windowTitle = "[floating] cool window";
 	Win::Canvas canvas(1280, 720, windowTitle);
-	jdscn::Color color = {255, 255, 255};
 
-	/*for (int i = 100; i < 1000; i++) {
-		canvas.draw(i, 100, color);
-	}
+	//FIXME: add scene.draw() to the drawloop (this is just the merge conflict resolve)
+	scene_jdscn.draw(canvas, 0);
 
-	color = {255, 0, 255};
-	for(float x = 0; x < 2 * M_PI; x += 0.01) {
-		canvas.draw(sin(x) * 100 + (canvas.width / 2), cos(x) * 100 + (canvas.height / 2), color);
-	}*/
-	
 	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
 	drawloop.startLoop();
 
-	sleep(10);
 	return EXIT_SUCCESS;
 }
