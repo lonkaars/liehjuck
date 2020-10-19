@@ -14,9 +14,7 @@
 
 namespace Win
 {
-Canvas::Canvas() {
-
-}
+Canvas::Canvas() {}
 
 Canvas::Canvas(int width, int height, const char *title)
 {

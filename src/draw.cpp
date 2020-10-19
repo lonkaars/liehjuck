@@ -9,25 +9,24 @@
 namespace draw
 {
 
-Drawloop::Drawloop(Win::Canvas& canvas, jdscn::Scene scene, float framerate)
+Drawloop::Drawloop(Win::Canvas& c, jdscn::Scene& s, float framerate)
 {
 	interval = 1000/framerate;
-	c = canvas;
-	s = scene;
+	canvas = c;
+	scene = s;
 }
 
 void Drawloop::startLoop()
 {
-	std::thread([interval = interval, &c = c]()
+	std::thread([this]()
 	{
-		jdscn::Color col = {255, 255, 255};
-		int pixelspot = 0;
+		int frame = 0;
 		while(true)
 		{
 			std::chrono::time_point nextFrameTime = std::chrono::steady_clock::now() + std::chrono::milliseconds(int(interval));
-			c.draw(pixelspot, pixelspot, col);
+			scene.draw(canvas, frame);
 			std::this_thread::sleep_until(nextFrameTime);
-			pixelspot++;
+			frame++;
 		}
 	}).detach();
 }

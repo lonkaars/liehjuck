@@ -12,9 +12,8 @@
 void jdscn::Object::transform(std::function<jdscn::Position(jdscn::Position)> operation)
 {
 	std::for_each(this->vertices.begin(), this->vertices.end(), [&operation](jdscn::Tri &tri) {
-		std::for_each(tri.begin(), tri.end(), [&operation](jdscn::Position &pos) {
-			pos = operation(pos);
-		});
+		std::for_each(tri.begin(), tri.end(),
+					  [&operation](jdscn::Position &pos) { pos = operation(pos); });
 	});
 }
 

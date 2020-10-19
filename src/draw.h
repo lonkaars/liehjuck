@@ -6,13 +6,12 @@ namespace draw
 class Drawloop
 {
 	public:
-	Win::Canvas c; 
-	jdscn::Scene s;
+	Win::Canvas canvas;
+	jdscn::Scene scene;
 	float interval;
 
-	Drawloop(Win::Canvas& c, jdscn::Scene s, float framerate);
+	Drawloop(Win::Canvas &, jdscn::Scene &, float framerate);
 	void startLoop();
 };
 
-}; // draw
-
+}; // namespace draw
