@@ -9,6 +9,15 @@
 #include <thread>
 #include <vector>
 
+void jdscn::Object::transform(std::function<jdscn::Position(jdscn::Position)> operation)
+{
+	std::for_each(this->vertices.begin(), this->vertices.end(), [&operation](jdscn::Tri &tri) {
+		std::for_each(tri.begin(), tri.end(), [&operation](jdscn::Position &pos) {
+			pos = operation(pos);
+		});
+	});
+}
+
 void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 {
 	for (jdscn::Object object : this->objects) {
@@ -24,14 +33,12 @@ void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 	canvas.clear();
 }
 
-// FIXME: Alsmost duplicate functions
 void jdscn::Object::transformScale(jdscn::Scale scaleFactor, bool apply = true)
 {
-	std::for_each(this->vertices.begin(), this->vertices.end(), [&scaleFactor](jdscn::Tri &tri) {
-		std::for_each(tri.begin(), tri.end(), [&scaleFactor](jdscn::Position &pos) {
-			for (int i = 0; i < pos.size(); i++)
-				pos[i] *= scaleFactor[i];
-		});
+	this->transform([&scaleFactor](jdscn::Position pos) {
+		for (int i = 0; i < pos.size(); i++)
+			pos[i] *= scaleFactor[i];
+		return pos;
 	});
 	if (apply)
 		for (int a = 0; a < this->scale.size(); a++)
@@ -40,11 +47,10 @@ void jdscn::Object::transformScale(jdscn::Scale scaleFactor, bool apply = true)
 
 void jdscn::Object::transformTranslate(jdscn::Position positionShift, bool apply = true)
 {
-	std::for_each(this->vertices.begin(), this->vertices.end(), [&positionShift](jdscn::Tri &tri) {
-		std::for_each(tri.begin(), tri.end(), [&positionShift](jdscn::Position &pos) {
-			for (int i = 0; i < pos.size(); i++)
-				pos[i] += positionShift[i];
-		});
+	this->transform([&positionShift](jdscn::Position pos) {
+		for (int i = 0; i < pos.size(); i++)
+			pos[i] += positionShift[i];
+		return pos;
 	});
 	if (apply)
 		for (int a = 0; a < this->scale.size(); a++)
@@ -53,15 +59,14 @@ void jdscn::Object::transformTranslate(jdscn::Position positionShift, bool apply
 
 void jdscn::Object::transformRotate(jdscn::Orientation rotation, bool apply = true)
 {
-	std::for_each(this->vertices.begin(), this->vertices.end(), [&rotation](jdscn::Tri &tri) {
-		std::for_each(tri.begin(), tri.end(), [&rotation](jdscn::Position &pos) {
-			jdscn::FloatXY rx = utility::rotate2D({pos[1], pos[2]}, rotation[0]);
-			pos = {pos[0], rx[0], rx[1]};
-			jdscn::FloatXY ry = utility::rotate2D({pos[0], pos[2]}, -rotation[1]);
-			pos = {ry[0], pos[1], ry[1]};
-			jdscn::FloatXY rz = utility::rotate2D({pos[0], pos[1]}, rotation[2]);
-			pos = {rz[0], rz[1], pos[2]};
-		});
+	this->transform([&rotation](jdscn::Position pos) {
+		jdscn::FloatXY rx = utility::rotate2D({pos[1], pos[2]}, rotation[0]);
+		pos = {pos[0], rx[0], rx[1]};
+		jdscn::FloatXY ry = utility::rotate2D({pos[0], pos[2]}, -rotation[1]);
+		pos = {ry[0], pos[1], ry[1]};
+		jdscn::FloatXY rz = utility::rotate2D({pos[0], pos[1]}, rotation[2]);
+		pos = {rz[0], rz[1], pos[2]};
+		return pos;
 	});
 	if (apply)
 		for (int a = 0; a < this->orientation.size(); a++)

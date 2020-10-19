@@ -71,6 +71,7 @@ class Object
 	Vertices vertices;
 	Meta meta;
 	Material material;
+	void transform(std::function<jdscn::Position(jdscn::Position)>);
 	void transformScale(jdscn::Scale, bool);
 	void transformRotate(jdscn::Orientation, bool);
 	void transformTranslate(jdscn::Position, bool);
