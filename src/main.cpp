@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 	Win::Canvas canvas(1280, 720, windowTitle);
 
 	scene_jdscn.draw(canvas, 0);
-	sleep(10);
+	sleep(60);
 
 	/* int frame = 0; */
 	/* while(true){ */

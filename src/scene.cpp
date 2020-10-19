@@ -17,14 +17,8 @@ void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 		object.transformTranslate(object.position, false);
 		jdscn::UVFloat projection = object.projectVertices(this->camera);
 		for (jdscn::TriXY tri : projection)
-			/* for (jdscn::FloatXY pos : tri) */
-			for (int i = 0; i < tri.size(); i++) {
-				gfx_color(object.material.color[0],object.material.color[1],object.material.color[2]);
-				gfx_line((1280/2)-tri[i][0], (720/2)+tri[i][1], (1280/2)-tri[(i+1)%3][0], (720/2)+tri[(i+1)%3][1]);
-			}
-		this->camera.position[0] = float(frame) / 10;
-		this->camera.orientation[2] = float(frame) / 120;
-				/* canvas.draw(-pos[0], -pos[1], object.material.color); */
+			for (jdscn::FloatXY pos : tri)
+				canvas.draw(-pos[0], -pos[1], object.material.color);
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
 	canvas.clear();
@@ -63,7 +57,7 @@ void jdscn::Object::transformRotate(jdscn::Orientation rotation, bool apply = tr
 		std::for_each(tri.begin(), tri.end(), [&rotation](jdscn::Position &pos) {
 			jdscn::FloatXY rx = utility::rotate2D({pos[1], pos[2]}, rotation[0]);
 			pos = {pos[0], rx[0], rx[1]};
-			jdscn::FloatXY ry = utility::rotate2D({pos[0], pos[2]}, rotation[1]);
+			jdscn::FloatXY ry = utility::rotate2D({pos[0], pos[2]}, -rotation[1]);
 			pos = {ry[0], pos[1], ry[1]};
 			jdscn::FloatXY rz = utility::rotate2D({pos[0], pos[1]}, rotation[2]);
 			pos = {rz[0], rz[1], pos[2]};
