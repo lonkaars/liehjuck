@@ -2,6 +2,7 @@
 #include "import.h"
 #include "scene.h"
 #include "win.h"
+#include "draw.h"
 
 #include <array>
 #include <iostream>
@@ -30,14 +31,11 @@ int main(int argc, char *argv[])
 	const char *windowTitle = "[floating] cool window";
 	Win::Canvas canvas(1280, 720, windowTitle);
 
+	//FIXME: add scene.draw() to the drawloop (this is just the merge conflict resolve)
 	scene_jdscn.draw(canvas, 0);
-	sleep(60);
 
-	/* int frame = 0; */
-	/* while(true){ */
-	/* 	scene_jdscn.draw(canvas, frame); */
-	/* 	frame++; */
-	/* } */
+	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
+	drawloop.startLoop();
 
 	return EXIT_SUCCESS;
 }
