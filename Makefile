@@ -79,6 +79,9 @@ format:
 $(BIN): $(OBJS)
 	$(LINK.o) $^ $(LDLIBS) 
 
+docs:
+	doxygen Doxyfile
+
 #$(OBJDIR)/%.o: %.c
 #$(OBJDIR)/%.o: %.c $(DEPDIR)/%.d
 #	$(PRECOMPILE)
