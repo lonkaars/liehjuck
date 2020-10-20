@@ -10,6 +10,11 @@
 namespace jdscn
 {
 
+/**
+ * @brief Information attached to all objects
+ *
+ * This class is used by every object to store it's name, but we might decide to add more properties to this class for debugging purposes.
+ */
 class Meta
 {
 	public:
@@ -17,6 +22,12 @@ class Meta
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Meta, name);
 };
 
+/**
+ * @brief Material used by objects
+ *
+ * This is a simplified version of the Principled BSDF shader in Blender.
+ * Some of these properties might be removed due to implementation difficulties.
+ */
 class Material
 {
 	public:
