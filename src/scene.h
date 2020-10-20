@@ -75,7 +75,7 @@ class Object
 	void transformScale(jdscn::Scale, bool);
 	void transformRotate(jdscn::Orientation, bool);
 	void transformTranslate(jdscn::Position, bool);
-	UVFloat projectVertices(Camera);
+	Vertices projectVertices(Camera);
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
 	/* Texture texture; */
 };

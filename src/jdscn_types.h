@@ -1,17 +1,21 @@
 #include <array>
+#include <iostream>
+#include <map>
+#include <string>
 #include <vector>
+
 namespace jdscn
 {
 
 using FloatXYZ = std::array<float, 3>;
 using FloatXY = std::array<float, 2>;
 
-using Position = FloatXYZ;	  // [<-, ->]
-using Scale = FloatXYZ;		  // [<-, ->]
-using Orientation = FloatXYZ; // [0, pi]
+using Position = FloatXYZ;
+using Scale = FloatXYZ;
+using Orientation = FloatXYZ;
 
-using Position2D = std::array<int, 2>; // [<-, ->]
-using Color = std::array<int, 3>;	   // int [0, 255]
+using Position2D = std::array<int, 2>;
+using Color = std::array<int, 3>;
 
 using Tri = std::array<Position, 3>;
 using TriXY = std::array<FloatXY, 3>;

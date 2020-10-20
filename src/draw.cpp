@@ -2,28 +2,27 @@
 #include "scene.h"
 #include "win.h"
 
-#include <iostream>
 #include <chrono>
+#include <iostream>
 #include <thread>
 
 namespace draw
 {
 
-Drawloop::Drawloop(Win::Canvas& c, jdscn::Scene& s, float framerate)
+Drawloop::Drawloop(Win::Canvas &c, jdscn::Scene &s, float framerate)
 {
-	interval = 1000/framerate;
+	interval = 1000 / framerate;
 	canvas = c;
 	scene = s;
 }
 
 void Drawloop::startLoop()
 {
-	std::thread([this]()
-	{
+	std::thread([this]() {
 		int frame = 0;
-		while(true)
-		{
-			std::chrono::time_point nextFrameTime = std::chrono::steady_clock::now() + std::chrono::milliseconds(int(interval));
+		while (true) {
+			std::chrono::time_point nextFrameTime =
+				std::chrono::steady_clock::now() + std::chrono::milliseconds(int(interval));
 			scene.draw(canvas, frame);
 			std::this_thread::sleep_until(nextFrameTime);
 			frame++;
@@ -31,4 +30,4 @@ void Drawloop::startLoop()
 	}).detach();
 }
 
-}; // draw
+}; // namespace draw
