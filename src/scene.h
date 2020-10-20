@@ -13,7 +13,10 @@ namespace jdscn
 /**
  * @brief Information attached to all objects
  *
- * This class is used by every object to store it's name, but we might decide to add more properties to this class for debugging purposes.
+ * @param name
+ *
+ * This class is used by every object to store properties that aren't rendered. We might decide to
+ * add more properties to this class for debugging purposes.
  */
 class Meta
 {
@@ -24,6 +27,12 @@ class Meta
 
 /**
  * @brief Material used by objects
+ *
+ * @param color
+ * @param roughness Reflection blurryness
+ * @param metallic Defines how much of the material's color you can see in the reflections
+ * @param transparency Opaqueness, higher is more opaque
+ * @param meta
  *
  * This is a simplified version of the Principled BSDF shader in Blender.
  * Some of these properties might be removed due to implementation difficulties.
@@ -39,6 +48,13 @@ class Material
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Material, color, roughness, metallic, transparency, meta);
 };
 
+/**
+ * @brief Simple texture with uv coordinates
+ *
+ * @param path Texture file path relative to .jdscn file. Must be png.
+ * @param uv Mapping of 3D vertex coordinates to 2D coordinates on the texture image
+ * @param meta Meta
+ */
 class Texture
 { // TODO: not yet implemented in the python plugin
 	public:
