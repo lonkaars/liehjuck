@@ -1,0 +1,18 @@
+\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}
+\contentsline {chapter}{\numberline {1}Class Index}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Class List}{1}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Class Documentation}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}argparse\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Args Class Reference}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}jdscn\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Camera Class Reference}{3}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Win\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Canvas Class Reference}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}draw\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Drawloop Class Reference}{4}{section.2.4}%
+\contentsline {section}{\numberline {2.5}jdscn\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Light Class Reference}{4}{section.2.5}%
+\contentsline {section}{\numberline {2.6}jdscn\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Material Class Reference}{5}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Detailed Description}{5}{subsection.2.6.1}%
+\contentsline {section}{\numberline {2.7}jdscn\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Meta Class Reference}{6}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}Detailed Description}{6}{subsection.2.7.1}%
+\contentsline {section}{\numberline {2.8}jdscn\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Object Class Reference}{6}{section.2.8}%
+\contentsline {section}{\numberline {2.9}jdscn\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Scene Class Reference}{7}{section.2.9}%
+\contentsline {section}{\numberline {2.10}jdscn\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Scene\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}Meta Class Reference}{7}{section.2.10}%
+\contentsline {section}{\numberline {2.11}jdscn\discretionary {\mbox {\scriptsize $\hookleftarrow $}}{}{}::Texture Class Reference}{7}{section.2.11}%
+\contentsline {chapter}{Index}{9}{section*.22}%

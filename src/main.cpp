@@ -33,5 +33,7 @@ int main(int argc, char *argv[])
 	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
 	drawloop.startLoop();
 
+	sleep(60);
+
 	return EXIT_SUCCESS;
 }

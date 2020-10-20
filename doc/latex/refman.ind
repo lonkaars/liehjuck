@@ -1,0 +1,24 @@
+\begin{theindex}
+
+  \item {argparse::Args}, \hyperpage{3}
+
+  \indexspace
+
+  \item {draw::Drawloop}, \hyperpage{4}
+
+  \indexspace
+
+  \item {jdscn::Camera}, \hyperpage{3}
+  \item {jdscn::Light}, \hyperpage{4}
+  \item {jdscn::Material}, \hyperpage{5}
+  \item {jdscn::Meta}, \hyperpage{6}
+  \item {jdscn::Object}, \hyperpage{6}
+  \item {jdscn::Scene}, \hyperpage{7}
+  \item {jdscn::SceneMeta}, \hyperpage{7}
+  \item {jdscn::Texture}, \hyperpage{7}
+
+  \indexspace
+
+  \item {Win::Canvas}, \hyperpage{4}
+
+\end{theindex}
