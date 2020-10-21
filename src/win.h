@@ -10,9 +10,15 @@
 #include <string.h>
 #include <sys/utsname.h>
 
+/**
+ * @brief Handles all X11 drawing
+ */
 namespace Win
 {
 
+/**
+ * @brief Manages the window and exposes simple drawing functions
+ */
 class Canvas
 {
 	public:
@@ -21,7 +27,17 @@ class Canvas
 	const char *title;
 	Canvas();
 	Canvas(int, int, const char *);
+	/**
+	 * @brief Draws a pixel with a specific color to the canvas
+	 *
+	 * @param int x coordinate
+	 * @param int y coordinate
+	 * @param jdscn::Color color
+	 */
 	void draw(int, int, jdscn::Color);
+	/**
+	 * @brief Clears the canvas
+	 */
 	void clear();
 };
 
