@@ -41,7 +41,7 @@ ifeq (3rdparty,$(_3p))
 	CPPFLAGS += -I$(_3p)
 endif
 
-CXXFLAGS := -std=c++17 -fPIC
+CXXFLAGS := -std=c++17
 LDFLAGS :=
 
 LDLIBS := -lX11 -pthread 
