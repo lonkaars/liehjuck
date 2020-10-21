@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+/** @file scene.h */
+
 namespace jdscn
 {
 
@@ -140,7 +142,11 @@ class Object
 	 */
 	void transformTranslate(jdscn::Position, bool);
 	/**
-	 * @brief FIXME: DEV BRANCH MERGE
+	 * @brief Project all vertices of current object
+	 *
+	 * @param Camera the camera to project the vertices with (usually the scene camera)
+	 *
+	 * @returns `jdscn::Vertices` Used as `jdscn::UVFloat`, but with the z axis used for z distance to camera after camera transform
 	 */
 	Vertices projectVertices(Camera);
 	/** @cond INTERNAL */
