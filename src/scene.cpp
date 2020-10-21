@@ -1,6 +1,5 @@
 #include "scene.h"
-#include "../lib/gfx/gfx.h"
-#include "utility.h"
+#include "calc.h"
 #include "win.h"
 #include <iostream>
 #include <math.h>
@@ -8,6 +7,22 @@
 #include <string>
 #include <thread>
 #include <vector>
+
+void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
+{
+	for (jdscn::Object object : this->objects) {
+		object.transformScale(object.scale, false);
+		object.transformRotate(object.orientation, false);
+		object.transformTranslate(object.position, false);
+		jdscn::Vertices projection = object.projectVertices(this->camera);
+		for (jdscn::Tri tri : projection)
+			for (jdscn::FloatXYZ pos : tri)
+				if(pos[2] < -20) // Near clipping
+					canvas.draw(-pos[0], -pos[1], object.material.color);
+	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
+	canvas.clear();
+}
 
 void jdscn::Object::transform(std::function<jdscn::Position(jdscn::Position)> operation)
 {
@@ -17,21 +32,6 @@ void jdscn::Object::transform(std::function<jdscn::Position(jdscn::Position)> op
 	});
 }
 
-void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
-{
-	for (jdscn::Object object : this->objects) {
-		object.transformScale(object.scale, false);
-		object.transformRotate(object.orientation, false);
-		object.transformTranslate(object.position, false);
-		jdscn::UVFloat projection = object.projectVertices(this->camera);
-		for (jdscn::TriXY tri : projection)
-			for (jdscn::FloatXY pos : tri)
-				canvas.draw(-pos[0], -pos[1], object.material.color);
-	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
-	canvas.clear();
-}
-
 void jdscn::Object::transformScale(jdscn::Scale scaleFactor, bool apply = true)
 {
 	this->transform([&scaleFactor](jdscn::Position pos) {
@@ -39,9 +39,8 @@ void jdscn::Object::transformScale(jdscn::Scale scaleFactor, bool apply = true)
 			pos[i] *= scaleFactor[i];
 		return pos;
 	});
-	if (apply)
-		for (int a = 0; a < this->scale.size(); a++)
-			this->scale[a] += scaleFactor[a];
+	for (int a = 0; a < this->scale.size(); a++)
+		this->scale[a] += scaleFactor[a] * int(apply);
 }
 
 void jdscn::Object::transformTranslate(jdscn::Position positionShift, bool apply = true)
@@ -51,59 +50,26 @@ void jdscn::Object::transformTranslate(jdscn::Position positionShift, bool apply
 			pos[i] += positionShift[i];
 		return pos;
 	});
-	if (apply)
-		for (int a = 0; a < this->scale.size(); a++)
-			this->position[a] += positionShift[a];
+	for (int a = 0; a < this->scale.size(); a++)
+		this->position[a] += positionShift[a] * int(apply);
 }
 
 void jdscn::Object::transformRotate(jdscn::Orientation rotation, bool apply = true)
 {
-	this->transform([&rotation](jdscn::Position pos) {
-		jdscn::FloatXY rx = utility::rotate2D({pos[1], pos[2]}, rotation[0]);
-		pos = {pos[0], rx[0], rx[1]};
-		jdscn::FloatXY ry = utility::rotate2D({pos[0], pos[2]}, -rotation[1]);
-		pos = {ry[0], pos[1], ry[1]};
-		jdscn::FloatXY rz = utility::rotate2D({pos[0], pos[1]}, rotation[2]);
-		pos = {rz[0], rz[1], pos[2]};
-		return pos;
-	});
-	if (apply)
-		for (int a = 0; a < this->orientation.size(); a++)
-			this->orientation[a] += rotation[a];
+	this->transform([&rotation](jdscn::Position pos) { return calc::rotate3D(pos, rotation); });
+	for (int a = 0; a < this->orientation.size(); a++)
+		this->orientation[a] += rotation[a] * int(apply);
 }
 
-jdscn::UVFloat jdscn::Object::projectVertices(jdscn::Camera camera)
+jdscn::Vertices jdscn::Object::projectVertices(jdscn::Camera camera)
 {
-	jdscn::UVFloat projectedVertices;
-	std::for_each(
-		this->vertices.begin(), this->vertices.end(),
-		[&camera, &projectedVertices](jdscn::Tri &tri) {
-			std::array<jdscn::FloatXY, 3> outVert;
-			for (int p = 0; p < tri.size(); p++) {
-				// https://en.wikipedia.org/wiki/3D_projection#Perspective_projection
-				jdscn::Position a = tri[p];									  // point
-				jdscn::Position c0 = camera.position;						  // camera pos
-				jdscn::Position e = {0, 0, camera.focalLength * float(35.6)}; // display surface
-				jdscn::Orientation o = camera.orientation;					  // camera rotation
-
-				// wikipedia abbreviations
-				float x = a[0] - c0[0];
-				float y = a[1] - c0[1];
-				float z = a[2] - c0[2];
-				jdscn::Position s = {std::sin(o[0]), std::sin(o[1]), std::sin(o[2])};
-				jdscn::Position c = {std::cos(o[0]), std::cos(o[1]), std::cos(o[2])};
-
-				// camera transform
-				jdscn::Position d = {
-					c[1] * (s[2] * y + c[2] * x) - s[1] * z,
-					s[0] * (c[1] * z + s[1] * (s[2] * y + c[2] * x)) + c[0] * (c[2] * y - s[2] * x),
-					c[0] * (c[1] * z + s[1] * (s[2] * y + c[2] * x)) - s[0] * (c[2] * y - s[2] * x),
-				};
-
-				// screen coordinates
-				outVert[p] = {(e[2] / d[2]) * d[0] + e[0], (e[2] / d[2]) * d[1] + e[1]};
-			}
-			projectedVertices.push_back(outVert);
-		});
-	return projectedVertices;
+	jdscn::Vertices out;
+	std::for_each(this->vertices.begin(), this->vertices.end(), [&camera, &out](jdscn::Tri tri) {
+		jdscn::Tri out_tri;
+		for (int i = 0; i < tri.size(); i++)
+			out_tri[i] = calc::project(tri[i], camera);
+		out.push_back(out_tri);
+	});
+	return out;
 }
+

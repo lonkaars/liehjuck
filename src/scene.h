@@ -142,7 +142,7 @@ class Object
 	/**
 	 * @brief FIXME: DEV BRANCH MERGE
 	 */
-	UVFloat projectVertices(Camera);
+	Vertices projectVertices(Camera);
 	/** @cond INTERNAL */
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Object, orientation, position, scale, vertices, meta, material);
 	/** @endcond */
