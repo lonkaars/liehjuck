@@ -28,7 +28,8 @@ void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 			for (jdscn::FloatXY pos : tri)
 				canvas.draw(-pos[0], -pos[1], object.material.color);
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
+	//std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
+	canvas.flush();
 	canvas.clear();
 }
 

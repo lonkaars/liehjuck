@@ -1,5 +1,4 @@
 #pragma once
-#include "../lib/gfx/gfx.h"
 #include "jdscn_types.h"
 #include <X11/Xlib.h>
 #include <X11/Xos.h>
@@ -19,9 +18,16 @@ class Canvas
 	int width;
 	int height;
 	const char *title;
+	
+	Display *dpy;
+	Window win;
+	GC gc;
+	XImage *frame;
+
 	Canvas();
 	Canvas(int, int, const char *);
 	void draw(int, int, jdscn::Color);
+	void flush();
 	void clear();
 };
 
