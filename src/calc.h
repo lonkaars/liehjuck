@@ -37,7 +37,8 @@ jdscn::Position rotate3D(jdscn::Position, jdscn::Orientation);
  * @param jdscn::Position Point to project
  * @param jdscn::Camera Camera to project with
  *
- * @return jdscn::FloatXYZ (screen coordinate x, screen coordinate y, z depth after camera transform)
+ * @return jdscn::FloatXYZ (screen coordinate x, screen coordinate y, z depth after camera
+ * transform)
  */
 jdscn::FloatXYZ project(jdscn::Position, jdscn::Camera);
 

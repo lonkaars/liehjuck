@@ -6,8 +6,7 @@ SRCS := \
 	src/win.cpp \
 	src/draw.cpp \
 	src/argparse.cpp \
-	src/calc.cpp \
-	lib/gfx/gfx.cpp
+	src/calc.cpp
 
 HEADERS := \
 	src/scene.h \
@@ -16,8 +15,7 @@ HEADERS := \
 	src/win.h \
 	src/calc.h \
 	src/jdscn_types.h \
-	src/draw.h \
-	lib/gfx/gfx.h
+	src/draw.h
 
 OBJDIR := .o
 DEPDIR := .d
@@ -43,7 +41,7 @@ ifeq (3rdparty,$(_3p))
 	CPPFLAGS += -I$(_3p)
 endif
 
-CXXFLAGS := -std=c++17
+CXXFLAGS := -std=c++17 -fPIC
 LDFLAGS :=
 
 LDLIBS := -lX11 -pthread 

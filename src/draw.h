@@ -12,15 +12,15 @@ namespace draw
 {
 
 /**
- * @class Drawloop 
+ * @class Drawloop
  */
 class Drawloop
 {
 	public:
 	/** @brief The canvas to draw to */
-	Win::Canvas canvas;
+	Win::Canvas& canvas;
 	/** @brief The scene to render */
-	jdscn::Scene scene;
+	jdscn::Scene& scene;
 	/** @brief The framerate to render at */
 	float interval;
 

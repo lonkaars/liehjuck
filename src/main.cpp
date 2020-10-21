@@ -9,6 +9,7 @@
 #include <math.h>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <thread>
 
 using namespace std;
 
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
 	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
 	drawloop.startLoop();
 
-	sleep(60);
+	this_thread::sleep_for(60s);
 
 	return EXIT_SUCCESS;
 }

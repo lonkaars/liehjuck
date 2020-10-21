@@ -1,14 +1,6 @@
 #pragma once
-#include "../lib/gfx/gfx.h"
 #include "jdscn_types.h"
 #include <X11/Xlib.h>
-#include <X11/Xos.h>
-#include <X11/Xutil.h>
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/utsname.h>
 
 /** @file win.h */
 
@@ -27,7 +19,11 @@ class Canvas
 	int width;
 	int height;
 	const char *title;
-	Canvas();
+	Display *display;
+	Window window;
+	GC gc;
+	Colormap colormap;
+
 	Canvas(int, int, const char *);
 	/**
 	 * @brief Draws a pixel with a specific color to the canvas

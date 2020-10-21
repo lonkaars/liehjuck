@@ -17,7 +17,7 @@ void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 		jdscn::Vertices projection = object.projectVertices(this->camera);
 		for (jdscn::Tri tri : projection)
 			for (jdscn::FloatXYZ pos : tri)
-				if(pos[2] < -0.02) // Near clipping
+				if (pos[2] < -0.02) // Near clipping
 					canvas.draw(-pos[0], -pos[1], object.material.color);
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
@@ -72,4 +72,3 @@ jdscn::Vertices jdscn::Object::projectVertices(jdscn::Camera camera)
 	});
 	return out;
 }
-
