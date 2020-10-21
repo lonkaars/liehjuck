@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+/** @file jdscn_types.h */
+
 /**
  * @namespace jdscn
  * @brief jdscn types and functions

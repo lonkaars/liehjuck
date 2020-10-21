@@ -10,6 +10,8 @@
 #include <string.h>
 #include <sys/utsname.h>
 
+/** @file win.h */
+
 /**
  * @brief Handles all X11 drawing
  */
