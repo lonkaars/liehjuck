@@ -1,16 +1,12 @@
 #include "argparse.h"
-#include "camera.h"
 #include "config.h"
 #include "draw.h"
 #include "import.h"
 #include "scene.h"
 #include "win.h"
 
-#include <X11/XKBlib.h>
-#include <X11/Xlib.h>
-#include <array>
+#include <xcb/xcb.h>
 #include <iostream>
-#include <math.h>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <thread>
