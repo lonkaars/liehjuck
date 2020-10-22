@@ -1,7 +1,6 @@
 #include "win.h"
 #include "scene.h"
 #include <X11/Xlib.h>
-#include <X11/Xos.h>
 #include <X11/Xutil.h>
 
 #include <stdio.h>
@@ -17,44 +16,50 @@
 
 namespace win
 {
-Canvas::Canvas() {}
 
 Canvas::Canvas(int width, int height, const char *title)
-	: emptydata( width * height * 4, 0 )
 {
 	this->width = width;
 	this->height = height;
 	this->title = title;
 
-	dpy = XOpenDisplay(0);
-	if (!dpy) {
-		std::cout << "Cant open window\n";
+	display = XOpenDisplay(0);
+	if (!display) {
+		fprintf(stderr, "unable to open the graphics window.\n");
 		exit(1);
 	}
 
-	int blackColor = BlackPixel(dpy, DefaultScreen(dpy));
-	int whiteColor = WhitePixel(dpy, DefaultScreen(dpy));
+	int blackColor = BlackPixel(display, DefaultScreen(display));
+	int whiteColor = WhitePixel(display, DefaultScreen(display));
 
-	win = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, width, height, 0, blackColor, blackColor);
+	window = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, width, height, 0,
+								 blackColor, blackColor);
 
-	XStoreName(dpy, win, title);
+	XSetWindowAttributes attr;
+	attr.backing_store = Always;
 
-	XSelectInput(dpy, win, StructureNotifyMask | KeyPressMask | ButtonPressMask);
+	XChangeWindowAttributes(display, window, CWBackingStore, &attr);
 
-	XMapWindow(dpy, win);
+	XStoreName(display, window, title);
 
-	gc = XCreateGC(dpy, win, 0, 0);
+	XSelectInput(display, window, StructureNotifyMask | KeyPressMask | ButtonPressMask);
 
-	// Wait for the MapNotify event
+	XMapWindow(display, window);
+
+	gc = XCreateGC(display, window, 0, 0);
+
+	colormap = DefaultColormap(display, 0);
+
+	XSetForeground(display, gc, whiteColor);
 
 	for (;;) {
 		XEvent e;
-		XNextEvent(dpy, &e);
+		XNextEvent(display, &e);
 		if (e.type == MapNotify)
 			break;
 	}
 	
-	frame = XCreateImage(dpy, DefaultVisual(dpy, DefaultScreen(dpy)), 24, ZPixmap, 0, (char *) emptydata.data(), width, height, 32, width * 4);	
+	frame = XCreateImage(display, DefaultVisual(display, DefaultScreen(display)), 24, ZPixmap, 0, (char *) emptydata.data(), width, height, 32, width * 4);	
 }
 
 // Draws a pixel at given x and y coordinates in the color that is specified in c
@@ -63,6 +68,11 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 	x = this->width / 2 + x;
 	y = this->height / 2 - y;
 
+	if(x > this->width ||
+	   x < 0 ||
+	   y > this->height ||
+	   y < 0) return;
+
 	int color = c[2] + c[1] * 256 + c[0] * 256 * 256;
 	XPutPixel(frame, x, y, color);
 }
@@ -70,7 +80,7 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 // Sends the stored frame to the x server
 void Canvas::flush()
 {
-	XPutImage(dpy, win, gc, frame, 0, 0, 0, 0, width, height);
+	XPutImage(display, window, gc, frame, 0, 0, 0, 0, width, height);
 }
 
 // Writes the frame data to just zeroes

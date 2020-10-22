@@ -4,9 +4,7 @@
 /** @file argparse.h */
 
 /**
- * @namespace argparse
  * @brief Argument parsing namespace
- *
  * This is the namespace for all command line argument parsing
  */
 namespace argparse

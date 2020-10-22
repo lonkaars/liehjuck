@@ -6,8 +6,8 @@ SRCS := \
 	src/win.cpp \
 	src/draw.cpp \
 	src/argparse.cpp \
-	src/calc.cpp \
-	lib/gfx/gfx.cpp
+	src/camera.cpp \
+	src/calc.cpp
 
 HEADERS := \
 	src/scene.h \
@@ -16,8 +16,10 @@ HEADERS := \
 	src/win.h \
 	src/calc.h \
 	src/jdscn_types.h \
-	src/draw.h \
-	lib/gfx/gfx.h
+	src/camera.h \
+	src/config.def.h \
+	src/config.h \
+	src/draw.h
 
 OBJDIR := .o
 DEPDIR := .d

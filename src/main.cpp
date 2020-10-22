@@ -1,19 +1,39 @@
 #include "argparse.h"
+#include "camera.h"
+#include "config.h"
 #include "draw.h"
 #include "import.h"
 #include "scene.h"
 #include "win.h"
 
+#include <X11/XKBlib.h>
+#include <X11/Xlib.h>
 #include <array>
 #include <iostream>
 #include <math.h>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <thread>
+#include <signal.h>
+#include <execinfo.h>
+#include <unistd.h>
 
 using namespace std;
 
+void errorHandler(int signal) {
+	void *array[10];
+	size_t size;
+	size = backtrace(array, 10);
+	std::cout << "Error: code " << signal << std::endl;
+	backtrace_symbols_fd(array, size, STDERR_FILENO);
+	exit(1);
+}
+
 int main(int argc, char *argv[])
 {
+	// Error handling first
+	signal(SIGSEGV, errorHandler);
+
 	argparse::Args arguments = argparse::parseArgs(argc, argv);
 
 	string scene_file = import::readFile(arguments.inputFile);
@@ -28,13 +48,13 @@ int main(int argc, char *argv[])
 	for (jdscn::Object object : scene_jdscn.objects)
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
 
-	const char *windowTitle = "[floating] cool window";
-	win::Canvas canvas(1280, 720, windowTitle);
+	config::renderSettings render;
+	win::Canvas canvas(render.width, render.height, render.title);
 
-	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
+	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
 	drawloop.startLoop();
-	
-	sleep(60);
+
+	this_thread::sleep_for(60s);
 
 	return EXIT_SUCCESS;
 }

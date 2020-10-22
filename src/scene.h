@@ -94,7 +94,8 @@ class Light
 	float power;
 	/** @brief Light source radius, defines blurryness of shadow edges */
 	float radius;
-	/** @brief Cone radius, only applies to spot lights, and defines how large the spot's circle is */
+	/** @brief Cone radius, only applies to spot lights, and defines how large the spot's circle is
+	 */
 	float cone;
 	/** @cond INTERNAL */
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Light, type, meta, orientation, color, position, power, radius,
@@ -117,7 +118,8 @@ class Object
 	/**
 	 * @brief Apply a transformation to all the vertices
 	 *
-	 * @param std::function(jdscn::Position) lambda function that returns a modified `jdscn::Position`
+	 * @param std::function(jdscn::Position) lambda function that returns a modified
+	 * `jdscn::Position`
 	 */
 	void transform(std::function<jdscn::Position(jdscn::Position)>);
 	/**
@@ -146,7 +148,8 @@ class Object
 	 *
 	 * @param Camera the camera to project the vertices with (usually the scene camera)
 	 *
-	 * @returns `jdscn::Vertices` Used as `jdscn::UVFloat`, but with the z axis used for z distance to camera after camera transform
+	 * @returns `jdscn::Vertices` Used as `jdscn::UVFloat`, but with the z axis used for z distance
+	 * to camera after camera transform
 	 */
 	Vertices projectVertices(Camera);
 	/** @cond INTERNAL */
