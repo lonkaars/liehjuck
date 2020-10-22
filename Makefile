@@ -17,6 +17,8 @@ HEADERS := \
 	src/calc.h \
 	src/jdscn_types.h \
 	src/camera.h \
+	src/config.def.h \
+	src/config.h \
 	src/draw.h
 
 OBJDIR := .o

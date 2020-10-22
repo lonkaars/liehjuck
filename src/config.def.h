@@ -1,6 +1,7 @@
+#pragma once
+
 namespace config {
 
-/* static int controlforward = 25; */
 struct keymap {
 	int forward = 25;
 	int backward = 39;
@@ -17,8 +18,9 @@ struct renderSettings {
 	const char *title = "[floating] cool window";
 };
 
-keymap keys;
-renderSettings render;
+struct camera_controls {
+	float speed = 5;
+};
 
 }
 

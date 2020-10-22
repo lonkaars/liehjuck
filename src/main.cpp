@@ -33,13 +33,11 @@ int main(int argc, char *argv[])
 	for (jdscn::Object object : scene_jdscn.objects)
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
 
-	Win::Canvas canvas(config::render.width, config::render.height, config::render.title);
+	config::renderSettings render;
+	Win::Canvas canvas(render.width, render.height, render.title);
 
-	draw::Drawloop drawloop(canvas, scene_jdscn, config::render.framerate);
+	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
 	drawloop.startLoop();
-	
-	controls::CameraController gert(canvas.display, &canvas.window);
-	gert.startInputLoop();
 
 	this_thread::sleep_for(60s);
 

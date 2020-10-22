@@ -1,5 +1,6 @@
 #include "camera.h"
 #include "draw.h"
+#include "config.h"
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -27,6 +28,18 @@ void CameraController::startInputLoop() {
 				keysPressed[event.xkey.keycode] = false;
 		}
 	}).detach();
+}
+
+void CameraController::moveCursor() {
+	config::camera_controls camera_controls;
+	config::keymap keys;
+	float camera_speed = camera_controls.speed / 100;
+	this->cursor[0] += camera_speed * float(this->keysPressed[keys.forward]);
+	this->cursor[0] -= camera_speed * float(this->keysPressed[keys.backward]);
+	this->cursor[1] += camera_speed * float(this->keysPressed[keys.left]);
+	this->cursor[1] -= camera_speed * float(this->keysPressed[keys.right]);
+	this->cursor[2] += camera_speed * float(this->keysPressed[keys.up]);
+	this->cursor[2] -= camera_speed * float(this->keysPressed[keys.down]);
 }
 
 }
