@@ -9,7 +9,7 @@
 namespace draw
 {
 
-Drawloop::Drawloop(Win::Canvas &c, jdscn::Scene &s, float framerate)
+Drawloop::Drawloop(win::Canvas &c, jdscn::Scene &s, float framerate)
 {
 	interval = 1000 / framerate;
 	canvas = c;

@@ -12,7 +12,7 @@
 #include <iostream>
 #include <sys/utsname.h>
 
-namespace Win
+namespace win
 {
 Canvas::Canvas() {}
 
@@ -34,4 +34,4 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 
 void Canvas::clear() { gfx_clear(); }
 
-}; // namespace Win
+}; // namespace win

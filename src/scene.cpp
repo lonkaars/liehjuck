@@ -8,7 +8,7 @@
 #include <thread>
 #include <vector>
 
-void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
+void jdscn::Scene::draw(win::Canvas canvas, int frame = 0)
 {
 	for (jdscn::Object object : this->objects) {
 		object.transformScale(object.scale, false);

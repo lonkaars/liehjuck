@@ -15,7 +15,7 @@
 /**
  * @brief Handles all X11 drawing
  */
-namespace Win
+namespace win
 {
 
 /**
@@ -43,4 +43,4 @@ class Canvas
 	void clear();
 };
 
-}; // namespace Win
+}; // namespace win

@@ -180,10 +180,10 @@ class Scene
 	/**
 	 * @brief Draw each object in the scene
 	 *
-	 * @param Win::Canvas canvas to draw the scene to
+	 * @param win::Canvas canvas to draw the scene to
 	 * @param int current frame
 	 */
-	void draw(Win::Canvas, int);
+	void draw(win::Canvas, int);
 	/** @cond INTERNAL */
 	NLOHMANN_DEFINE_TYPE_INTRUSIVE(Scene, meta, camera, lights, objects);
 	/** @endcond */
