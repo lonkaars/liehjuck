@@ -1,6 +1,7 @@
 #pragma once
 
-namespace config {
+namespace config
+{
 
 struct keymap {
 	int forward = 25;
@@ -22,5 +23,4 @@ struct camera_controls {
 	float speed = 5;
 };
 
-}
-
+} // namespace config

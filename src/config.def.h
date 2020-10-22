@@ -7,7 +7,8 @@
  */
 
 /** @brief config namespace */
-namespace config {
+namespace config
+{
 
 /** @brief Keycode mapping */
 struct keymap {
@@ -32,5 +33,4 @@ struct camera_controls {
 	float speed = 5;
 };
 
-}
-
+} // namespace config

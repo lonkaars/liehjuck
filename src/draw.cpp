@@ -1,8 +1,8 @@
 #include "draw.h"
+#include "calc.h"
+#include "camera.h"
 #include "scene.h"
 #include "win.h"
-#include "camera.h"
-#include "calc.h"
 
 #include <chrono>
 #include <iostream>
@@ -32,10 +32,11 @@ void Drawloop::startLoop()
 
 			// Calculate camera movement
 			controller.moveCursor();
-			jdscn::Position relativeCursor = calc::rotate3D(controller.cursor, jdscn::Orientation({0, 0, 0}));
+			jdscn::Position relativeCursor =
+				calc::rotate3D(controller.cursor, jdscn::Orientation({0, 0, 0}));
 			// FIXME: interpolating as in test/camera-controls/sketch.js
 			scene.camera.position = relativeCursor;
-			
+
 			scene.draw(canvas, frame);
 
 			std::this_thread::sleep_until(nextFrameTime);
