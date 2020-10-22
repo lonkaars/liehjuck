@@ -30,9 +30,10 @@ int main(int argc, char *argv[])
 
 	const char *windowTitle = "[floating] cool window";
 	win::Canvas canvas(1280, 720, windowTitle);
+
 	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
 	drawloop.startLoop();
-
+	
 	sleep(60);
 
 	return EXIT_SUCCESS;

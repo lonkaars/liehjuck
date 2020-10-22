@@ -1,5 +1,4 @@
 #pragma once
-#include "../lib/gfx/gfx.h"
 #include "jdscn_types.h"
 #include <X11/Xlib.h>
 #include <X11/Xos.h>
@@ -9,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/utsname.h>
+#include <memory>
 
 /** @file win.h */
 
@@ -24,9 +24,16 @@ namespace win
 class Canvas
 {
 	public:
+	std::vector<char> emptydata;
 	int width;
 	int height;
 	const char *title;
+	
+	Display *dpy;
+	Window win;
+	GC gc;
+	XImage *frame;
+
 	Canvas();
 	Canvas(int, int, const char *);
 	/**
@@ -37,6 +44,7 @@ class Canvas
 	 * @param jdscn::Color color
 	 */
 	void draw(int, int, jdscn::Color);
+	void flush();
 	/**
 	 * @brief Clears the canvas
 	 */
