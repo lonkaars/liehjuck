@@ -21,16 +21,12 @@ void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 {
 	for (jdscn::Object object : this->objects) {
 		object.transformScale(object.scale, false);
-		object.transformRotate(object.orientation, true);
+		object.transformRotate(object.orientation, false);
 		object.transformTranslate(object.position, false);
 		jdscn::UVFloat projection = object.projectVertices(this->camera);
 		for (jdscn::TriXY tri : projection)
-		{
 			for (jdscn::FloatXY pos : tri)
-			{				
-				canvas.draw(canvas.width/2 - pos[0], canvas.height/2 + pos[1], object.material.color);
-			}
-		}
+				canvas.draw(-pos[0], -pos[1], object.material.color);
 	}
 	canvas.flush();
 	canvas.clear();

@@ -60,6 +60,9 @@ Canvas::Canvas(int width, int height, const char *title)
 // Draws a pixel at given x and y coordinates in the color that is specified in c
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
+	x = this->width / 2 + x;
+	y = this->height / 2 - y;
+
 	int color = c[2] + c[1] * 256 + c[0] * 256 * 256;
 	XPutPixel(frame, x, y, color);
 }
