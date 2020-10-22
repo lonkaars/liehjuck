@@ -31,21 +31,9 @@ int main(int argc, char *argv[])
 	const char *windowTitle = "[floating] cool window";
 	Win::Canvas canvas(1280, 720, windowTitle);
 
-	//canvas.draw(644, 126, {255, 255, 255});
-	//canvas.flush();
-	//scene_jdscn.draw(canvas, 1);
 	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
 	drawloop.startLoop();
-	//cout << "tot de draw\n";
-	//canvas.draw(100, 600, {255, 255, 255});
 	
-	//canvas.draw(600, 100, {255, 255, 255});
-	//canvas.draw(633, 100, {255, 255, 255});
-	//for(int i = 0; i < 256; i++)
-	//{
-	//	canvas.draw(i, i, {i, i, i});
-	//}
-	//canvas.flush();
 	sleep(60);
 
 	return EXIT_SUCCESS;

@@ -20,6 +20,7 @@ namespace Win
 Canvas::Canvas() {}
 
 Canvas::Canvas(int width, int height, const char *title)
+	: emptydata( width * height * 4, 0 )
 {
 	this->width = width;
 	this->height = height;
@@ -41,9 +42,7 @@ Canvas::Canvas(int width, int height, const char *title)
 	XMapWindow(dpy, win);
 
 	gc = XCreateGC(dpy, win, 0, 0);
-	
-	XSetForeground(dpy, gc, whiteColor);
-	
+
 	// Wait for the MapNotify event
 
 	for (;;) {
@@ -53,27 +52,28 @@ Canvas::Canvas(int width, int height, const char *title)
 			break;
 	}
 	
-	std::this_thread::sleep_for(std::chrono::seconds(1));
-
-	frame = XGetImage(dpy, win, 0, 0, width, height, AllPlanes, ZPixmap);
-	emptyframe = XGetImage(dpy, win, 0, 0, width, height, AllPlanes, ZPixmap);
+	frame = XCreateImage(dpy, DefaultVisual(dpy, DefaultScreen(dpy)), 24, ZPixmap, 0, (char *) emptydata.data(), width, height, 32, width * 4);	
 }
 
+// Draws a pixel at given x and y coordinates in the color that is specified in c
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
-	XPutPixel(frame, x, y, c[2] + c[1] * 256 + c[2] * 256 * 256);
+	int color = c[2] + c[1] * 256 + c[2] * 256 * 256;
+	XPutPixel(frame, x, y, color);
 }
 
+// Sends the stored frame to the x server
 void Canvas::flush()
 {
 	XPutImage(dpy, win, gc, frame, 0, 0, 0, 0, width, height);
 }
 
+// Writes the frame data to just zeroes
+// Using memset isn't the most beautiful way to do this, but other methods cause headaches
 void Canvas::clear()
 {
-	// copy the image data from emptyframe to frame
 	const size_t data_size = frame->bytes_per_line * frame->height;
-	memcpy(frame->data, emptyframe->data, data_size);
+	memset(frame->data, 0, data_size);	
 }
 
 }; // namespace Win

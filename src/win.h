@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/utsname.h>
+#include <memory>
 
 namespace Win
 {
@@ -15,6 +16,7 @@ namespace Win
 class Canvas
 {
 	public:
+	std::vector<char> emptydata;
 	int width;
 	int height;
 	const char *title;
@@ -23,7 +25,6 @@ class Canvas
 	Window win;
 	GC gc;
 	XImage *frame;
-	XImage *emptyframe;
 
 	Canvas();
 	Canvas(int, int, const char *);
