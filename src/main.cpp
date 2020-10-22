@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
 
 	const char *windowTitle = "[floating] cool window";
-	Win::Canvas canvas(1280, 720, windowTitle);
+	win::Canvas canvas(1280, 720, windowTitle);
 
 	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
 	drawloop.startLoop();

@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <iterator>
 
-namespace Win
+namespace win
 {
 Canvas::Canvas() {}
 
@@ -81,4 +81,4 @@ void Canvas::clear()
 	memset(frame->data, 0, data_size);	
 }
 
-}; // namespace Win
+}; // namespace win
