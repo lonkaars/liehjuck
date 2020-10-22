@@ -37,6 +37,8 @@ Canvas::Canvas(int width, int height, const char *title)
 
 	win = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy), 0, 0, width, height, 0, blackColor, blackColor);
 
+	XStoreName(dpy, win, title);
+
 	XSelectInput(dpy, win, StructureNotifyMask | KeyPressMask | ButtonPressMask);
 
 	XMapWindow(dpy, win);
@@ -58,7 +60,7 @@ Canvas::Canvas(int width, int height, const char *title)
 // Draws a pixel at given x and y coordinates in the color that is specified in c
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
-	int color = c[2] + c[1] * 256 + c[2] * 256 * 256;
+	int color = c[2] + c[1] * 256 + c[0] * 256 * 256;
 	XPutPixel(frame, x, y, color);
 }
 
