@@ -1,6 +1,7 @@
 #include "win.h"
 #include "scene.h"
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,8 +9,12 @@
 
 #include <iostream>
 #include <sys/utsname.h>
+#include <thread>
+#include <chrono>
+#include <algorithm>
+#include <iterator>
 
-namespace Win
+namespace win
 {
 
 Canvas::Canvas(int width, int height, const char *title)
@@ -53,20 +58,37 @@ Canvas::Canvas(int width, int height, const char *title)
 		if (e.type == MapNotify)
 			break;
 	}
+	
+	frame = XCreateImage(display, DefaultVisual(display, DefaultScreen(display)), 24, ZPixmap, 0, (char *) emptydata.data(), width, height, 32, width * 4);	
 }
 
+// Draws a pixel at given x and y coordinates in the color that is specified in c
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
 	x = this->width / 2 + x;
 	y = this->height / 2 - y;
 
-	XColor color;
-	color.pixel = ((c[2] & 0xff) | ((c[1] & 0xff) << 8) | ((c[0] & 0xff) << 16));
-	XSetForeground(this->display, this->gc, color.pixel);
+	if(x > this->width ||
+	   x < 0 ||
+	   y > this->height ||
+	   y < 0) return;
 
-	XDrawPoint(this->display, this->window, this->gc, x, y);
+	int color = c[2] + c[1] * 256 + c[0] * 256 * 256;
+	XPutPixel(frame, x, y, color);
 }
 
-void Canvas::clear() { XClearWindow(this->display, this->window); }
+// Sends the stored frame to the x server
+void Canvas::flush()
+{
+	XPutImage(display, window, gc, frame, 0, 0, 0, 0, width, height);
+}
 
-}; // namespace Win
+// Writes the frame data to just zeroes
+// Using memset isn't the most beautiful way to do this, but other methods cause headaches
+void Canvas::clear()
+{
+	const size_t data_size = frame->bytes_per_line * frame->height;
+	memset(frame->data, 0, data_size);	
+}
+
+}; // namespace win

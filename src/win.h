@@ -1,13 +1,19 @@
 #pragma once
 #include "jdscn_types.h"
 #include <X11/Xlib.h>
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/utsname.h>
+#include <memory>
 
 /** @file win.h */
 
 /**
  * @brief Handles all X11 drawing
  */
-namespace Win
+namespace win
 {
 
 /**
@@ -16,13 +22,16 @@ namespace Win
 class Canvas
 {
 	public:
+	std::vector<char> emptydata;
 	int width;
 	int height;
 	const char *title;
+
 	Display *display;
 	Window window;
 	GC gc;
 	Colormap colormap;
+	XImage *frame;
 
 	Canvas(int, int, const char *);
 	/**
@@ -33,10 +42,11 @@ class Canvas
 	 * @param jdscn::Color color
 	 */
 	void draw(int, int, jdscn::Color);
+	void flush();
 	/**
 	 * @brief Clears the canvas
 	 */
 	void clear();
 };
 
-}; // namespace Win
+}; // namespace win

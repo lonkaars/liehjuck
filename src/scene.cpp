@@ -8,7 +8,7 @@
 #include <thread>
 #include <vector>
 
-void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
+void jdscn::Scene::draw(win::Canvas canvas, int frame = 0)
 {
 	for (jdscn::Object object : this->objects) {
 		object.transformScale(object.scale, false);
@@ -20,7 +20,7 @@ void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 				if (pos[2] < -0.02) // Near clipping
 					canvas.draw(-pos[0], -pos[1], object.material.color);
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
+	canvas.flush();
 	canvas.clear();
 }
 
