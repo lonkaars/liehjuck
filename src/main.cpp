@@ -3,6 +3,7 @@
 #include "import.h"
 #include "scene.h"
 #include "win.h"
+#include "camera.h"
 
 #include <array>
 #include <iostream>
@@ -37,22 +38,16 @@ int main(int argc, char *argv[])
 	/* drawloop.startLoop(); */
 
 	// https://stackoverflow.com/questions/2100654/ignore-auto-repeat-in-x11-applications
-	array<bool, 255> keysPressed;
-	fill(keysPressed.begin(), keysPressed.end(), false);
-	XEvent e;
-	XSelectInput(canvas.display, canvas.window, KeyPressMask | KeyReleaseMask);
-	XkbSetDetectableAutoRepeat(canvas.display, 1, nullptr);
+	
+	controls::CameraController gert(canvas.display, &canvas.window);
+	gert.startInputLoop();
+
 	for(;;) {
-		int p = XNextEvent(canvas.display, &e);
-
-		if(e.type == KeyPress && keysPressed[e.xkey.keycode] != true) {
-			std::cout << e.xkey.keycode << " " << "on t+" << e.xkey.time << std::endl;
-			keysPressed[e.xkey.keycode] = true;
-		} else if (e.type == KeyRelease) {
-			std::cout << e.xkey.keycode << " " << "off t+" << e.xkey.time << std::endl;
-			keysPressed[e.xkey.keycode] = false;
-		}
-
+		cout <<
+			(gert.keysPressed[38] == 1 ? "a " : "") <<
+			(gert.keysPressed[39] == 1 ? "s " : "") <<
+			(gert.keysPressed[40] == 1 ? "d " : "") <<
+			(gert.keysPressed[25] == 1 ? "w " : "") << endl;
 	}
 
 	this_thread::sleep_for(60s);

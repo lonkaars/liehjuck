@@ -1,3 +1,4 @@
+#pragma once
 #include "scene.h"
 #include "win.h"
 
