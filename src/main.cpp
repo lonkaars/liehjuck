@@ -4,6 +4,7 @@
 #include "scene.h"
 #include "win.h"
 #include "camera.h"
+#include "config.h"
 
 #include <array>
 #include <iostream>
@@ -32,23 +33,13 @@ int main(int argc, char *argv[])
 	for (jdscn::Object object : scene_jdscn.objects)
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
 
-	const char *windowTitle = "[floating] cool window";
-	Win::Canvas canvas(1280, 720, windowTitle);
-	/* draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f); */
-	/* drawloop.startLoop(); */
+	Win::Canvas canvas(config::render.width, config::render.height, config::render.title);
 
-	// https://stackoverflow.com/questions/2100654/ignore-auto-repeat-in-x11-applications
+	draw::Drawloop drawloop(canvas, scene_jdscn, config::render.framerate);
+	drawloop.startLoop();
 	
 	controls::CameraController gert(canvas.display, &canvas.window);
 	gert.startInputLoop();
-
-	for(;;) {
-		cout <<
-			(gert.keysPressed[38] == 1 ? "a " : "") <<
-			(gert.keysPressed[39] == 1 ? "s " : "") <<
-			(gert.keysPressed[40] == 1 ? "d " : "") <<
-			(gert.keysPressed[25] == 1 ? "w " : "") << endl;
-	}
 
 	this_thread::sleep_for(60s);
 
