@@ -6,10 +6,7 @@
 
 /** @file calc.h */
 
-/**
- * @namespace calc
- * @brief 2D and 3D calculations
- */
+/** @brief 2D and 3D calculations */
 namespace calc
 {
 

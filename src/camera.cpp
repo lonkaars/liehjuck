@@ -11,7 +11,6 @@ namespace controls {
 CameraController::CameraController(Display *d, Window *w) {
 	display = d;
 	window = *w;
-	/* std::fill_n(keysPressed, 255, false); */
 	keysPressed.fill(false);
 	XSelectInput(display, window, KeyPressMask | KeyReleaseMask);
 	XkbSetDetectableAutoRepeat(display, 1, nullptr);

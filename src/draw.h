@@ -4,11 +4,7 @@
 
 /** @file draw.h */
 
-/**
- * @namespace draw
- *
- * @brief namespace handling the draw loop
- */
+/** @brief namespace handling the draw loop */
 namespace draw
 {
 

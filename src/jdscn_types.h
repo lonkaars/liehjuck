@@ -7,9 +7,7 @@
 /** @file jdscn_types.h */
 
 /**
- * @namespace jdscn
  * @brief jdscn types and functions
- *
  * Namespace handling all jdscn file > json import > c++ jdscn::Scene class
  */
 namespace jdscn
