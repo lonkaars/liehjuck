@@ -23,6 +23,7 @@ class Canvas
 	Window win;
 	GC gc;
 	XImage *frame;
+	XImage *emptyframe;
 
 	Canvas();
 	Canvas(int, int, const char *);

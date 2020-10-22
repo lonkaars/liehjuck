@@ -9,6 +9,8 @@
 #include <thread>
 #include <vector>
 
+float rotation = 0;
+
 void jdscn::Object::transform(std::function<jdscn::Position(jdscn::Position)> operation)
 {
 	std::for_each(this->vertices.begin(), this->vertices.end(), [&operation](jdscn::Tri &tri) {
@@ -20,15 +22,18 @@ void jdscn::Object::transform(std::function<jdscn::Position(jdscn::Position)> op
 void jdscn::Scene::draw(Win::Canvas canvas, int frame = 0)
 {
 	for (jdscn::Object object : this->objects) {
+		object.orientation[0] = object.orientation[0] + rotation;
 		object.transformScale(object.scale, false);
-		object.transformRotate(object.orientation, false);
+		object.transformRotate(object.orientation, true);
 		object.transformTranslate(object.position, false);
 		jdscn::UVFloat projection = object.projectVertices(this->camera);
 		for (jdscn::TriXY tri : projection)
 			for (jdscn::FloatXY pos : tri)
-				canvas.draw(-pos[0], -pos[1], object.material.color);
+			{				
+				canvas.draw(canvas.width/2 - pos[0], canvas.height/2 + pos[1], object.material.color);
+			}
+		rotation = rotation + 0.1;
 	}
-	//std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 20));
 	canvas.flush();
 	canvas.clear();
 }

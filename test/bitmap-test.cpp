@@ -60,24 +60,13 @@ int main()
 		if (e.type == MapNotify)
 			break;
 	}
-
+	
+	XDrawPoint(gfx_display, gfx_window, gfx_gc, 1, 1);
 	std::this_thread::sleep_for(std::chrono::seconds(1));
-	bg = XGetImage(gfx_display, gfx_window, 0, 0, 100, 100, AllPlanes, ZPixmap);
+	bg = XGetImage(gfx_display, gfx_window, 0, 0, 2, 2, AllPlanes, ZPixmap);
 	
-	std::cout << "hoi: " << bg->data[10] << "\n";
-	std::cout << "hoi2: " << blackColor << "\n";
-	
-	/*int x;
-    for(x = 0; x < 10000; x++) {
-        bg->data[x] = whiteColor;
-    }*/
-	for(int i = 0; i < 10000; i++)
-	{
-    bg->data[0 + 3 * i] = whiteColor;
-	bg->data[1 + 3 * i] = whiteColor;
-    bg->data[2 + 3 * i] = whiteColor;
-	}
-
+	std::cout << "test";
+	std::cout << bg->data[9];	
 	XPutImage(gfx_display, gfx_window, gfx_gc, bg, 0, 0, 0, 0, width, height);
 	std::this_thread::sleep_for(std::chrono::seconds(20));
 }

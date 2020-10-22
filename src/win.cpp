@@ -12,6 +12,8 @@
 #include <sys/utsname.h>
 #include <thread>
 #include <chrono>
+#include <algorithm>
+#include <iterator>
 
 namespace Win
 {
@@ -39,7 +41,7 @@ Canvas::Canvas(int width, int height, const char *title)
 	XMapWindow(dpy, win);
 
 	gc = XCreateGC(dpy, win, 0, 0);
-
+	
 	XSetForeground(dpy, gc, whiteColor);
 	
 	// Wait for the MapNotify event
@@ -54,13 +56,12 @@ Canvas::Canvas(int width, int height, const char *title)
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 
 	frame = XGetImage(dpy, win, 0, 0, width, height, AllPlanes, ZPixmap);
+	emptyframe = XGetImage(dpy, win, 0, 0, width, height, AllPlanes, ZPixmap);
 }
 
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
-	frame->data[3 * (x + width * y)] = WhitePixel(dpy, DefaultScreen(dpy));
-	frame->data[3 * (x + width * y) + 1] = WhitePixel(dpy, DefaultScreen(dpy));
-	frame->data[3 * (x + width * y) + 2] = WhitePixel(dpy, DefaultScreen(dpy));
+	XPutPixel(frame, x, y, c[2] + c[1] * 256 + c[2] * 256 * 256);
 }
 
 void Canvas::flush()
@@ -69,8 +70,10 @@ void Canvas::flush()
 }
 
 void Canvas::clear()
-{/* gfx_clear();*/ 
-
+{
+	// copy the image data from emptyframe to frame
+	const size_t data_size = frame->bytes_per_line * frame->height;
+	memcpy(frame->data, emptyframe->data, data_size);
 }
 
 }; // namespace Win
