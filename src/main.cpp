@@ -10,6 +10,8 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include <thread>
+#include <X11/Xlib.h>
+#include <X11/XKBlib.h>
 
 using namespace std;
 
@@ -31,8 +33,27 @@ int main(int argc, char *argv[])
 
 	const char *windowTitle = "[floating] cool window";
 	Win::Canvas canvas(1280, 720, windowTitle);
-	draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f);
-	drawloop.startLoop();
+	/* draw::Drawloop drawloop(canvas, scene_jdscn, 30.0f); */
+	/* drawloop.startLoop(); */
+
+	// https://stackoverflow.com/questions/2100654/ignore-auto-repeat-in-x11-applications
+	array<bool, 255> keysPressed;
+	fill(keysPressed.begin(), keysPressed.end(), false);
+	XEvent e;
+	XSelectInput(canvas.display, canvas.window, KeyPressMask | KeyReleaseMask);
+	XkbSetDetectableAutoRepeat(canvas.display, 1, nullptr);
+	for(;;) {
+		int p = XNextEvent(canvas.display, &e);
+
+		if(e.type == KeyPress && keysPressed[e.xkey.keycode] != true) {
+			std::cout << e.xkey.keycode << " " << "on t+" << e.xkey.time << std::endl;
+			keysPressed[e.xkey.keycode] = true;
+		} else if (e.type == KeyRelease) {
+			std::cout << e.xkey.keycode << " " << "off t+" << e.xkey.time << std::endl;
+			keysPressed[e.xkey.keycode] = false;
+		}
+
+	}
 
 	this_thread::sleep_for(60s);
 
