@@ -13,6 +13,7 @@
 #include <xcb/xcb.h>
 #include <xcb/xcb_atom.h>
 #include <xcb/xcb_pixel.h>
+#include <xcb/xcb_image.h>
 
 namespace win
 {
@@ -48,20 +49,27 @@ Canvas::Canvas(int width, int height, const char *title)
 						 XCB_ATOM_WM_NAME, XCB_ATOM_STRING, 8,
 						 strlen(title), title);
 
-	xcb_colormap_t colormap = display->default_colormap;
-	xcb_gcontext_t gc = xcb_generate_id(connection);
-	xcb_pixmap_t pixmap = xcb_generate_id(connection);
+	gc_id = xcb_generate_id(connection);
+	gc = xcb_create_gc(connection,
+					   gc_id, window_id,
+					   mask, values);
 
-	xcb_create_pixmap(connection, 24, pixmap, window_id, width, height);
-	xcb_create_gc(connection, gc, pixmap, 0, NULL);
-	xcb_image_t *image = xcb_image_create(width, height, XCB_IMAGE_FORMAT_XY_PIXMAP, 0, 24, 0, 0, NULL, NU)
-	/* gc_id = xcb_generate_id(connection); */
-	/* gc = xcb_create_gc(connection, gc_id, display->root, XCB_GC_FOREGROUND, display->black_pixel); */
+	frame_id = xcb_generate_id(connection);
+	frame = xcb_create_pixmap(connection, 24, frame_id, window_id, width, height);
 
 	xcb_flush(connection);
-	
-	/* frame = xcb_create_pixmap(connection, 24, frame_id, window_id, width, height); */
-	
+
+	/* xcb_generic_event_t *event; */
+	/* while ((event = xcb_wait_for_event(connection))) { */
+	/* 	if (event->response_type == XCB_EXPOSE) { */
+	/* 		xcb_copy_area(connection, frame_id, window_id, gc_id, 0, 0, 0, 0, width, height); */
+	/* 		xcb_flush(connection); */
+	/* 	} */
+
+	/* 	if (event->response_type == XCB_KEY_PRESS) { */
+	/* 		exit(0); */
+	/* 	} */
+	/* } */
 }
 
 // Draws a pixel at given x and y coordinates in the color that is specified in c
@@ -76,15 +84,15 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 	   y < 0) return;
 
 	int color = c[2] + c[1] * 256 + c[0] * 256 * 256;
-	/* XPutPixel(frame, x, y, color); */
-	/* xcb_image_put_pixel(frame, x, y, color); */
+	xcb_point_t point[] = {{10, 10}};
+	xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, frame_id, gc_id, 1, point);
 }
 
 // Sends the stored frame to the x server
 void Canvas::flush()
 {
-	/* XPutImage(display, window, gc, frame, 0, 0, 0, 0, width, height); */
-	xcb_copy_area(connection, frame_id, window_id, display->root, 0, 0, 0, 0, width, height);
+	xcb_copy_area(connection, frame_id, window_id, gc_id, 0, 0, 0, 0, width, height);
+	xcb_flush(connection);
 }
 
 // Writes the frame data to just zeroes

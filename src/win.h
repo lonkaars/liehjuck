@@ -31,7 +31,7 @@ class Canvas
 	xcb_screen_t *display;
 	xcb_window_t window_id;
 	xcb_void_cookie_t window;
-	uint32_t gc_id;
+	xcb_gcontext_t gc_id;
 	xcb_void_cookie_t gc;
 	xcb_pixmap_t frame_id;
 	xcb_void_cookie_t frame;
