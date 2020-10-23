@@ -57,36 +57,33 @@ Canvas::Canvas(int width, int height, const char *title)
 
 	xcb_map_window(connection, window);
 	xcb_flush(connection);
+	
 
-	/* xcb_generic_event_t *event; */
-	/* while ((event = xcb_wait_for_event(connection))) { */
-	/* 	if(event->response_type == XCB_EXPOSE) { */
-	/* 		xcb_point_t points[] = {{20, 20}}; */
-	/* 		xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, window, gc, 1, points); */
-	/* 		xcb_flush(connection); */
-	/* 	} */
-	/* 	free(event); */
-	/* } */
+	xcb_generic_event_t *event;
+	while ((event = xcb_wait_for_event(connection))) {
+		if(event->response_type == XCB_EXPOSE) break; 
+		free(event);
+	}
 }
 
 // Draws a pixel at given x and y coordinates in the color that is specified in c
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
-	/* x = this->width / 2 + x; */
-	/* y = this->height / 2 - y; */
+	x = this->width / 2 + x;
+	y = this->height / 2 - y;
 
-	/* if(x > this->width || */
-	/*    x < 0 || */
-	/*    y > this->height || */
-	/*    y < 0) return; */
+	if(x > this->width ||
+	   x < 0 ||
+	   y > this->height ||
+	   y < 0) return;
 
-	/* int32_t rgb = pow(0xff, 3) + c[0] * pow(0xff, 2) + c[1] * pow(0xff, 1) + c[2] * pow(0xff, 0); */
-	/* xcb_point_t point[] = {{int16_t(x), int16_t(y)}}; */
-	/* xcb_change_gc(connection, gc, mask, &rgb); */
-	/* xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, window, gc, 1, point); */
+	int32_t rgb = pow(0xff, 3) + c[0] * pow(0xff, 2) + c[1] * pow(0xff, 1) + c[2] * pow(0xff, 0);
+	xcb_point_t point[] = {{int16_t(x), int16_t(y)}};
+	xcb_change_gc(connection, gc, mask, &rgb);
+	xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, window, gc, 1, point);
 
-	xcb_point_t points[] = {{20, 20}};
-	xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, window, gc, 1, points);
+	/* xcb_point_t points[] = {{20, 20}}; */
+	/* xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, window, gc, 1, points); */
 }
 
 // Sends the stored frame to the x server
