@@ -8,11 +8,7 @@
 namespace draw
 {
 
-/**
- * @class Drawloop
- *
- * @brief Saves references to the canvas and scene to draw, and starts a draw loop
- */
+/** @brief Saves references to the canvas and scene to draw, and starts a draw loop */
 class Drawloop
 {
 	public:
