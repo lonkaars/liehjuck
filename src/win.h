@@ -29,12 +29,10 @@ class Canvas
 	/* Colormap colormap; */
 	xcb_connection_t *connection;
 	xcb_screen_t *display;
-	xcb_window_t window_id;
-	xcb_void_cookie_t window;
-	xcb_gcontext_t gc_id;
-	xcb_void_cookie_t gc;
-	xcb_pixmap_t frame_id;
-	xcb_void_cookie_t frame;
+	xcb_window_t window;
+	xcb_gcontext_t gc;
+	xcb_pixmap_t frame;
+	uint32_t mask;
 
 	Canvas(int, int, const char *);
 	/**
