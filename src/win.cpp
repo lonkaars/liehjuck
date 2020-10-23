@@ -29,7 +29,7 @@ Canvas::Canvas(int width, int height, const char *title)
 
 	window = display->root;
 
-	uint32_t rgb = 0xFFFF00FF;
+	uint32_t rgb = 0xff000000;
 	mask = XCB_GC_FOREGROUND;
 
 	gc = xcb_generate_id(connection);
@@ -40,7 +40,7 @@ Canvas::Canvas(int width, int height, const char *title)
 	window = xcb_generate_id(connection);
 
 	mask = XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
-	values[0] = display->black_pixel;
+	values[0] = display->white_pixel;
 	values[1] = XCB_EVENT_MASK_EXPOSURE;
 
 	xcb_create_window(connection,
@@ -56,12 +56,15 @@ Canvas::Canvas(int width, int height, const char *title)
 						 strlen(title), title);
 
 	xcb_map_window(connection, window);
+
+	frame = xcb_generate_id(connection);
+	xcb_create_pixmap(connection, 24, frame, window, width, height);
+
 	xcb_flush(connection);
-	
 
 	xcb_generic_event_t *event;
 	while ((event = xcb_wait_for_event(connection))) {
-		if(event->response_type == XCB_EXPOSE) break; 
+		if(event->response_type == XCB_EXPOSE) break;
 		free(event);
 	}
 }
@@ -77,19 +80,16 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 	   y > this->height ||
 	   y < 0) return;
 
-	int32_t rgb = pow(0xff, 3) + c[0] * pow(0xff, 2) + c[1] * pow(0xff, 1) + c[2] * pow(0xff, 0);
+	int32_t rgb = pow(0x100, 3) + c[0] * pow(0x100, 2) + c[1] * pow(0x100, 1) + c[2] * pow(0x100, 0);
 	xcb_point_t point[] = {{int16_t(x), int16_t(y)}};
-	xcb_change_gc(connection, gc, mask, &rgb);
-	xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, window, gc, 1, point);
-
-	/* xcb_point_t points[] = {{20, 20}}; */
-	/* xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, window, gc, 1, points); */
+	xcb_change_gc(connection, gc, XCB_GC_FOREGROUND, &rgb);
+	xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, frame, gc, 1, point);
 }
 
 // Sends the stored frame to the x server
 void Canvas::flush()
 {
-	/* xcb_copy_area(connection, frame_id, window_id, gc_id, 0, 0, 0, 0, width, height); */
+	xcb_copy_area(connection, frame, window, gc, 0, 0, 0, 0, width, height);
 	xcb_flush(connection);
 }
 
@@ -97,8 +97,10 @@ void Canvas::flush()
 // Using memset isn't the most beautiful way to do this, but other methods cause headaches
 void Canvas::clear()
 {
-	/* const size_t data_size = frame->bytes_per_line * frame->height; */
-	/* memset(frame->data, 0, data_size); */	
+	int32_t rgb = 0xff000000; // Reset clear color
+	xcb_change_gc(connection, gc, XCB_GC_FOREGROUND, &rgb);
+	xcb_rectangle_t rect[] = {{0, 0, uint16_t(width), uint16_t(height)}};
+	xcb_poly_fill_rectangle(connection, frame, gc, 1, rect);
 }
 
 }; // namespace win

@@ -26,22 +26,22 @@ void Drawloop::startLoop()
 		/* controls::CameraController controller(canvas.display, &canvas.window); */
 		/* controller.startInputLoop(); */
 		/* controller.cursor = scene.camera.position; */
-		/* while (true) { */
-		/* 	std::chrono::time_point nextFrameTime = */
-		/* 		std::chrono::steady_clock::now() + std::chrono::milliseconds(int(interval)); */
+		while (true) {
+			std::chrono::time_point nextFrameTime =
+				std::chrono::steady_clock::now() + std::chrono::milliseconds(int(interval));
 
-		/* 	// Calculate camera movement */
-		/* 	controller.moveCursor(); */
-		/* 	jdscn::Position relativeCursor = */
-		/* 		calc::rotate3D(controller.cursor, jdscn::Orientation({0, 0, 0})); */
-		/* 	// FIXME: interpolating as in test/camera-controls/sketch.js */
-		/* 	scene.camera.position = relativeCursor; */
+			// Calculate camera movement
+			/* controller.moveCursor(); */
+			/* jdscn::Position relativeCursor = */
+			/* 	calc::rotate3D(controller.cursor, jdscn::Orientation({0, 0, 0})); */
+			/* // FIXME: interpolating as in test/camera-controls/sketch.js */
+			/* scene.camera.position = relativeCursor; */
 
-		/* 	scene.draw(canvas, frame); */
+			scene.draw(canvas, frame);
 
-		/* 	std::this_thread::sleep_until(nextFrameTime); */
-		/* 	frame++; */
-		/* } */
+			std::this_thread::sleep_until(nextFrameTime);
+			frame++;
+		}
 	}).detach();
 }
 

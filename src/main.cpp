@@ -46,11 +46,9 @@ int main(int argc, char *argv[])
 
 	config::renderSettings render;
 	win::Canvas canvas(render.width, render.height, render.title);
-	canvas.draw(20, 20, jdscn::Color({255, 0, 255}));
-	canvas.flush();
 
-	/* draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate); */
-	/* drawloop.startLoop(); */
+	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
+	drawloop.startLoop();
 
 	this_thread::sleep_for(60s);
 
