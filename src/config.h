@@ -1,8 +1,16 @@
 #pragma once
 
+/**
+ * @file config.def.h
+ *
+ * Default config file
+ */
+
+/** @brief config namespace */
 namespace config
 {
 
+/** @brief Keycode mapping */
 struct keymap {
 	int forward = 25;
 	int backward = 39;
@@ -12,6 +20,7 @@ struct keymap {
 	int down = 37;
 };
 
+/** @brief Render window settings */
 struct renderSettings {
 	int width = 1280;
 	int height = 720;
@@ -19,8 +28,10 @@ struct renderSettings {
 	const char *title = "[floating] cool window";
 };
 
+/** @brief Camera movement settings */
 struct camera_controls {
 	float speed = 5;
+	float easing = 8;
 };
 
 } // namespace config

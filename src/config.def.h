@@ -31,6 +31,7 @@ struct renderSettings {
 /** @brief Camera movement settings */
 struct camera_controls {
 	float speed = 5;
+	float easing = 8;
 };
 
 } // namespace config
