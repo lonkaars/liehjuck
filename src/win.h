@@ -10,7 +10,7 @@
 
 /** @file win.h */
 
-/** @brief Handles all X11 drawing */
+/** @brief Handles all drawing */
 namespace win
 {
 
