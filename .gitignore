@@ -3,4 +3,5 @@
 .ccls-cache/
 doc/
 pws-engine
+src/config.h
 

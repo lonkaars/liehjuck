@@ -49,9 +49,7 @@ class Material
 	/** @endcond */
 };
 
-/**
- * @brief Simple texture with UV coordinates
- */
+/** @brief Simple texture with UV coordinates */
 class Texture
 { // TODO: not yet implemented in the python plugin
 	public:
@@ -103,9 +101,7 @@ class Light
 	/** @endcond */
 };
 
-/**
- * @brief 3D mesh
- */
+/** @brief 3D mesh */
 class Object
 {
 	public:
@@ -118,7 +114,7 @@ class Object
 	/**
 	 * @brief Apply a transformation to all the vertices
 	 *
-	 * @param std::function(jdscn::Position) lambda function that returns a modified
+	 * @param std::function<jdscn::Position(jdscn::Position)> lambda function that returns a modified
 	 * `jdscn::Position`
 	 */
 	void transform(std::function<jdscn::Position(jdscn::Position)>);
@@ -158,9 +154,7 @@ class Object
 	/* Texture texture; */
 };
 
-/**
- * @brief Meta for the `jdscn::Scene` class
- */
+/** @brief Meta for the `jdscn::Scene` class */
 class SceneMeta
 {
 	public:

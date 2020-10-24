@@ -5,31 +5,14 @@
 #include "scene.h"
 #include "win.h"
 
-#include <xcb/xcb.h>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <thread>
-#include <signal.h>
-#include <execinfo.h>
-#include <unistd.h>
 
 using namespace std;
 
-void errorHandler(int signal) {
-	void *array[10];
-	size_t size;
-	size = backtrace(array, 10);
-	std::cout << "Error: code " << signal << std::endl;
-	backtrace_symbols_fd(array, size, STDERR_FILENO);
-	exit(1);
-}
-
 int main(int argc, char *argv[])
 {
-	// Error handling first
-	signal(SIGSEGV, errorHandler);
-
 	argparse::Args arguments = argparse::parseArgs(argc, argv);
 
 	string scene_file = import::readFile(arguments.inputFile);
@@ -51,7 +34,7 @@ int main(int argc, char *argv[])
 	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
 	drawloop.startLoop();
 
-	this_thread::sleep_for(60s);
+	while(1){};
 
 	return EXIT_SUCCESS;
 }

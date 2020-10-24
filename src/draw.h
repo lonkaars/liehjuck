@@ -20,9 +20,7 @@ class Drawloop
 	float interval;
 
 	Drawloop(win::Canvas &canvas, jdscn::Scene &scene, float framerate);
-	/**
-	 * @brief Start the drawloop
-	 */
+	/** @brief Start the drawloop */
 	void startLoop();
 };
 
