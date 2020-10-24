@@ -15,6 +15,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: apt-get update
       run: sudo apt-get update
+    - name: unzip
+      run: sudo apt-get install unzip
     - name: nlohmann-json
       run: wget https://github.com/nlohmann/json/releases/latest/download/include.zip && \
                 unzip include.zip && \
