@@ -13,9 +13,10 @@ This is the repository for the engine itself.
 yay -S nlohmann-json argagg libxcb xcb-util
 ```
 
+> Make sure nlohmann json is >= 3.9
 ```sh
 # apt
-apt-get install nlohmann-json3-dev argagg-dev libxcb1 libxcb1-dev libxcb-xtest0 libxcb-xtest0-dev
+apt-get install nlohmann-json3-dev argagg-dev libx11-xcb-dev libxcb-xtest0-dev libxcb-xfixes0-dev
 ```
 
 ## Contributing
