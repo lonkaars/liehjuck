@@ -16,7 +16,6 @@ CameraController::CameraController(xcb_connection_t *c)
 {
 	connection = c;
 	keysPressed.fill(false);
-	/* XkbSetDetectableAutoRepeat(display, 1, nullptr); */
 }
 
 void CameraController::startInputLoop()
@@ -31,34 +30,6 @@ void CameraController::startInputLoop()
 				free (event);
 			}
 		}).detach();
-			/* XNextEvent(display, &event); */
-			/* if (event.type == KeyPress && keysPressed[event.xkey.keycode] != true) */
-			/* 	keysPressed[event.xkey.keycode] = true; */
-			/* else if (event.type == KeyRelease) */
-			/* 	keysPressed[event.xkey.keycode] = false; */
-			/* if(event->response_type == XCB_KEY_PRESS) { */
-			/* 	xcb_key_press_event_t *keyboard_event; */
-			/* 	keyboard_event = (xcb_key_press_event_t *)keyboard_event; */
-			/* 	std::cout << keyboard_event->detail << std::endl; */
-			/* } */
-			/* std::cout << event->response_type << std::endl; */
-			/* free(event); */
-			/* } */
-
-			/* xcb_generic_event_t *e; */
-			/* while ((e = xcb_wait_for_event (connection))) { */
-			/* switch (e->response_type & ~0x80) { */
-
-			/* 	/1* ESC to exit *1/ */
-			/* 	case XCB_KEY_PRESS: { */
-			/* 		xcb_key_press_event_t *ev; */
-			/* 		ev = (xcb_key_press_event_t *)e; */
-			/* 		std::cout << ev->detail << std::endl; */
-			/* 		if (ev->detail == 9) return; */
-			/* 		break; */
-			/* 	} */
-
-			/* } */
 }
 
 void CameraController::moveCursor()
