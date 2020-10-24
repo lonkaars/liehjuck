@@ -1,7 +1,10 @@
 #include "argparse.h"
+#include "config.h"
+#include "draw.h"
 #include "import.h"
 #include "scene.h"
-#include <array>
+#include "win.h"
+
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
@@ -23,6 +26,16 @@ int main(int argc, char *argv[])
 		cout << "light: " << light.meta.name << endl;
 	for (jdscn::Object object : scene_jdscn.objects)
 		cout << "object: " << object.meta.name << ", tris: " << object.vertices.size() << endl;
+
+	config::renderSettings render;
+	win::Canvas canvas(render.width, render.height, render.title);
+	canvas.clear();
+
+	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
+	drawloop.startLoop();
+
+	while (1) {
+	};
 
 	return EXIT_SUCCESS;
 }

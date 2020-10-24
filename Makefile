@@ -3,11 +3,23 @@ SRCS := \
 	src/main.cpp \
 	src/import.cpp \
 	src/scene.cpp \
-	src/argparse.cpp
+	src/win.cpp \
+	src/draw.cpp \
+	src/argparse.cpp \
+	src/camera.cpp \
+	src/calc.cpp
+
 HEADERS := \
 	src/scene.h \
 	src/argparse.h \
-	src/import.h
+	src/import.h \
+	src/win.h \
+	src/calc.h \
+	src/jdscn_types.h \
+	src/camera.h \
+	src/config.def.h \
+	src/config.h \
+	src/draw.h
 
 OBJDIR := .o
 DEPDIR := .d
@@ -20,17 +32,28 @@ $(shell mkdir -p $(dir $(OBJS)) >/dev/null)
 $(shell mkdir -p $(dir $(DEPS)) >/dev/null)
 
 CXX=g++
+CC=gcc
 LD=g++
+
+# Optionele 3rdparty headers.
+# 
+# Als er geen distro-packages zijn, of ze zijn verouderd, dan kan
+# de headers in 3rdparty/<subdir> geplaatst worden.
+#
+_3p=$(shell test -d 3rdparty && echo 3rdparty)
+ifeq (3rdparty,$(_3p))
+	CPPFLAGS += -I$(_3p)
+endif
 
 CXXFLAGS := -std=c++17
 LDFLAGS :=
 
-LDLIBS := -lX11
+LDLIBS := -lxcb -lxcb-xtest -pthread 
 
 DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
 
 COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
-LINK.o = $(LD) $(LDFLAGS) $(LDLIBS) -o $@
+LINK.o = $(LD) $(LDFLAGS) -o $@
 PRECOMPILE =
 POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
 
@@ -56,13 +79,16 @@ format:
 	clang-format -i $(SRCS) $(HEADERS)
 
 $(BIN): $(OBJS)
-	$(LINK.o) $^
+	$(LINK.o) $^ $(LDLIBS) 
 
-$(OBJDIR)/%.o: %.c
-$(OBJDIR)/%.o: %.c $(DEPDIR)/%.d
-	$(PRECOMPILE)
-	$(COMPILE.c) $<
-	$(POSTCOMPILE)
+docs:
+	doxygen Doxyfile
+
+#$(OBJDIR)/%.o: %.c
+#$(OBJDIR)/%.o: %.c $(DEPDIR)/%.d
+#	$(PRECOMPILE)
+#	$(COMPILE.c) $<
+#	$(POSTCOMPILE)
 
 $(OBJDIR)/%.o: %.cpp
 $(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.d

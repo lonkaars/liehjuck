@@ -1,5 +1,7 @@
-build/
 .d/
 .o/
-pws-engine
 .ccls-cache/
+doc/
+pws-engine
+src/config.h
+
