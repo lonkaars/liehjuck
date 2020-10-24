@@ -10,13 +10,15 @@
 #include <xcb/xcb_event.h>
 #include <xcb/xcb_keysyms.h>
 #include <xcb/xcb_cursor.h>
+#include <xcb/xtest.h>
 
 namespace controls
 {
 
-CameraController::CameraController(xcb_connection_t *c)
+CameraController::CameraController(xcb_connection_t *c, xcb_window_t *w)
 {
 	connection = c;
+	window = *w;
 	keysPressed.fill(false);
 	capturingCursor = false;
 }
@@ -25,6 +27,10 @@ void CameraController::startInputLoop()
 {
 	std::thread([this]() {
 		xcb_generic_event_t *event;
+		bool fake_next = false;
+		pointer = jdscn::Position2D({0, 0});
+		int x = 0;
+		int y = 0;
 		while ((event = xcb_wait_for_event(connection))) {
 			if (event->response_type == XCB_KEY_PRESS || event->response_type == XCB_KEY_RELEASE) {
 				// Keyboard press/release
@@ -36,11 +42,18 @@ void CameraController::startInputLoop()
 			} else if (event->response_type == XCB_MOTION_NOTIFY) {
 				// Mouse move
 				xcb_motion_notify_event_t *ev = (xcb_motion_notify_event_t *)event;
-				pointer = jdscn::Position2D({ev->event_x, ev->event_y});
-
-				/* if(capturingCursor) { */
-				/* 	xcb_get_pointer_control(connection); */
-				/* } */
+				if(capturingCursor) {
+					// warp cursor to window center
+					pointer[0] += width / 2 - ev->event_x;
+					pointer[1] += height / 2 - ev->event_y;
+					if(!fake_next) {
+						xcb_test_fake_input(connection, XCB_MOTION_NOTIFY, 1, 0, xcb_window_t { XCB_NONE }, width / 2 - ev->event_x, height / 2 - ev->event_y, 0);
+						xcb_flush(connection);
+						fake_next = true;
+					} else {
+						fake_next = false;
+					}
+				}
 			} else if (event->response_type == XCB_BUTTON_PRESS) {
 				// Mouse button click
 				xcb_button_press_event_t *ev = (xcb_button_press_event_t *)event;
@@ -53,13 +66,13 @@ void CameraController::startInputLoop()
 	}).detach();
 }
 
-jdscn::Orientation CameraController::cameraRotation(int maxx, int maxy) {
+jdscn::Orientation CameraController::cameraRotation() {
 	config::camera_controls camera_controls;
 	if(!capturingCursor) return this->originalRotation;
 	return jdscn::Orientation({
-			this->originalRotation[0] + (float(pointer[1]) - float(maxy) / 2) / camera_controls.sensitivity_y,
+			this->originalRotation[0] + float(pointer[1]) / camera_controls.sensitivity_y,
 			this->originalRotation[1],
-			this->originalRotation[2] + (float(pointer[0]) - float(maxx) / 2) / camera_controls.sensitivity_x
+			this->originalRotation[2] + float(pointer[0]) / camera_controls.sensitivity_x
 			});
 }
 

@@ -26,10 +26,12 @@ void Drawloop::startLoop()
 		int frame = 0;
 		config::camera_controls camera_controls;
 		config::keymap keymap;
-		controls::CameraController controller(canvas.connection);
+		controls::CameraController controller(canvas.connection, &canvas.window);
 		controller.startInputLoop();
 		controller.cursor = scene.camera.position;
 		controller.originalRotation = scene.camera.orientation;
+		controller.width = this->canvas.width;
+		controller.height = this->canvas.height;
 		while (true) {
 			if (controller.keysPressed[keymap.exit])
 				exit(0);
@@ -46,7 +48,7 @@ void Drawloop::startLoop()
 			scene.camera.position[2] +=
 				(controller.cursor[2] - scene.camera.position[2]) / camera_controls.easing;
 
-			scene.camera.orientation = controller.cameraRotation(this->canvas.width, this->canvas.height);
+			scene.camera.orientation = controller.cameraRotation();
 
 			scene.draw(canvas, frame);
 

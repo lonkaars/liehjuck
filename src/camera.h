@@ -15,7 +15,8 @@ class CameraController
 	/** @brief Array with keyboard state */
 	std::array<bool, 255> keysPressed;
 	xcb_connection_t *connection;
-	CameraController(xcb_connection_t *c);
+	xcb_window_t window;
+	CameraController(xcb_connection_t *c, xcb_window_t *w);
 	/** @brief Start a thread that waits for an X event, and changes the keysPressed array
 	 * accordingly */
 	void startInputLoop();
@@ -25,9 +26,12 @@ class CameraController
 	jdscn::Position2D pointer;
 	jdscn::Orientation originalRotation;
 	bool capturingCursor;
+
+	int width;
+	int height;
 	/** @brief Moves the cursor accoring to the keys currently held */
 	void moveCursor(float rotation);
-	jdscn::Orientation cameraRotation(int maxx, int maxy);
+	jdscn::Orientation cameraRotation();
 };
 
 } // namespace controls
