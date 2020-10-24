@@ -29,8 +29,10 @@ void Drawloop::startLoop()
 		controls::CameraController controller(canvas.connection);
 		controller.startInputLoop();
 		controller.cursor = scene.camera.position;
+		controller.originalRotation = scene.camera.orientation;
 		while (true) {
-			if(controller.keysPressed[keymap.exit]) exit(0);
+			if (controller.keysPressed[keymap.exit])
+				exit(0);
 
 			std::chrono::time_point nextFrameTime =
 				std::chrono::steady_clock::now() + std::chrono::milliseconds(int(interval));
@@ -43,6 +45,8 @@ void Drawloop::startLoop()
 				(controller.cursor[1] - scene.camera.position[1]) / camera_controls.easing;
 			scene.camera.position[2] +=
 				(controller.cursor[2] - scene.camera.position[2]) / camera_controls.easing;
+
+			scene.camera.orientation = controller.cameraRotation(this->canvas.width, this->canvas.height);
 
 			scene.draw(canvas, frame);
 

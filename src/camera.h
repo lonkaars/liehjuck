@@ -21,8 +21,13 @@ class CameraController
 	void startInputLoop();
 	/** @brief Target position of the camera, in the camera's local coordinate space */
 	jdscn::Position cursor;
+	/** @brief Mouse cursor position */
+	jdscn::Position2D pointer;
+	jdscn::Orientation originalRotation;
+	bool capturingCursor;
 	/** @brief Moves the cursor accoring to the keys currently held */
 	void moveCursor(float rotation);
+	jdscn::Orientation cameraRotation(int maxx, int maxy);
 };
 
 } // namespace controls

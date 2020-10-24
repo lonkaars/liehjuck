@@ -33,7 +33,9 @@ Canvas::Canvas(int width, int height, const char *title)
 
 	mask = XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
 	uint32_t values[2] = {display->black_pixel, XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_KEY_PRESS |
-													XCB_EVENT_MASK_KEY_RELEASE | XCB_EVENT_MASK_POINTER_MOTION};
+													XCB_EVENT_MASK_KEY_RELEASE |
+													XCB_EVENT_MASK_POINTER_MOTION |
+													XCB_EVENT_MASK_BUTTON_PRESS};
 
 	gc = xcb_generate_id(connection);
 	xcb_create_gc(connection, gc, display->root, XCB_GC_FOREGROUND, &rgb);
