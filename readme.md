@@ -6,15 +6,16 @@ This is the repository for the engine itself.
 
 - nlohmann/json
 - vietjtnguyen/argagg
+- [libxcb](https://cgit.freedesktop.org/xcb/libxcb/)
 
 ```sh
 # yay
-yay -S nlohmann-json argagg
+yay -S nlohmann-json argagg libxcb xcb-util
 ```
 
 ```sh
 # apt
-apt-get install nlohmann-json3-dev argagg-dev
+apt-get install nlohmann-json3-dev argagg-dev libxcb1 libxcb1-dev libxcb-xtest0 libxcb-xtest0-dev
 ```
 
 ## Contributing
