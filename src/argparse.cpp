@@ -1,7 +1,6 @@
 #include "argparse.h"
 #include <argagg/argagg.hpp>
 #include <iostream>
-#include <stdlib.h>
 
 namespace argparse
 {
@@ -18,21 +17,37 @@ Args parseArgs(int argc, char *argv[])
 	argagg::parser argparser{{{"help", {"-h", "--help"}, "shows this help message", 0}}};
 
 	std::ostringstream usage;
-	usage << "Usage: " << argv[0] << " [options] input" << std::endl << std::endl;
+	usage << "Usage: " << argv[0] << " [options, -h|--help] input" << std::endl << std::endl;
+
+	std::ostringstream controls;
+	controls << "Controls: (these can be edited through config.h)" << std::endl
+			 << std::endl
+			 << "Basic movement: " << std::endl
+			 << "wasd    -> forward, backward, left, right" << std::endl
+			 << "<ctrl>  -> down" << std::endl
+			 << "<space> -> up" << std::endl
+			 << std::endl
+			 << "Camera movement: " << std::endl
+			 << "<left mouse button> -> enter focus" << std::endl
+			 << "<esc>               -> exit focus" << std::endl
+			 << "While in focus, moving the mouse will move the camera" << std::endl
+			 << std::endl
+			 << "Miscellaneous:" << std::endl
+			 << "q -> exit" << std::endl
+			 << std::endl;
 
 	argagg::parser_results args;
 	try {
 		args = argparser.parse(argc, argv);
 	} catch (const std::exception &e) {
-		argagg::fmt_ostream fmt(std::cerr);
-		fmt << usage.str() << argparser << std::endl
-			<< "Encountered exception while parsing arguments: " << e.what() << std::endl;
+		std::cerr << usage.str() << argparser << std::endl
+				  << "Encountered exception while parsing arguments: " << e.what() << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
 	if (args["help"]) {
 		argagg::fmt_ostream fmt(std::cerr);
-		fmt << usage.str() << argparser;
+		std::cerr << usage.str() << argparser << std::endl << std::endl << controls.str();
 		exit(EXIT_SUCCESS);
 	}
 
