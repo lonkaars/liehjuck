@@ -1,11 +1,11 @@
 #pragma once
 #include "jdscn_types.h"
 #include <iostream>
+#include <memory>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/utsname.h>
-#include <memory>
 #include <xcb/xcb.h>
 
 /** @file win.h */

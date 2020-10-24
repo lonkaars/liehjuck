@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
 	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
 	drawloop.startLoop();
 
-	while(1){};
+	while (1) {
+	};
 
 	return EXIT_SUCCESS;
 }

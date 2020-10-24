@@ -114,8 +114,8 @@ class Object
 	/**
 	 * @brief Apply a transformation to all the vertices
 	 *
-	 * @param std::function<jdscn::Position(jdscn::Position)> lambda function that returns a modified
-	 * `jdscn::Position`
+	 * @param std::function<jdscn::Position(jdscn::Position)> lambda function that returns a
+	 * modified `jdscn::Position`
 	 */
 	void transform(std::function<jdscn::Position(jdscn::Position)>);
 	/**
