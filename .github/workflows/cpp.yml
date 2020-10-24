@@ -20,7 +20,7 @@ jobs:
     - name: argagg
       run: sudo apt-get install argagg-dev
     - name: xcb
-      run: sudo apt-get install libx11-xcb-dev libxcb-xtest0-dev
+      run: sudo apt-get install libx11-xcb-dev libxcb-xtest0-dev libxcb-xfixes0-dev
     - name: configure
       run: ./configure
     - name: make distclean
