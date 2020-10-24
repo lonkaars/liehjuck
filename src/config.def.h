@@ -1,12 +1,8 @@
 #pragma once
 
-/**
- * @file config.def.h
- *
- * Default config file
- */
+/** @file config.def.h */
 
-/** @brief config namespace */
+/** @brief Default config file */
 namespace config
 {
 
