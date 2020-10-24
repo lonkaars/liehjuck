@@ -84,26 +84,11 @@ $(BIN): $(OBJS)
 docs:
 	doxygen Doxyfile
 
-#$(OBJDIR)/%.o: %.c
-#$(OBJDIR)/%.o: %.c $(DEPDIR)/%.d
-#	$(PRECOMPILE)
-#	$(COMPILE.c) $<
-#	$(POSTCOMPILE)
+check: $(BIN) docs
+	echo gert
 
 $(OBJDIR)/%.o: %.cpp
 $(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.d
-	$(PRECOMPILE)
-	$(COMPILE.cc) $<
-	$(POSTCOMPILE)
-
-$(OBJDIR)/%.o: %.cc
-$(OBJDIR)/%.o: %.cc $(DEPDIR)/%.d
-	$(PRECOMPILE)
-	$(COMPILE.cc) $<
-	$(POSTCOMPILE)
-
-$(OBJDIR)/%.o: %.cxx
-$(OBJDIR)/%.o: %.cxx $(DEPDIR)/%.d
 	$(PRECOMPILE)
 	$(COMPILE.cc) $<
 	$(POSTCOMPILE)
