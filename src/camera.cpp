@@ -7,9 +7,9 @@
 #include <iostream>
 #include <thread>
 #include <xcb/xcb.h>
+#include <xcb/xcb_cursor.h>
 #include <xcb/xcb_event.h>
 #include <xcb/xcb_keysyms.h>
-#include <xcb/xcb_cursor.h>
 #include <xcb/xtest.h>
 
 namespace controls
@@ -38,16 +38,19 @@ void CameraController::startInputLoop()
 				keysPressed[ev->detail] = event->response_type == XCB_KEY_PRESS;
 
 				// Escape button
-				if (event->response_type == XCB_KEY_PRESS && ev->detail == 9) capturingCursor = false;
+				if (event->response_type == XCB_KEY_PRESS && ev->detail == 9)
+					capturingCursor = false;
 			} else if (event->response_type == XCB_MOTION_NOTIFY) {
 				// Mouse move
 				xcb_motion_notify_event_t *ev = (xcb_motion_notify_event_t *)event;
-				if(capturingCursor) {
+				if (capturingCursor) {
 					// warp cursor to window center
 					pointer[0] += width / 2 - ev->event_x;
 					pointer[1] += height / 2 - ev->event_y;
-					if(!fake_next) {
-						xcb_test_fake_input(connection, XCB_MOTION_NOTIFY, 1, 0, xcb_window_t { XCB_NONE }, width / 2 - ev->event_x, height / 2 - ev->event_y, 0);
+					if (!fake_next) {
+						xcb_test_fake_input(connection, XCB_MOTION_NOTIFY, 1, 0,
+											xcb_window_t{XCB_NONE}, width / 2 - ev->event_x,
+											height / 2 - ev->event_y, 0);
 						xcb_flush(connection);
 						fake_next = true;
 					} else {
@@ -59,21 +62,23 @@ void CameraController::startInputLoop()
 				xcb_button_press_event_t *ev = (xcb_button_press_event_t *)event;
 
 				// Left mouse button
-				if (ev->detail == 1) capturingCursor = true;
+				if (ev->detail == 1)
+					capturingCursor = true;
 			}
 			free(event);
 		}
 	}).detach();
 }
 
-jdscn::Orientation CameraController::cameraRotation() {
+jdscn::Orientation CameraController::cameraRotation()
+{
 	config::camera_controls camera_controls;
-	if(!capturingCursor) return this->originalRotation;
-	return jdscn::Orientation({
-			this->originalRotation[0] + float(pointer[1]) / camera_controls.sensitivity_y,
-			this->originalRotation[1],
-			this->originalRotation[2] + float(pointer[0]) / camera_controls.sensitivity_x
-			});
+	if (!capturingCursor)
+		return this->originalRotation;
+	return jdscn::Orientation(
+		{this->originalRotation[0] + float(pointer[1]) / camera_controls.sensitivity_y,
+		 this->originalRotation[1],
+		 this->originalRotation[2] + float(pointer[0]) / camera_controls.sensitivity_x});
 }
 
 void CameraController::moveCursor(float rotation)
