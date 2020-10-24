@@ -21,6 +21,8 @@ jobs:
       run: sudo apt-get install argagg-dev
     - name: xcb
       run: sudo apt-get install libx11-xcb-dev libxcb-xtest0-dev libxcb-xfixes0-dev
+    - name: doxygen
+      run: sudo apt-get install doxygen
     - name: configure
       run: ./configure
     - name: make distclean
