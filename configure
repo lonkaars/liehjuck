@@ -1,1 +1,1 @@
-apt-get install nlohmann-json3-dev argagg-dev libxcb1 libxcb1-dev libxcb-xtest0 libxcb-xtest0-dev
+sudo apt-get install nlohmann-json3-dev argagg-dev libxcb1 libxcb1-dev libxcb-xtest0 libxcb-xtest0-dev
