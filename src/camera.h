@@ -1,7 +1,5 @@
 #include "draw.h"
 #include "jdscn_types.h"
-#include <X11/XKBlib.h>
-#include <X11/Xlib.h>
 #include <array>
 
 /** @file camera.h */
@@ -16,9 +14,8 @@ class CameraController
 	public:
 	/** @brief Array with keyboard state */
 	std::array<bool, 255> keysPressed;
-	Display *display;
-	Window window;
-	CameraController(Display *d, Window *w);
+	xcb_connection_t *connection;
+	CameraController(xcb_connection_t *c);
 	/** @brief Start a thread that waits for an X event, and changes the keysPressed array
 	 * accordingly */
 	void startInputLoop();

@@ -23,7 +23,7 @@ void Drawloop::startLoop()
 {
 	std::thread([this]() {
 		int frame = 0;
-		controls::CameraController controller(canvas.display, &canvas.window);
+		controls::CameraController controller(canvas.connection);
 		controller.startInputLoop();
 		controller.cursor = scene.camera.position;
 		while (true) {

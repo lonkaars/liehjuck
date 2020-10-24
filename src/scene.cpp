@@ -20,6 +20,7 @@ void jdscn::Scene::draw(win::Canvas canvas, int frame = 0)
 				if (pos[2] < -0.02) // Near clipping
 					canvas.draw(-pos[0], -pos[1], object.material.color);
 	}
+	this->objects[0].orientation[0] = frame * 0.05;
 	canvas.flush();
 	canvas.clear();
 }

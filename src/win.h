@@ -1,24 +1,20 @@
 #pragma once
 #include "jdscn_types.h"
-#include <X11/Xlib.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/utsname.h>
 #include <memory>
+#include <xcb/xcb.h>
 
 /** @file win.h */
 
-/**
- * @brief Handles all X11 drawing
- */
+/** @brief Handles all drawing */
 namespace win
 {
 
-/**
- * @brief Manages the window and exposes simple drawing functions
- */
+/** @brief Manages the window and exposes simple drawing functions */
 class Canvas
 {
 	public:
@@ -27,11 +23,16 @@ class Canvas
 	int height;
 	const char *title;
 
-	Display *display;
-	Window window;
-	GC gc;
-	Colormap colormap;
-	XImage *frame;
+	/* Display *display; */
+	/* Window window; */
+	/* GC gc; */
+	/* Colormap colormap; */
+	xcb_connection_t *connection;
+	xcb_screen_t *display;
+	xcb_window_t window;
+	xcb_gcontext_t gc;
+	xcb_pixmap_t frame;
+	uint32_t mask;
 
 	Canvas(int, int, const char *);
 	/**
