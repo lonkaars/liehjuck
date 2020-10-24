@@ -11,6 +11,7 @@
 #include <xcb/xcb_event.h>
 #include <xcb/xcb_keysyms.h>
 #include <xcb/xtest.h>
+#include <xcb/xfixes.h>
 
 namespace controls
 {
@@ -29,8 +30,7 @@ void CameraController::startInputLoop()
 		xcb_generic_event_t *event;
 		bool fake_next = false;
 		pointer = jdscn::Position2D({0, 0});
-		int x = 0;
-		int y = 0;
+		xcb_xfixes_query_version(connection, 4, 0);
 		while ((event = xcb_wait_for_event(connection))) {
 			if (event->response_type == XCB_KEY_PRESS || event->response_type == XCB_KEY_RELEASE) {
 				// Keyboard press/release
@@ -38,8 +38,10 @@ void CameraController::startInputLoop()
 				keysPressed[ev->detail] = event->response_type == XCB_KEY_PRESS;
 
 				// Escape button
-				if (event->response_type == XCB_KEY_PRESS && ev->detail == 9)
+				if (event->response_type == XCB_KEY_PRESS && ev->detail == 9) {
 					capturingCursor = false;
+					xcb_xfixes_show_cursor(connection, window);
+				}
 			} else if (event->response_type == XCB_MOTION_NOTIFY) {
 				// Mouse move
 				xcb_motion_notify_event_t *ev = (xcb_motion_notify_event_t *)event;
@@ -62,8 +64,10 @@ void CameraController::startInputLoop()
 				xcb_button_press_event_t *ev = (xcb_button_press_event_t *)event;
 
 				// Left mouse button
-				if (ev->detail == 1)
+				if (ev->detail == 1) {
 					capturingCursor = true;
+					xcb_xfixes_hide_cursor(connection, window);
+				}
 			}
 			free(event);
 		}

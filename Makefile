@@ -48,7 +48,7 @@ endif
 CXXFLAGS := -std=c++17
 LDFLAGS :=
 
-LDLIBS := -lxcb -lxcb-xtest -pthread 
+LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread 
 
 DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
 
