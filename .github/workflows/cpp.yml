@@ -16,9 +16,7 @@ jobs:
     - name: apt-get update
       run: sudo apt-get update
     - name: nlohmann-json
-      run: wget https://github.com/nlohmann/json/releases/latest/download/include.zip && \
-                7z x include.zip && \
-                sudo mv include/nlohmann /usr/include
+      run: wget https://github.com/nlohmann/json/releases/latest/download/include.zip && 7z x include.zip && sudo mv include/nlohmann /usr/include
     - name: argagg
       run: sudo apt-get install argagg-dev
     - name: xcb
