@@ -13,8 +13,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure
+    - name: nlohmann-json
+      run: sudo apt-get install nlohmann-json3-dev
+    - name: argagg
+      run: sudo apt-get install argagg-dev
+    - name: xcb
+      run: sudo apt-get install libx11-xcb-dev libxcb-xtest0-dev
     - name: make distclean
       run: make distclean
     - name: make check
