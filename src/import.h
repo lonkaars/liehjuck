@@ -10,7 +10,7 @@
 
 namespace fs = std::filesystem;
 
-/** @brief namespace handling filesystem reads, and deserialization */
+/** @brief Filesystem reads and deserialization */
 namespace import
 {
 

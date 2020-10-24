@@ -71,6 +71,7 @@ class Camera
 	Meta meta;
 	/**
 	 * @brief Focal length of the lens in millimeters, as in Blender
+	 *
 	 * This property is converted to pixels
 	 */
 	float focalLength;

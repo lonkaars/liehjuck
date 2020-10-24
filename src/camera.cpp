@@ -10,8 +10,8 @@
 #include <xcb/xcb_cursor.h>
 #include <xcb/xcb_event.h>
 #include <xcb/xcb_keysyms.h>
-#include <xcb/xtest.h>
 #include <xcb/xfixes.h>
+#include <xcb/xtest.h>
 
 namespace controls
 {

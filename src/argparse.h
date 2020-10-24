@@ -3,10 +3,7 @@
 
 /** @file argparse.h */
 
-/**
- * @brief Argument parsing namespace
- * This is the namespace for all command line argument parsing
- */
+/** @brief Command line argument parsing */
 namespace argparse
 {
 
@@ -22,9 +19,7 @@ namespace argparse
  */
 static bool endsWith(const std::string &input, const std::string &suffix);
 
-/**
- * @brief Return type of the parseArgs function
- */
+/** @brief Return type of the parseArgs function */
 class Args
 {
 	public:
