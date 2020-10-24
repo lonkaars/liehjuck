@@ -16,8 +16,8 @@ jobs:
     - name: apt-get update
       run: sudo apt-get update
     - name: nlohmann-json
-      run: wget https://github.com/nlohmann/json/releases/latest/download/include.zip \
-                unzip include.zip \
+      run: wget https://github.com/nlohmann/json/releases/latest/download/include.zip && \
+                unzip include.zip && \
                 sudo mv include/nlohmann /usr/include
     - name: argagg
       run: sudo apt-get install argagg-dev
