@@ -11,9 +11,6 @@
 #include <sys/utsname.h>
 #include <thread>
 #include <xcb/xcb.h>
-#include <xcb/xcb_atom.h>
-#include <xcb/xcb_image.h>
-#include <xcb/xcb_pixel.h>
 
 namespace win
 {
