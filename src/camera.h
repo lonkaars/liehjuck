@@ -22,7 +22,7 @@ class CameraController
 	/** @brief Target position of the camera, in the camera's local coordinate space */
 	jdscn::Position cursor;
 	/** @brief Moves the cursor accoring to the keys currently held */
-	void moveCursor();
+	void moveCursor(float rotation);
 };
 
 } // namespace controls

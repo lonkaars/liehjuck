@@ -1,5 +1,6 @@
 #include "camera.h"
 #include "config.h"
+#include "calc.h"
 #include "draw.h"
 #include <array>
 #include <chrono>
@@ -32,15 +33,26 @@ void CameraController::startInputLoop()
 		}).detach();
 }
 
-void CameraController::moveCursor()
+void CameraController::moveCursor(float rotation)
 {
 	config::camera_controls camera_controls;
 	config::keymap keys;
+
 	float camera_speed = camera_controls.speed / 100;
-	this->cursor[0] += camera_speed * float(this->keysPressed[keys.forward]);
-	this->cursor[0] -= camera_speed * float(this->keysPressed[keys.backward]);
-	this->cursor[1] += camera_speed * float(this->keysPressed[keys.left]);
-	this->cursor[1] -= camera_speed * float(this->keysPressed[keys.right]);
+
+	jdscn::FloatXY xmod = calc::rotate2D(jdscn::FloatXY({1,0}), rotation);
+	jdscn::FloatXY ymod = calc::rotate2D(jdscn::FloatXY({0,1}), rotation);
+
+	this->cursor[0] += camera_speed * float(this->keysPressed[keys.right]) * xmod[0];
+	this->cursor[1] += camera_speed * float(this->keysPressed[keys.right]) * xmod[1];
+	this->cursor[0] -= camera_speed * float(this->keysPressed[keys.left]) * xmod[0];
+	this->cursor[1] -= camera_speed * float(this->keysPressed[keys.left]) * xmod[1];
+
+	this->cursor[0] += camera_speed * float(this->keysPressed[keys.forward]) * ymod[0];
+	this->cursor[1] += camera_speed * float(this->keysPressed[keys.forward]) * ymod[1];
+	this->cursor[0] -= camera_speed * float(this->keysPressed[keys.backward]) * ymod[0];
+	this->cursor[1] -= camera_speed * float(this->keysPressed[keys.backward]) * ymod[1];
+
 	this->cursor[2] += camera_speed * float(this->keysPressed[keys.up]);
 	this->cursor[2] -= camera_speed * float(this->keysPressed[keys.down]);
 }

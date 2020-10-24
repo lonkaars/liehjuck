@@ -31,11 +31,8 @@ void Drawloop::startLoop()
 				std::chrono::steady_clock::now() + std::chrono::milliseconds(int(interval));
 
 			// Calculate camera movement
-			controller.moveCursor();
-			jdscn::Position relativeCursor =
-				calc::rotate3D(controller.cursor, jdscn::Orientation({0, 0, 0}));
-			// FIXME: interpolating as in test/camera-controls/sketch.js
-			scene.camera.position = relativeCursor;
+			controller.moveCursor(scene.camera.orientation[2]);
+			scene.camera.position = controller.cursor;
 
 			scene.draw(canvas, frame);
 
