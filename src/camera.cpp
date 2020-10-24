@@ -27,6 +27,9 @@ void CameraController::startInputLoop()
 			if (event->response_type == XCB_KEY_PRESS || event->response_type == XCB_KEY_RELEASE) {
 				xcb_key_press_event_t *ev = (xcb_key_press_event_t *)event;
 				keysPressed[ev->detail] = event->response_type == XCB_KEY_PRESS;
+			} else if (event->response_type == XCB_MOTION_NOTIFY) {
+				xcb_motion_notify_event_t *ev = (xcb_motion_notify_event_t *)event;
+				std::cout << ev->event_x << ", " << ev->event_y << std::endl;
 			}
 			free(event);
 		}
