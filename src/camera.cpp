@@ -5,31 +5,60 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include <xcb/xcb.h>
+#include <xcb/xcb_keysyms.h>
+#include <xcb/xcb_event.h>
 
 namespace controls
 {
 
-CameraController::CameraController(Display *d, Window *w)
+CameraController::CameraController(xcb_connection_t *c)
 {
-	display = d;
-	window = *w;
+	connection = c;
 	keysPressed.fill(false);
-	XSelectInput(display, window, KeyPressMask | KeyReleaseMask);
-	XkbSetDetectableAutoRepeat(display, 1, nullptr);
+	/* XkbSetDetectableAutoRepeat(display, 1, nullptr); */
 }
 
 void CameraController::startInputLoop()
 {
 	std::thread([this]() {
-		for (;;) {
-			XEvent event;
-			XNextEvent(display, &event);
-			if (event.type == KeyPress && keysPressed[event.xkey.keycode] != true)
-				keysPressed[event.xkey.keycode] = true;
-			else if (event.type == KeyRelease)
-				keysPressed[event.xkey.keycode] = false;
-		}
-	}).detach();
+			xcb_generic_event_t *event;
+			while ((event = xcb_wait_for_event(connection))) {
+				if(event->response_type == XCB_KEY_PRESS || event->response_type == XCB_KEY_RELEASE) {
+						xcb_key_press_event_t *ev = (xcb_key_press_event_t *)event;
+						keysPressed[ev->detail] = event->response_type == XCB_KEY_PRESS;
+				}
+				free (event);
+			}
+		}).detach();
+			/* XNextEvent(display, &event); */
+			/* if (event.type == KeyPress && keysPressed[event.xkey.keycode] != true) */
+			/* 	keysPressed[event.xkey.keycode] = true; */
+			/* else if (event.type == KeyRelease) */
+			/* 	keysPressed[event.xkey.keycode] = false; */
+			/* if(event->response_type == XCB_KEY_PRESS) { */
+			/* 	xcb_key_press_event_t *keyboard_event; */
+			/* 	keyboard_event = (xcb_key_press_event_t *)keyboard_event; */
+			/* 	std::cout << keyboard_event->detail << std::endl; */
+			/* } */
+			/* std::cout << event->response_type << std::endl; */
+			/* free(event); */
+			/* } */
+
+			/* xcb_generic_event_t *e; */
+			/* while ((e = xcb_wait_for_event (connection))) { */
+			/* switch (e->response_type & ~0x80) { */
+
+			/* 	/1* ESC to exit *1/ */
+			/* 	case XCB_KEY_PRESS: { */
+			/* 		xcb_key_press_event_t *ev; */
+			/* 		ev = (xcb_key_press_event_t *)e; */
+			/* 		std::cout << ev->detail << std::endl; */
+			/* 		if (ev->detail == 9) return; */
+			/* 		break; */
+			/* 	} */
+
+			/* } */
 }
 
 void CameraController::moveCursor()

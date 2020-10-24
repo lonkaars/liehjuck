@@ -15,7 +15,7 @@ struct keymap {
 struct renderSettings {
 	int width = 1280;
 	int height = 720;
-	float framerate = 60.0f;
+	float framerate = 30.0f;
 	const char *title = "[floating] cool window";
 };
 

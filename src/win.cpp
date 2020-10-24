@@ -27,21 +27,17 @@ Canvas::Canvas(int width, int height, const char *title)
 	connection = xcb_connect(NULL, NULL);
 	display = xcb_setup_roots_iterator(xcb_get_setup(connection)).data;
 
-	window = display->root;
-
-	uint32_t rgb = 0xff000000;
-	mask = XCB_GC_FOREGROUND;
-
-	gc = xcb_generate_id(connection);
-
-	uint32_t values[2] = {display->white_pixel, 0};
-	xcb_create_gc(connection, gc, window, XCB_GC_FOREGROUND, &rgb);
-
 	window = xcb_generate_id(connection);
 
+	uint32_t rgb = 0xff000000;
+
 	mask = XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK;
-	values[0] = display->white_pixel;
-	values[1] = XCB_EVENT_MASK_EXPOSURE;
+	uint32_t values[2] = {display->black_pixel,
+		XCB_EVENT_MASK_EXPOSURE |
+		XCB_EVENT_MASK_KEY_PRESS | XCB_EVENT_MASK_KEY_RELEASE };
+
+	gc = xcb_generate_id(connection);
+	xcb_create_gc(connection, gc, display->root, XCB_GC_FOREGROUND, &rgb);
 
 	xcb_create_window(connection,
 					  XCB_COPY_FROM_PARENT, window, display->root,
@@ -55,16 +51,16 @@ Canvas::Canvas(int width, int height, const char *title)
 						 XCB_ATOM_WM_NAME, XCB_ATOM_STRING, 8,
 						 strlen(title), title);
 
-	xcb_map_window(connection, window);
-
 	frame = xcb_generate_id(connection);
 	xcb_create_pixmap(connection, 24, frame, window, width, height);
+
+	xcb_map_window(connection, window);
 
 	xcb_flush(connection);
 
 	xcb_generic_event_t *event;
 	while ((event = xcb_wait_for_event(connection))) {
-		if(event->response_type == XCB_EXPOSE) break;
+		if (event->response_type == XCB_EXPOSE) break;
 		free(event);
 	}
 }
@@ -76,9 +72,9 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 	y = this->height / 2 - y;
 
 	if(x > this->width ||
-	   x < 0 ||
-	   y > this->height ||
-	   y < 0) return;
+			x < 0 ||
+			y > this->height ||
+			y < 0) return;
 
 	int32_t rgb = pow(0x100, 3) + c[0] * pow(0x100, 2) + c[1] * pow(0x100, 1) + c[2] * pow(0x100, 0);
 	xcb_point_t point[] = {{int16_t(x), int16_t(y)}};

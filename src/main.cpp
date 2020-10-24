@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
 
 	config::renderSettings render;
 	win::Canvas canvas(render.width, render.height, render.title);
+	canvas.clear();
 
 	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
 	drawloop.startLoop();
