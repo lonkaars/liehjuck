@@ -1,6 +1,7 @@
 .d/
 .o/
 .ccls-cache/
+.clangd/
 doc/
 pws-engine
 src/config.h
