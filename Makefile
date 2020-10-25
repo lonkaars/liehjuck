@@ -11,7 +11,7 @@ TESTS   := $(wildcard $(TESTS_DIR)/*.cpp)
 OBJECTS      := $(patsubst %,$(OBJ_DIR)/%, $(patsubst %.cpp,%.o, $(SOURCES)))
 TEST_OBJECTS := $(patsubst %,$(OBJ_DIR)/%, $(patsubst %.cpp,%.o, $(TESTS)))
 
-$(shell mkdir -p $(dir $(OBJECTS)) >/dev/null)
+$(shell mkdir -p $(dir $(TEST_OBJECTS)) $(dir $(OBJECTS)) >/dev/null)
 
 CXX=g++
 LD=g++
@@ -62,7 +62,12 @@ $(BIN): $(OBJECTS)
 docs:
 	doxygen Doxyfile
 
-check: $(BIN) docs
+$(OBJ_DIR)/$(TESTS_DIR)/%.o: $(TESTS)
+	$(COMPILE.cc) $(TESTS_DIR)/$*.cpp
+
+check: CXXFLAGS += -D UNIT_TEST_BINARY
+check: LDLIBS += -lgtest
+check: docs $(OBJECTS) $(TEST_OBJECTS) $(BIN)
 	echo gert
 
 compile_commands: clean
