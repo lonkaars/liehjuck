@@ -2,6 +2,8 @@
 .o/
 .ccls-cache/
 .clangd/
+compile_commands.commands.json
+compile_commands.json
 doc/
 pws-engine
 src/config.h

@@ -1,16 +1,17 @@
 BIN := pws-engine
 
-SOURCES := $(wildcard src/*.cpp)
-HEADERS := $(wildcard src/*.h)
-TESTS := $(wildcard tests/*.cpp)
+SOURCE_DIR = src
+TESTS_DIR  = tests
+OBJ_DIR    = .o
 
-OBJDIR := .o/
+SOURCES := $(wildcard $(SOURCE_DIR)/*.cpp)
+HEADERS := $(wildcard $(SOURCE_DIR)/*.h)
+TESTS   := $(wildcard $(TESTS_DIR)/*.cpp)
 
-# OBJS := $(patsubst %,$(OBJDIR)/%.o,$(basename $(SRCS)))
-OBJECTS := $(patsubst %,$(OBJDIR)%, $(patsubst %.cpp,%.o, $(SOURCES)))
-TEST_OBJECTS := $(patsubst %,$(OBJDIR)%, $(patsubst %.cpp,%.o, $(TESTS)))
+OBJECTS      := $(patsubst %,$(OBJ_DIR)/%, $(patsubst %.cpp,%.o, $(SOURCES)))
+TEST_OBJECTS := $(patsubst %,$(OBJ_DIR)/%, $(patsubst %.cpp,%.o, $(TESTS)))
 
-$(shell mkdir -p $(dir $(OBJS)) >/dev/null)
+$(shell mkdir -p $(dir $(OBJECTS)) >/dev/null)
 
 CXX=g++
 LD=g++
@@ -26,40 +27,36 @@ ifeq (3rdparty,$(_3p))
 endif
 
 CXXFLAGS := -std=c++17
-LDFLAGS :=
+LDFLAGS  :=
 
 LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread 
 
-COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
-LINK.o = $(LD) $(LDFLAGS) -o $@
+COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c -o $@
+LINK.o     = $(LD) $(LDFLAGS) -o $@
 PRECOMPILE =
 
 all: $(BIN)
 
-.PHONY: clean
 clean:
-	$(RM) -r $(OBJDIR) $(DEPDIR)
+	$(RM) -r $(OBJ_DIR)/
 
-.PHONY: distclean
 distclean: clean
 	$(RM) $(BIN) $(DISTOUTPUT)
 
-.PHONY: install
 install: $(BIN)
 	sudo cp $(BIN) /bin/$(BIN)
 
-.PHONY: uninstall
 uninstall:
 	sudo rm /bin/$(BIN)
 
 format:
 	clang-format -i $(SRCS) $(HEADERS)
 
-$(BIN): $(OBJS)
-	$(LINK.o) $^ $(LDLIBS) 
+$(OBJ_DIR)/$(SOURCE_DIR)/%.o: $(SOURCES)
+	$(COMPILE.cc) $(SOURCE_DIR)/$*.cpp
 
-# test: $(TEST_OBJS)
-# 	$(LINK.o) $^ $(LDLIBS) 
+$(BIN): $(OBJECTS)
+	$(LINK.o) $^ $(LDLIBS) 
 
 docs:
 	doxygen Doxyfile
@@ -70,14 +67,4 @@ check: $(BIN) docs
 compile_commands: clean
 	bear -- make
 	rm compile_commands.commands.json
-
-# $(OBJDIR)/%.o: %.cpp
-$(OBJDIR)/%.o: $(SOURCES)
-	$(PRECOMPILE)
-	$(COMPILE.cc) $<
-	$(POSTCOMPILE)
-#
-
-$(OBJDIR)/src/%o: src/%.cpp
-	$(CXX) $(CXXFLAGS) $(LDLIBS) -c $< -o .o/$@
 
