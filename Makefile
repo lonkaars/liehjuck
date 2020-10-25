@@ -33,7 +33,6 @@ LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread
 
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c -o $@
 LINK.o     = $(LD) $(LDFLAGS) -o $@
-PRECOMPILE =
 
 all: $(BIN)
 
@@ -52,9 +51,11 @@ uninstall:
 format:
 	clang-format -i $(SRCS) $(HEADERS)
 
+# Compiling files in src/ to .o/
 $(OBJ_DIR)/$(SOURCE_DIR)/%.o: $(SOURCES)
 	$(COMPILE.cc) $(SOURCE_DIR)/$*.cpp
 
+# Linking all files in .o/ to pws-engine binary
 $(BIN): $(OBJECTS)
 	$(LINK.o) $^ $(LDLIBS) 
 
