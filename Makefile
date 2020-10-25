@@ -1,38 +1,18 @@
 BIN := pws-engine
-SRCS := \
-	src/main.cpp \
-	src/import.cpp \
-	src/scene.cpp \
-	src/win.cpp \
-	src/draw.cpp \
-	src/argparse.cpp \
-	src/camera.cpp \
-	src/calc.cpp
 
-HEADERS := \
-	src/scene.h \
-	src/argparse.h \
-	src/import.h \
-	src/win.h \
-	src/calc.h \
-	src/jdscn_types.h \
-	src/camera.h \
-	src/config.def.h \
-	src/config.h \
-	src/draw.h
+SOURCES := $(wildcard src/*.cpp)
+HEADERS := $(wildcard src/*.h)
+TESTS := $(wildcard tests/*.cpp)
 
-OBJDIR := .o
-DEPDIR := .d
+OBJDIR := .o/
 
-OBJS := $(patsubst %,$(OBJDIR)/%.o,$(basename $(SRCS)))
-DEPS := $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS)))
+# OBJS := $(patsubst %,$(OBJDIR)/%.o,$(basename $(SRCS)))
+OBJECTS := $(patsubst %,$(OBJDIR)%, $(patsubst %.cpp,%.o, $(SOURCES)))
+TEST_OBJECTS := $(patsubst %,$(OBJDIR)%, $(patsubst %.cpp,%.o, $(TESTS)))
 
-# make directories
 $(shell mkdir -p $(dir $(OBJS)) >/dev/null)
-$(shell mkdir -p $(dir $(DEPS)) >/dev/null)
 
 CXX=g++
-CC=gcc
 LD=g++
 
 # Optionele 3rdparty headers.
@@ -50,12 +30,9 @@ LDFLAGS :=
 
 LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread 
 
-DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
-
-COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
+COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
 LINK.o = $(LD) $(LDFLAGS) -o $@
 PRECOMPILE =
-POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
 
 all: $(BIN)
 
@@ -81,6 +58,9 @@ format:
 $(BIN): $(OBJS)
 	$(LINK.o) $^ $(LDLIBS) 
 
+# test: $(TEST_OBJS)
+# 	$(LINK.o) $^ $(LDLIBS) 
+
 docs:
 	doxygen Doxyfile
 
@@ -91,14 +71,13 @@ compile_commands: clean
 	bear -- make
 	rm compile_commands.commands.json
 
-$(OBJDIR)/%.o: %.cpp
-$(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.d
+# $(OBJDIR)/%.o: %.cpp
+$(OBJDIR)/%.o: $(SOURCES)
 	$(PRECOMPILE)
 	$(COMPILE.cc) $<
 	$(POSTCOMPILE)
+#
 
-.PRECIOUS: $(DEPDIR)/%.d
-$(DEPDIR)/%.d: ;
-
--include $(DEPS)
+$(OBJDIR)/src/%o: src/%.cpp
+	$(CXX) $(CXXFLAGS) $(LDLIBS) -c $< -o .o/$@
 
