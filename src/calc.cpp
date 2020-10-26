@@ -51,3 +51,4 @@ jdscn::FloatXYZ project(jdscn::Position a, jdscn::Camera camera)
 }
 
 }; // namespace calc
+
