@@ -40,7 +40,10 @@ clean:
 	$(RM) -r $(OBJ_DIR)/
 
 distclean: clean
-	$(RM) $(BIN) $(DISTOUTPUT)
+	$(RM) $(BIN)
+	$(RM) $(BIN)-test
+	$(RM) -r doc/
+	$(RM) compile_commands.json
 
 install: $(BIN)
 	sudo cp $(BIN) /bin/$(BIN)
@@ -62,13 +65,16 @@ $(BIN): $(OBJECTS)
 docs:
 	doxygen Doxyfile
 
+# Unit test binary and linker
 $(OBJ_DIR)/$(TESTS_DIR)/%.o: $(TESTS)
 	$(COMPILE.cc) $(TESTS_DIR)/$*.cpp
+$(BIN)-test: $(OBJECTS) $(TESTS)
+	$(LINK.o) $^ $(LDLIBS) 
 
 check: CXXFLAGS += -D UNIT_TEST_BINARY
 check: LDLIBS += -lgtest
-check: docs $(OBJECTS) $(TEST_OBJECTS) $(BIN)
-	echo gert
+check: $(OBJECTS) $(TEST_OBJECTS) $(BIN)-test
+	./pws-engine-test
 
 compile_commands: clean
 	bear -- make

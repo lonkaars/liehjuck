@@ -6,5 +6,6 @@ compile_commands.commands.json
 compile_commands.json
 doc/
 pws-engine
+pws-engine-test
 src/config.h
 
