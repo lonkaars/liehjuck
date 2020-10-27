@@ -61,9 +61,6 @@ Canvas::Canvas(int width, int height, const char *title)
 // Draws a pixel at given x and y coordinates in the color that is specified in c
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
-	//x = this->width / 2 + x;
-	//y = this->height / 2 - y;
-
 	if (x > this->width || x < 0 || y > this->height || y < 0)
 		return;
 
@@ -81,8 +78,6 @@ void Canvas::flush()
 	xcb_flush(connection);
 }
 
-// Writes the frame data to just zeroes
-// Using memset isn't the most beautiful way to do this, but other methods cause headaches
 void Canvas::clear()
 {
 	int32_t rgb = 0xff000000; // Reset clear color

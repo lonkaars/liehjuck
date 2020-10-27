@@ -9,8 +9,6 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <chrono>
-#include <thread>
 
 using namespace std;
 
@@ -37,17 +35,6 @@ int main(int argc, char *argv[])
 	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
 	drawloop.startLoop();
 	
-	/*std::this_thread::sleep_for(std::chrono::seconds(1));
-
-	calc::drawTriangle({10, 10}, {100, 100}, {10, 100}, {255, 255, 255}, canvas);
-	
-	calc::drawTriangle({-10, -10}, {-100, -100}, {-10, -100}, {255, 255, 255}, canvas);
-
-	calc::drawTriangle({-10, 10}, {-100, 100}, {-10, 100}, {255, 255, 255}, canvas);
-
-	calc::drawTriangle({10, -10}, {100, -100}, {10, -100}, {255, 255, 255}, canvas);
-	
-	canvas.flush();*/
 	while (1) {
 	};
 
