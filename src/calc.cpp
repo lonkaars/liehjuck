@@ -2,9 +2,9 @@
 #include "jdscn_types.h"
 #include "win.h"
 #include <array>
+#include <iostream>
 #include <math.h>
 #include <stdlib.h>
-#include <iostream>
 #include <utility>
 
 namespace calc
@@ -53,35 +53,34 @@ jdscn::FloatXYZ project(jdscn::Position a, jdscn::Camera camera)
 	return {(e[2] / d[2]) * d[0] + e[0], (e[2] / d[2]) * d[1] + e[1], d[2]};
 }
 
-jdscn::FloatXY recalculateCoords(jdscn::FloatXY point, win::Canvas& c)
+jdscn::FloatXY recalculateCoords(jdscn::FloatXY point, win::Canvas &c)
 {
 	point[0] = c.width / 2 + point[0];
 	point[1] = c.height / 2 - point[1];
 	return point;
 }
 
-void drawLine(jdscn::FloatXY start, jdscn::FloatXY end, jdscn::Color c, win::Canvas& canvas)
+void drawLine(jdscn::FloatXY start, jdscn::FloatXY end, jdscn::Color c, win::Canvas &canvas)
 {
 	// Convert coords to originating from top-left
 	start = recalculateCoords(start, canvas);
 	end = recalculateCoords(end, canvas);
-	
+
 	// Inverts points if necessary, makes drawing easier
-	if(start[1] > end[1])
-	{
+	if (start[1] > end[1]) {
 		std::swap(start[0], end[0]);
 		std::swap(start[1], end[1]);
 	}
 
 	// Calculates a change in the X coordinate per Y coordinate and draws the line
 	float changePerPixel = (end[0] - start[0]) / (end[1] - start[1]);
-	for(int y = 0; y <= (end[1] - start[1]); y++)
-	{
+	for (int y = 0; y <= (end[1] - start[1]); y++) {
 		canvas.draw(start[0] + y * changePerPixel, start[1] + y, c);
 	}
 }
 
-void drawTriangle(jdscn::FloatXY point1, jdscn::FloatXY point2, jdscn::FloatXY point3, jdscn::Color c, win::Canvas& canvas)
+void drawTriangle(jdscn::FloatXY point1, jdscn::FloatXY point2, jdscn::FloatXY point3,
+				  jdscn::Color c, win::Canvas &canvas)
 {
 	drawLine(point1, point2, c, canvas);
 	drawLine(point2, point3, c, canvas);

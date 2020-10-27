@@ -39,14 +39,15 @@ jdscn::Position rotate3D(jdscn::Position, jdscn::Orientation);
  */
 jdscn::FloatXYZ project(jdscn::Position, jdscn::Camera);
 /**
- * @brief Gives coordinates originating from top-left corner of a window instead of originating from the middle of the window
+ * @brief Gives coordinates originating from top-left corner of a window instead of originating from
+ * the middle of the window
  *
  * @param jdscn::FloatXY Point originating from the middle
  * @param win::Canvas& Canvas that the point is on
- * 
+ *
  * @return jdscn::FloatXY Pointcoordinates originating from top-left
  */
-jdscn::FloatXY toCoordsFromTopLeft(jdscn::FloatXY, win::Canvas&); 
+jdscn::FloatXY toCoordsFromTopLeft(jdscn::FloatXY, win::Canvas &);
 /**
  * @brief Draws a line between two points in a specific color to a canvas
  *
@@ -55,7 +56,7 @@ jdscn::FloatXY toCoordsFromTopLeft(jdscn::FloatXY, win::Canvas&);
  * @param jdscn::Color Color for line
  * @param win::Canvas& Canvas to draw the line on
  */
-void drawLine(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas&);
+void drawLine(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas &);
 /**
  * @brief Draws a triangle between 3 points
  *
@@ -65,6 +66,6 @@ void drawLine(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas&);
  * @param jdscn::Color Color of triangle
  * @param win::Canvas& Canvas to draw triangle on
  */
-void drawTriangle(jdscn::FloatXY, jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas&);
+void drawTriangle(jdscn::FloatXY, jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas &);
 
 }; // namespace calc

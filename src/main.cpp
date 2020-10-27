@@ -1,10 +1,10 @@
 #include "argparse.h"
+#include "calc.h"
 #include "config.h"
 #include "draw.h"
 #include "import.h"
 #include "scene.h"
 #include "win.h"
-#include "calc.h"
 
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
 	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
 	drawloop.startLoop();
-	
+
 	while (1) {
 	};
 
