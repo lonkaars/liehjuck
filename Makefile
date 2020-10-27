@@ -50,7 +50,7 @@ uninstall:
 	sudo rm /bin/$(BIN)
 
 format:
-	clang-format -i $(SRCS) $(HEADERS)
+	clang-format -i $(SRCS) $(HEADERS) $(TESTS)
 
 obj_dirs:
 	mkdir -p $(dir $(TEST_OBJECTS)) $(dir $(OBJECTS))
@@ -74,7 +74,7 @@ $(BIN)-test: $(OBJECTS) $(TESTS)
 
 check: CXXFLAGS += -D UNIT_TEST_BINARY
 check: LDLIBS += -lgtest
-check: clean $(OBJECTS) $(TEST_OBJECTS) $(BIN)-test
+check: $(OBJECTS) $(TEST_OBJECTS) $(BIN)-test
 	./pws-engine-test --gtest_color=no
 
 compile_commands: clean
