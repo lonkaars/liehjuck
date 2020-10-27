@@ -11,8 +11,6 @@ TESTS   := $(wildcard $(TESTS_DIR)/*.cpp)
 OBJECTS      := $(patsubst %,$(OBJ_DIR)/%, $(patsubst %.cpp,%.o, $(SOURCES)))
 TEST_OBJECTS := $(patsubst %,$(OBJ_DIR)/%, $(patsubst %.cpp,%.o, $(TESTS)))
 
-$(shell mkdir -p $(dir $(TEST_OBJECTS)) $(dir $(OBJECTS)) >/dev/null)
-
 CXX=g++
 LD=g++
 
@@ -29,7 +27,7 @@ endif
 CXXFLAGS := -std=c++17
 LDFLAGS  :=
 
-LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread 
+LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread
 
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c -o $@
 LINK.o     = $(LD) $(LDFLAGS) -o $@
@@ -54,8 +52,11 @@ uninstall:
 format:
 	clang-format -i $(SRCS) $(HEADERS)
 
+obj_dirs:
+	mkdir -p $(dir $(TEST_OBJECTS)) $(dir $(OBJECTS))
+
 # Compiling files in src/ to .o/
-$(OBJ_DIR)/$(SOURCE_DIR)/%.o: $(SOURCES)
+$(OBJ_DIR)/$(SOURCE_DIR)/%.o: obj_dirs $(SOURCES)
 	$(COMPILE.cc) $(SOURCE_DIR)/$*.cpp
 
 # Linking all files in .o/ to pws-engine binary
@@ -66,15 +67,15 @@ docs:
 	doxygen Doxyfile
 
 # Unit test binary and linker
-$(OBJ_DIR)/$(TESTS_DIR)/%.o: $(TESTS)
+$(OBJ_DIR)/$(TESTS_DIR)/%.o: obj_dirs $(TESTS)
 	$(COMPILE.cc) $(TESTS_DIR)/$*.cpp
 $(BIN)-test: $(OBJECTS) $(TESTS)
 	$(LINK.o) $^ $(LDLIBS) 
 
 check: CXXFLAGS += -D UNIT_TEST_BINARY
 check: LDLIBS += -lgtest
-check: $(OBJECTS) $(TEST_OBJECTS) $(BIN)-test
-	./pws-engine-test
+check: clean $(OBJECTS) $(TEST_OBJECTS) $(BIN)-test
+	./pws-engine-test --gtest_color=no
 
 compile_commands: clean
 	bear -- make

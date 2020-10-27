@@ -1,14 +1,11 @@
 #pragma once
 #include "scene.h"
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
 
 /** @file import.h */
-
-namespace fs = std::filesystem;
 
 /** @brief Filesystem reads and deserialization */
 namespace import
@@ -19,7 +16,7 @@ namespace import
  * @param fs::path path of the file to read
  * @return std::string file contents
  */
-std::string readFile(fs::path);
+std::string readFile(std::string);
 
 /**
  * @brief Deserialize nlohmann::json to jdscn::Scene
