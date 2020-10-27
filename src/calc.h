@@ -39,4 +39,18 @@ jdscn::Position rotate3D(jdscn::Position, jdscn::Orientation);
  */
 jdscn::FloatXYZ project(jdscn::Position, jdscn::Camera);
 
+/**
+ * @brief Normalize point to have coordinates originating from the top-left corner
+ */
+jdscn::FloatXY recalculateCoords(jdscn::FloatXY, win::Canvas&); 
+/**
+ * @brief draws a line between two points in a specific color to a canvas
+ *
+ */
+void drawLine(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas&);
+/**
+ * @brief Draws a triangle between 3 points
+ */
+void drawTriangle(jdscn::FloatXY, jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas&); // Perhaps they should be floatXY?
+
 }; // namespace calc
