@@ -1,38 +1,17 @@
 BIN := pws-engine
-SRCS := \
-	src/main.cpp \
-	src/import.cpp \
-	src/scene.cpp \
-	src/win.cpp \
-	src/draw.cpp \
-	src/argparse.cpp \
-	src/camera.cpp \
-	src/calc.cpp
 
-HEADERS := \
-	src/scene.h \
-	src/argparse.h \
-	src/import.h \
-	src/win.h \
-	src/calc.h \
-	src/jdscn_types.h \
-	src/camera.h \
-	src/config.def.h \
-	src/config.h \
-	src/draw.h
+SOURCE_DIR = src
+TESTS_DIR  = tests
+OBJ_DIR    = .o
 
-OBJDIR := .o
-DEPDIR := .d
+SOURCES := $(wildcard $(SOURCE_DIR)/*.cpp)
+HEADERS := $(wildcard $(SOURCE_DIR)/*.h)
+TESTS   := $(wildcard $(TESTS_DIR)/*.cpp)
 
-OBJS := $(patsubst %,$(OBJDIR)/%.o,$(basename $(SRCS)))
-DEPS := $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS)))
-
-# make directories
-$(shell mkdir -p $(dir $(OBJS)) >/dev/null)
-$(shell mkdir -p $(dir $(DEPS)) >/dev/null)
+OBJECTS      := $(patsubst %,$(OBJ_DIR)/%, $(patsubst %.cpp,%.o, $(SOURCES)))
+TEST_OBJECTS := $(patsubst %,$(OBJ_DIR)/%, $(patsubst %.cpp,%.o, $(TESTS)))
 
 CXX=g++
-CC=gcc
 LD=g++
 
 # Optionele 3rdparty headers.
@@ -46,59 +25,59 @@ ifeq (3rdparty,$(_3p))
 endif
 
 CXXFLAGS := -std=c++17
-LDFLAGS :=
+LDFLAGS  :=
 
-LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread 
+LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread
 
-DEPFLAGS = -MT $@ -MD -MP -MF $(DEPDIR)/$*.Td
-
-COMPILE.cc = $(CXX) $(DEPFLAGS) $(CXXFLAGS) $(CPPFLAGS) -c -o $@
-LINK.o = $(LD) $(LDFLAGS) -o $@
-PRECOMPILE =
-POSTCOMPILE = mv -f $(DEPDIR)/$*.Td $(DEPDIR)/$*.d
+COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c -o $@
+LINK.o     = $(LD) $(LDFLAGS) -o $@
 
 all: $(BIN)
 
-.PHONY: clean
 clean:
-	$(RM) -r $(OBJDIR) $(DEPDIR)
+	$(RM) -r $(OBJ_DIR)/
 
-.PHONY: distclean
 distclean: clean
-	$(RM) $(BIN) $(DISTOUTPUT)
+	$(RM) $(BIN)
+	$(RM) $(BIN)-test
+	$(RM) -r doc/
+	$(RM) compile_commands.json
 
-.PHONY: install
 install: $(BIN)
 	sudo cp $(BIN) /bin/$(BIN)
 
-.PHONY: uninstall
 uninstall:
 	sudo rm /bin/$(BIN)
 
 format:
-	clang-format -i $(SRCS) $(HEADERS)
+	clang-format -i $(SRCS) $(HEADERS) $(TESTS)
 
-$(BIN): $(OBJS)
+obj_dirs:
+	mkdir -p $(dir $(TEST_OBJECTS)) $(dir $(OBJECTS))
+
+# Compiling files in src/ to .o/
+$(OBJ_DIR)/$(SOURCE_DIR)/%.o: obj_dirs $(SOURCES)
+	$(COMPILE.cc) $(SOURCE_DIR)/$*.cpp
+
+# Linking all files in .o/ to pws-engine binary
+$(BIN): $(OBJECTS)
 	$(LINK.o) $^ $(LDLIBS) 
 
 docs:
 	doxygen Doxyfile
 
-check: $(BIN) docs
-	echo gert
+# Unit test binary and linker
+$(OBJ_DIR)/$(TESTS_DIR)/%.o: obj_dirs $(TESTS)
+	$(COMPILE.cc) $(TESTS_DIR)/$*.cpp
+$(BIN)-test: $(OBJECTS) $(TESTS)
+	$(LINK.o) $^ $(LDLIBS) 
+
+check: CXXFLAGS += -D UNIT_TEST_BINARY
+check: LDLIBS += -lgtest
+check: $(OBJECTS) $(TEST_OBJECTS) $(BIN)-test
+	./pws-engine-test --gtest_color=no
 
 compile_commands: clean
 	bear -- make
 	rm compile_commands.commands.json
-
-$(OBJDIR)/%.o: %.cpp
-$(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.d
-	$(PRECOMPILE)
-	$(COMPILE.cc) $<
-	$(POSTCOMPILE)
-
-.PRECIOUS: $(DEPDIR)/%.d
-$(DEPDIR)/%.d: ;
-
--include $(DEPS)
 
