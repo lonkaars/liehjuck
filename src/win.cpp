@@ -64,10 +64,10 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 	if (x > this->width || x < 0 || y > this->height || y < 0)
 		return;
 
-	int32_t rgb =
-		pow(0x100, 3) + c[0] * pow(0x100, 2) + c[1] * pow(0x100, 1) + c[2] * pow(0x100, 0);
+	/* int32_t rgb = */
+	/* 	pow(0x100, 3) + c[0] * pow(0x100, 2) + c[1] * pow(0x100, 1) + c[2] * pow(0x100, 0); */
 	xcb_point_t point[] = {{int16_t(x), int16_t(y)}};
-	xcb_change_gc(connection, gc, XCB_GC_FOREGROUND, &rgb);
+	/* xcb_change_gc(connection, gc, XCB_GC_FOREGROUND, &rgb); */
 	xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, frame, gc, 1, point);
 }
 
@@ -84,6 +84,8 @@ void Canvas::clear()
 	xcb_change_gc(connection, gc, XCB_GC_FOREGROUND, &rgb);
 	xcb_rectangle_t rect[] = {{0, 0, uint16_t(width), uint16_t(height)}};
 	xcb_poly_fill_rectangle(connection, frame, gc, 1, rect);
+	rgb = 0xffff00ff; // temp
+	xcb_change_gc(connection, gc, XCB_GC_FOREGROUND, &rgb);
 }
 
 }; // namespace win
