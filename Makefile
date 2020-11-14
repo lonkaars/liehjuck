@@ -89,7 +89,6 @@ check: $(BIN) docs
 
 compile_commands: clean
 	bear -- make
-	rm compile_commands.commands.json
 
 $(OBJDIR)/%.o: %.cpp
 $(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.d

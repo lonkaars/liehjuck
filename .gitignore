@@ -6,4 +6,5 @@
 doc/
 pws-engine
 src/config.h
+compile-commands.json
 
