@@ -53,30 +53,22 @@ jdscn::FloatXYZ project(jdscn::Position a, jdscn::Camera camera)
 	return {(e[2] / d[2]) * d[0] + e[0], (e[2] / d[2]) * d[1] + e[1], d[2]};
 }
 
-jdscn::FloatXY recalculateCoords(jdscn::FloatXY point, win::Canvas &c)
+jdscn::Position2D recalculateCoords(jdscn::FloatXY point, win::Canvas &c)
 {
-	point[0] = c.width / 2 + point[0];
-	point[1] = c.height / 2 - point[1];
-	return point;
+	return jdscn::Position2D({
+			int(float(c.width) / 2 + point[0]),
+			int(float(c.height) / 2 - point[1])
+			});
 }
 
 void drawLine(jdscn::FloatXY start, jdscn::FloatXY end, jdscn::Color c, win::Canvas &canvas)
 {
-	// Convert coords to originating from top-left
-	start = recalculateCoords(start, canvas);
-	end = recalculateCoords(end, canvas);
-
-	// Inverts points if necessary, makes drawing easier
-	if (start[1] > end[1]) {
-		std::swap(start[0], end[0]);
-		std::swap(start[1], end[1]);
-	}
-
-	// Calculates a change in the X coordinate per Y coordinate and draws the line
-	float changePerPixel = (end[0] - start[0]) / (end[1] - start[1]);
-	for (int y = 0; y <= (end[1] - start[1]); y++) {
-		canvas.draw(start[0] + y * changePerPixel, start[1] + y, c);
-	}
+	jdscn::Position2D s = recalculateCoords(start, canvas);
+	jdscn::Position2D e = recalculateCoords(end, canvas);
+	int step = s[1] > e[1] ? -1 : 1;
+	float change = float(e[0] - s[0]) / float(e[1] - s[1]);
+	for(int y = s[1]; y != e[1] + step; y += step)
+		canvas.draw(s[0] + (y - s[1]) * change, s[1] + (y - s[1]), c);
 }
 
 void drawTriangle(jdscn::FloatXY point1, jdscn::FloatXY point2, jdscn::FloatXY point3,
