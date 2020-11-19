@@ -12,7 +12,6 @@
 #include <thread>
 #include <xcb/xcb.h>
 #include <xcb/xcb_image.h>
-#include <xcb/xcb_util.h>
 
 namespace win
 {
