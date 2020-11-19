@@ -79,7 +79,8 @@ void Canvas::flush()
 
 void Canvas::clear()
 {
-	frame = xcb_image_create_native(connection, this->width, this->height, XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL);
+	/* frame = xcb_image_create_native(connection, this->width, this->height, XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL); */
+	memset(frame->data, 0, frame->size);
 }
 
 }; // namespace win
