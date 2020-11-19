@@ -125,6 +125,7 @@ class Object
 	 * @param jdscn::Scale x,y,z scale factor
 	 * @param bool Adds the scale factor to the object's scale member if true
 	 */
+	void transformScale(jdscn::Scale);
 	void transformScale(jdscn::Scale, bool);
 	/**
 	 * @brief Transform the orientation of an object
@@ -132,6 +133,7 @@ class Object
 	 * @param jdscn::Orientation x,y,z rotation
 	 * @param bool Adds the roation to the object's orientation member if true
 	 */
+	void transformRotate(jdscn::Orientation);
 	void transformRotate(jdscn::Orientation, bool);
 	/**
 	 * @brief Transform the position of an object
@@ -139,6 +141,7 @@ class Object
 	 * @param jdscn::Position x,y,z position shift
 	 * @param bool Adds the position shift to the object's position member if true
 	 */
+	void transformTranslate(jdscn::Position);
 	void transformTranslate(jdscn::Position, bool);
 	/**
 	 * @brief Project all vertices of current object

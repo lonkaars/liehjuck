@@ -11,6 +11,8 @@
 #include <sys/utsname.h>
 #include <thread>
 #include <xcb/xcb.h>
+#include <xcb/xcb_image.h>
+#include <xcb/xcb_util.h>
 
 namespace win
 {
@@ -43,8 +45,7 @@ Canvas::Canvas(int width, int height, const char *title)
 	xcb_change_property(connection, XCB_PROP_MODE_REPLACE, window, XCB_ATOM_WM_NAME,
 						XCB_ATOM_STRING, 8, strlen(title), title);
 
-	frame = xcb_generate_id(connection);
-	xcb_create_pixmap(connection, 24, frame, window, width, height);
+	frame = xcb_image_create_native(connection, this->width, this->height, XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL);
 
 	xcb_map_window(connection, window);
 
@@ -61,34 +62,25 @@ Canvas::Canvas(int width, int height, const char *title)
 // Draws a pixel at given x and y coordinates in the color that is specified in c
 void Canvas::draw(int x, int y, jdscn::Color c)
 {
-	x = this->width / 2 + x;
-	y = this->height / 2 - y;
-
 	if (x > this->width || x < 0 || y > this->height || y < 0)
 		return;
 
 	int32_t rgb =
 		pow(0x100, 3) + c[0] * pow(0x100, 2) + c[1] * pow(0x100, 1) + c[2] * pow(0x100, 0);
-	xcb_point_t point[] = {{int16_t(x), int16_t(y)}};
-	xcb_change_gc(connection, gc, XCB_GC_FOREGROUND, &rgb);
-	xcb_poly_point(connection, XCB_COORD_MODE_ORIGIN, frame, gc, 1, point);
+	xcb_image_put_pixel(frame, x, y, rgb);
 }
 
 // Sends the stored frame to the x server
 void Canvas::flush()
 {
-	xcb_copy_area(connection, frame, window, gc, 0, 0, 0, 0, width, height);
+	xcb_image_put(connection, window, gc, frame, 0, 0, 0);
 	xcb_flush(connection);
 }
 
-// Writes the frame data to just zeroes
-// Using memset isn't the most beautiful way to do this, but other methods cause headaches
 void Canvas::clear()
 {
-	int32_t rgb = 0xff000000; // Reset clear color
-	xcb_change_gc(connection, gc, XCB_GC_FOREGROUND, &rgb);
-	xcb_rectangle_t rect[] = {{0, 0, uint16_t(width), uint16_t(height)}};
-	xcb_poly_fill_rectangle(connection, frame, gc, 1, rect);
+	/* frame = xcb_image_create_native(connection, this->width, this->height, XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL); */
+	memset(frame->data, 0, frame->size);
 }
 
 }; // namespace win
