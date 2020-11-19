@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/utsname.h>
 #include <xcb/xcb.h>
+#include <xcb/xcb_image.h>
 
 /** @file win.h */
 
@@ -32,7 +33,7 @@ class Canvas
 	/** @brief graphics context */
 	xcb_gcontext_t gc;
 	/** @brief bitmap for drawing */
-	xcb_pixmap_t frame;
+	xcb_image_t *frame;
 	uint32_t mask;
 
 	Canvas(int, int, const char *);
