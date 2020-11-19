@@ -10,6 +10,19 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
+#ifdef UNIT_TEST_BINARY
+
+#include <iostream>
+#include <gtest/gtest.h>
+
+GTEST_API_ int main(int argc, char **argv) {
+	std::cout << "Running main() from " << __FILE__ << std::endl;
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
+}
+
+#else
+
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -40,3 +53,5 @@ int main(int argc, char *argv[])
 
 	return EXIT_SUCCESS;
 }
+
+#endif

@@ -80,3 +80,4 @@ void drawTriangle(jdscn::FloatXY point1, jdscn::FloatXY point2, jdscn::FloatXY p
 }
 
 }; // namespace calc
+

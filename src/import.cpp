@@ -1,5 +1,4 @@
 #include "scene.h"
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -8,9 +7,9 @@
 namespace import
 {
 
-std::string readFile(std::filesystem::path path)
+std::string readFile(std::string path)
 {
-	std::ifstream fileStream(path.string());
+	std::ifstream fileStream(path);
 	std::string fileString((std::istreambuf_iterator<char>(fileStream)),
 						   (std::istreambuf_iterator<char>()));
 	return fileString;
