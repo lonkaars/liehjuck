@@ -1,8 +1,11 @@
 #include "calc.h"
 #include "jdscn_types.h"
+#include "win.h"
 #include <array>
+#include <iostream>
 #include <math.h>
 #include <stdlib.h>
+#include <utility>
 
 namespace calc
 {
@@ -48,6 +51,32 @@ jdscn::FloatXYZ project(jdscn::Position a, jdscn::Camera camera)
 
 	// screen coordinates
 	return {(e[2] / d[2]) * d[0] + e[0], (e[2] / d[2]) * d[1] + e[1], d[2]};
+}
+
+jdscn::Position2D recalculateCoords(jdscn::FloatXY point, win::Canvas &c)
+{
+	return jdscn::Position2D({
+			int(float(c.width) / 2 + point[0]),
+			int(float(c.height) / 2 - point[1])
+			});
+}
+
+void drawLine(jdscn::FloatXY start, jdscn::FloatXY end, jdscn::Color c, win::Canvas &canvas)
+{
+	jdscn::Position2D s = recalculateCoords(start, canvas);
+	jdscn::Position2D e = recalculateCoords(end, canvas);
+	int step = s[1] > e[1] ? -1 : 1;
+	float change = float(e[0] - s[0]) / float(e[1] - s[1]);
+	for(int y = s[1]; y != e[1] + step; y += step)
+		canvas.draw(s[0] + (y - s[1]) * change, s[1] + (y - s[1]), c);
+}
+
+void drawTriangle(jdscn::FloatXY point1, jdscn::FloatXY point2, jdscn::FloatXY point3,
+				  jdscn::Color c, win::Canvas &canvas)
+{
+	drawLine(point1, point2, c, canvas);
+	drawLine(point2, point3, c, canvas);
+	drawLine(point3, point1, c, canvas);
 }
 
 }; // namespace calc

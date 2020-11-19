@@ -1,4 +1,5 @@
 #include "argparse.h"
+#include "calc.h"
 #include "config.h"
 #include "draw.h"
 #include "import.h"

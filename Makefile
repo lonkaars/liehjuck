@@ -27,7 +27,7 @@ endif
 CXXFLAGS := -std=c++17
 LDFLAGS  :=
 
-LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread
+LDLIBS := -lxcb -lxcb-xtest -lxcb-xfixes -pthread -lxcb-image
 
 COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDLIBS) -c -o $@
 LINK.o     = $(LD) $(LDFLAGS) -o $@
@@ -79,5 +79,4 @@ check: $(OBJECTS) $(TEST_OBJECTS) $(BIN)-test
 
 compile_commands: clean
 	bear -- make
-	rm compile_commands.commands.json
 
