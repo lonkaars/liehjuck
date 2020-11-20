@@ -72,16 +72,12 @@ void CameraController::startInputLoop()
 	}).detach();
 }
 
-jdscn::Orientation CameraController::cameraRotation()
+jdscn::Orientation CameraController::cameraRotation(int maxY, int minY)
 {
 	config::camera_controls camera_controls;
 	if (!capturingCursor)
 		return this->originalRotation;
 
-	std::cout << "(" << pointer[0] << ", " << pointer[1] << ")" << std::endl;
-
-	int maxY = (M_PI - this->originalRotation[0]) * camera_controls.sensitivity_y;
-	int minY = (0 - this->originalRotation[0]) * camera_controls.sensitivity_y;
 	pointer[1] = pointer[1] > maxY ? maxY : pointer[1] < minY ? minY : pointer[1];
 
 	return jdscn::Orientation(

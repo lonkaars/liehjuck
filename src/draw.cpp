@@ -32,6 +32,8 @@ void Drawloop::startLoop()
 		controller.originalRotation = scene.camera.orientation;
 		controller.width = this->canvas.width;
 		controller.height = this->canvas.height;
+		int maxY = (M_PI - this->scene.camera.orientation[0]) * camera_controls.sensitivity_y;
+		int minY = (-this->scene.camera.orientation[0]) * camera_controls.sensitivity_y;
 		while (true) {
 			if (controller.keysPressed[keymap.exit])
 				exit(0);
@@ -48,7 +50,7 @@ void Drawloop::startLoop()
 			scene.camera.position[2] +=
 				(controller.cursor[2] - scene.camera.position[2]) / camera_controls.easing;
 
-			scene.camera.orientation = controller.cameraRotation();
+			scene.camera.orientation = controller.cameraRotation(maxY, minY);
 
 			scene.draw(canvas, frame);
 
