@@ -1,1 +1,2 @@
+#!/bin/sh
 cp src/config.def.h src/config.h

@@ -27,6 +27,7 @@ void Drawloop::startLoop()
 		int frame = 0;
 		config::camera_controls camera_controls;
 		config::keymap keymap;
+		config::debug_cursor debug_cursor;
 		controls::CameraController controller(canvas.connection, &canvas.window);
 		controller.startInputLoop();
 		controller.cursor = scene.camera.position;
@@ -55,7 +56,7 @@ void Drawloop::startLoop()
 
 			scene.draw(canvas, frame);
 
-			debug::draw_debug_axes(this->scene.camera, this->canvas);
+			if (debug_cursor.on) debug::draw_debug_axes(this->scene.camera, this->canvas);
 
 			std::this_thread::sleep_until(nextFrameTime);
 			frame++;

@@ -3,6 +3,7 @@
 #include "jdscn_types.h"
 #include "scene.h"
 #include "win.h"
+#include "config.h"
 
 namespace debug {
 
@@ -12,7 +13,6 @@ void line(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color color, wi
 	int diffX = abs(start[0] - end[0]);
 	int diffY = abs(start[1] - end[1]);
 	bool scan = diffY > diffX;
-	/* bool scan = 1; */
 
 	int step = start[scan] > end[scan] ? -1 : 1;
 	float change = float(end[!scan] - start[!scan]) / float(end[scan] - start[scan]);
@@ -25,7 +25,8 @@ void line(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color color, wi
 
 void draw_debug_axes(jdscn::Camera camera, win::Canvas& canvas)
 {
-	int length = 30;
+	config::debug_cursor settings;
+	int length = settings.length;
 	float updown = camera.orientation[0] - M_PI / 2;
 	
 	jdscn::Position2D z = {0, int(cos(updown) * -length)};
@@ -34,9 +35,9 @@ void draw_debug_axes(jdscn::Camera camera, win::Canvas& canvas)
 	jdscn::Position2D x = {int(sin(camera.orientation[2]) * length),
 		int(cos(camera.orientation[2]) * length * (updown / (M_PI / 2)))};
 
-	line({0, 0}, z, {0, 0, 255}, canvas);
-	line({0, 0}, y, {0, 255, 0}, canvas);
-	line({0, 0}, x, {255, 0, 0}, canvas);
+	line({0, 0}, z, settings.z_axis, canvas);
+	line({0, 0}, y, settings.y_axis, canvas);
+	line({0, 0}, x, settings.x_axis, canvas);
 }
 
 };
