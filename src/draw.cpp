@@ -4,6 +4,7 @@
 #include "config.h"
 #include "scene.h"
 #include "win.h"
+#include "debug.h"
 
 #include <chrono>
 #include <iostream>
@@ -53,6 +54,8 @@ void Drawloop::startLoop()
 			scene.camera.orientation = controller.cameraRotation(maxY, minY);
 
 			scene.draw(canvas, frame);
+
+			debug::draw_debug_axes(this->scene.camera, this->canvas);
 
 			std::this_thread::sleep_until(nextFrameTime);
 			frame++;
