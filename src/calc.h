@@ -48,24 +48,15 @@ jdscn::FloatXYZ project(jdscn::Position, jdscn::Camera);
  * @return jdscn::FloatXY Pointcoordinates originating from top-left
  */
 jdscn::FloatXY toCoordsFromTopLeft(jdscn::FloatXY, win::Canvas &);
+
 /**
- * @brief Draws a line between two points in a specific color to a canvas
+ * @brief Scanline interpolation between 2 points
  *
- * @param jdscn::FloatXY Starting point of line
- * @param jdscn::FloatXY Ending point of line
- * @param jdscn::Color Color for line
- * @param win::Canvas& Canvas to draw the line on
- */
-void drawLine(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas &);
-/**
- * @brief Draws a triangle between 3 points
+ * @param jdscn::Position2D start point
+ * @param jdscn::Position2D end point
  *
- * @param jdscn::FloatXY Point of triangle
- * @param jdscn::FloatXY Point of triangle
- * @param jdscn::FloatXY Point of triangle
- * @param jdscn::Color Color of triangle
- * @param win::Canvas& Canvas to draw triangle on
+ * @return std::vector<Position2D> with all the points in between start and end
  */
-void drawTriangle(jdscn::FloatXY, jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas &);
+std::vector<jdscn::Position2D> interpolateBetweenPoints(jdscn::Position2D, jdscn::Position2D);
 
 }; // namespace calc

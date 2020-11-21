@@ -36,6 +36,13 @@ class Canvas
 	xcb_image_t *frame;
 	uint32_t mask;
 
+	/**
+	 * @brief Initialize a window to draw on
+	 *
+	 * @param width window width
+	 * @param height window height
+	 * @param title window title
+	 */
 	Canvas(int, int, const char *);
 	/**
 	 * @brief Draws a pixel with a specific color to `frame`
@@ -49,6 +56,29 @@ class Canvas
 	void flush();
 	/** @brief Clears the canvas */
 	void clear();
+
+	/**
+	 * @brief Draws a line between two points in a specific color to a canvas
+	 *
+	 * @param jdscn::FloatXY Starting point of line
+	 * @param jdscn::FloatXY Ending point of line
+	 * @param jdscn::Color Color for line
+	 * @param win::Canvas& Canvas to draw the line on
+	 */
+	void line(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas &);
+	/**
+	 * @brief Draws a triangle between 3 points
+	 *
+	 * @param jdscn::FloatXY Point of triangle
+	 * @param jdscn::FloatXY Point of triangle
+	 * @param jdscn::FloatXY Point of triangle
+	 * @param jdscn::Color Color of triangle
+	 * @param win::Canvas& Canvas to draw triangle on
+	 */
+	void drawTriangle(jdscn::Tri, jdscn::Color, win::Canvas &);
+
+	void prettyLine(jdscn::Position2D, jdscn::Position2D, jdscn::Color);
+
 };
 
 }; // namespace win

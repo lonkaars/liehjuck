@@ -4,40 +4,27 @@
 #include "scene.h"
 #include "win.h"
 #include "config.h"
+#include "calc.h"
 
 namespace debug {
 
-void line(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color color, win::Canvas& canvas)
-{
-	//FIXME: This is duplicated code, there should be a 2D interpolation function in calc.cpp which can be extended as a line function
-	int diffX = abs(start[0] - end[0]);
-	int diffY = abs(start[1] - end[1]);
-	bool scan = diffY > diffX;
-
-	int step = start[scan] > end[scan] ? -1 : 1;
-	float change = float(end[!scan] - start[!scan]) / float(end[scan] - start[scan]);
-	for(int y = start[scan]; y != end[scan] + step; y += step){
-		int a = start[scan] + (y - start[scan]) * change;
-		int b = start[scan] + (y - start[scan]);
-		canvas.draw((scan ? a : b) + canvas.width / 2, (scan ? b : a) + canvas.height / 2, color);
-	}
-}
 
 void draw_debug_axes(jdscn::Camera camera, win::Canvas& canvas)
 {
 	config::debug_cursor settings;
 	int length = settings.length;
 	float updown = camera.orientation[0] - M_PI / 2;
+	float leftright = -camera.orientation[2];
 	
 	jdscn::Position2D z = {0, int(cos(updown) * -length)};
-	jdscn::Position2D y = {int(cos(camera.orientation[2]) * length),
-		int(-sin(camera.orientation[2]) * length * (updown / (M_PI / 2)))};
-	jdscn::Position2D x = {int(sin(camera.orientation[2]) * length),
-		int(cos(camera.orientation[2]) * length * (updown / (M_PI / 2)))};
+	jdscn::Position2D y = {int(cos(leftright) * length),
+		int(-sin(leftright) * length * (updown / (M_PI / 2)))};
+	jdscn::Position2D x = {int(sin(leftright) * length),
+		int(cos(leftright) * length * (updown / (M_PI / 2)))};
 
-	line({0, 0}, z, settings.z_axis, canvas);
-	line({0, 0}, y, settings.y_axis, canvas);
-	line({0, 0}, x, settings.x_axis, canvas);
+	canvas.prettyLine({0, 0}, z, settings.z_axis);
+	canvas.prettyLine({0, 0}, y, settings.y_axis);
+	canvas.prettyLine({0, 0}, x, settings.x_axis);
 }
 
 };

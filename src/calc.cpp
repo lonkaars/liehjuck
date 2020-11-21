@@ -61,22 +61,16 @@ jdscn::Position2D recalculateCoords(jdscn::FloatXY point, win::Canvas &c)
 			});
 }
 
-void drawLine(jdscn::FloatXY start, jdscn::FloatXY end, jdscn::Color c, win::Canvas &canvas)
-{
-	jdscn::Position2D s = recalculateCoords(start, canvas);
-	jdscn::Position2D e = recalculateCoords(end, canvas);
-	int step = s[1] > e[1] ? -1 : 1;
-	float change = float(e[0] - s[0]) / float(e[1] - s[1]);
-	for(int y = s[1]; y != e[1] + step; y += step)
-		canvas.draw(s[0] + (y - s[1]) * change, s[1] + (y - s[1]), c);
-}
 
-void drawTriangle(jdscn::FloatXY point1, jdscn::FloatXY point2, jdscn::FloatXY point3,
-				  jdscn::Color c, win::Canvas &canvas)
+std::vector<jdscn::Position2D> interpolateBetweenPoints(jdscn::Position2D start, jdscn::Position2D end)
 {
-	drawLine(point1, point2, c, canvas);
-	drawLine(point2, point3, c, canvas);
-	drawLine(point3, point1, c, canvas);
+	std::vector<jdscn::Position2D> out;
+	int step = start[1] > end[1] ? -1 : 1;
+	float change = float(end[0] - start[0]) / float(end[1] - start[1]);
+	for(int y = start[1]; y != end[1] + step; y += step)
+		out.push_back({ int(start[0] + (y - start[1]) * change),
+						int(start[1] + (y - start[1])) });
+	return out;
 }
 
 }; // namespace calc

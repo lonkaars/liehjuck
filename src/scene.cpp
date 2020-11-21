@@ -16,8 +16,7 @@ void jdscn::Scene::draw(win::Canvas canvas, int frame = 0)
 		object.transformTranslate(object.position, false);
 		jdscn::Vertices projection = object.projectVertices(this->camera);
 		for (jdscn::Tri tri : projection)
-			calc::drawTriangle({-tri[0][0], -tri[0][1]}, {-tri[1][0], -tri[1][1]},
-							   {-tri[2][0], -tri[2][1]}, object.material.color,
+			canvas.drawTriangle(tri, object.material.color,
 							   canvas); // More elegant conversion to FloatXY would be neat
 	}
 	canvas.flush();
