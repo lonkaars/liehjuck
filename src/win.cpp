@@ -87,7 +87,7 @@ void Canvas::clear()
 	memset(frame->data, 0, frame->size);
 }
 
-void Canvas::line(jdscn::FloatXY start, jdscn::FloatXY end, jdscn::Color c)
+void Canvas::line(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color c)
 {
 	std::vector<jdscn::Position2D> points =
 		calc::interpolateBetweenPoints( jdscn::Position2D({ int(start[0]), int(start[1]) }),
@@ -101,8 +101,8 @@ void Canvas::drawTriangle(jdscn::Tri tri,
 {
 	for(int i = 0; i < tri.size(); i++) {
 		int i_1 = (i+1)%tri.size();
-		line({tri[i][0], tri[i][1]},
-				 {tri[i_1][0], tri[i_1][1]},
+		line({int(tri[i][0]), int(tri[i][1])},
+				 {int(tri[i_1][0]), int(tri[i_1][1])},
 				 c);
 	}
 }

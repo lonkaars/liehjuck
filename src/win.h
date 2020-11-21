@@ -68,12 +68,12 @@ class Canvas
 	/**
 	 * @brief Draws a line between two points in a specific color to a canvas
 	 *
-	 * @param jdscn::FloatXY Starting point of line
-	 * @param jdscn::FloatXY Ending point of line
+	 * @param jdscn::Position2D Starting point of line
+	 * @param jdscn::Position2D Ending point of line
 	 * @param jdscn::Color Color for line
 	 * @param win::Canvas& Canvas to draw the line on
 	 */
-	void line(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color);
+	void line(jdscn::Position2D, jdscn::Position2D, jdscn::Color);
 	/**
 	 * @brief Draws a triangle between 3 points
 	 *
