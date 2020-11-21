@@ -14,7 +14,7 @@ void draw_debug_axes(jdscn::Camera camera, win::Canvas& canvas)
 	config::debug_cursor settings;
 	int length = settings.length;
 	float updown = camera.orientation[0] - M_PI / 2;
-	float leftright = -camera.orientation[2];
+	float leftright = -camera.orientation[2] - M_PI / 2;
 	
 	jdscn::Position2D z = {0, int(cos(updown) * -length)};
 	jdscn::Position2D y = {int(cos(leftright) * length),
