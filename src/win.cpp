@@ -61,7 +61,7 @@ Canvas::Canvas(int width, int height, const char *title)
 }
 
 void Canvas::drawAbsolute(int x, int y, jdscn::Color c) {
-	if (x > this->width || x < 0 || y > this->height || y < 0)
+	if (x > this->width - 1 || x < 0 || y > this->height - 1 || y < 0)
 		return;
 
 	int32_t rgb =
@@ -87,13 +87,13 @@ void Canvas::clear()
 	memset(frame->data, 0, frame->size);
 }
 
-void Canvas::line(jdscn::FloatXY start, jdscn::FloatXY end, jdscn::Color c, win::Canvas &canvas)
+void Canvas::line(jdscn::FloatXY start, jdscn::FloatXY end, jdscn::Color c)
 {
 	std::vector<jdscn::Position2D> points =
 		calc::interpolateBetweenPoints( jdscn::Position2D({ int(start[0]), int(start[1]) }),
 				jdscn::Position2D({ int(end[0]), int(end[1]) }));
 	for(jdscn::Position2D p : points)
-		canvas.draw(p[0], p[1], c);
+		draw(p[0], p[1], c);
 }
 
 void Canvas::drawTriangle(jdscn::Tri tri,
@@ -103,7 +103,7 @@ void Canvas::drawTriangle(jdscn::Tri tri,
 		int i_1 = (i+1)%tri.size();
 		line({tri[i][0], tri[i][1]},
 				 {tri[i_1][0], tri[i_1][1]},
-				 c, canvas);
+				 c);
 	}
 }
 

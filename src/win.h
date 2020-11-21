@@ -73,7 +73,7 @@ class Canvas
 	 * @param jdscn::Color Color for line
 	 * @param win::Canvas& Canvas to draw the line on
 	 */
-	void line(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color, win::Canvas &);
+	void line(jdscn::FloatXY, jdscn::FloatXY, jdscn::Color);
 	/**
 	 * @brief Draws a triangle between 3 points
 	 *
@@ -93,7 +93,6 @@ class Canvas
 	 * @param jdscn::Color line color
 	 */
 	void prettyLine(jdscn::Position2D, jdscn::Position2D, jdscn::Color);
-
 };
 
 }; // namespace win
