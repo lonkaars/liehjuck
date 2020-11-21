@@ -60,17 +60,20 @@ Canvas::Canvas(int width, int height, const char *title)
 	}
 }
 
-void Canvas::draw(int x, int y, jdscn::Color c)
-{
-	x = this->width / 2 - x;
-	y = this->height / 2 + y;
-
+void Canvas::drawAbsolute(int x, int y, jdscn::Color c) {
 	if (x > this->width || x < 0 || y > this->height || y < 0)
 		return;
 
 	int32_t rgb =
 		pow(0x100, 3) + c[0] * pow(0x100, 2) + c[1] * pow(0x100, 1) + c[2] * pow(0x100, 0);
 	xcb_image_put_pixel(frame, x, y, rgb);
+}
+
+void Canvas::draw(int x, int y, jdscn::Color c)
+{
+	x = this->width / 2 - x;
+	y = this->height / 2 + y;
+	drawAbsolute(x, y, c);
 }
 
 void Canvas::flush()

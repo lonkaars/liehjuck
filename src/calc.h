@@ -38,16 +38,6 @@ jdscn::Position rotate3D(jdscn::Position, jdscn::Orientation);
  * transform)
  */
 jdscn::FloatXYZ project(jdscn::Position, jdscn::Camera);
-/**
- * @brief Gives coordinates originating from top-left corner of a window instead of originating from
- * the middle of the window
- *
- * @param jdscn::FloatXY Point originating from the middle
- * @param win::Canvas& Canvas that the point is on
- *
- * @return jdscn::FloatXY Pointcoordinates originating from top-left
- */
-jdscn::FloatXY toCoordsFromTopLeft(jdscn::FloatXY, win::Canvas &);
 
 /**
  * @brief Scanline interpolation between 2 points

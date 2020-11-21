@@ -53,15 +53,6 @@ jdscn::FloatXYZ project(jdscn::Position a, jdscn::Camera camera)
 	return {(e[2] / d[2]) * d[0] + e[0], (e[2] / d[2]) * d[1] + e[1], d[2]};
 }
 
-jdscn::Position2D recalculateCoords(jdscn::FloatXY point, win::Canvas &c)
-{
-	return jdscn::Position2D({
-			int(float(c.width) / 2 + point[0]),
-			int(float(c.height) / 2 - point[1])
-			});
-}
-
-
 std::vector<jdscn::Position2D> interpolateBetweenPoints(jdscn::Position2D start, jdscn::Position2D end)
 {
 	std::vector<jdscn::Position2D> out;

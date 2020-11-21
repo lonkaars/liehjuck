@@ -52,6 +52,14 @@ class Canvas
 	 * @param jdscn::Color color
 	 */
 	void draw(int, int, jdscn::Color);
+	/**
+	 * @brief Draws from the top-left (absolute coordinates)
+	 *
+	 * @param int x coordinate
+	 * @param int y coordinate
+	 * @param jdscn::Color color
+	 */
+	void drawAbsolute(int, int, jdscn::Color);
 	/** @brief Draws `frame` to the window */
 	void flush();
 	/** @brief Clears the canvas */
@@ -77,6 +85,13 @@ class Canvas
 	 */
 	void drawTriangle(jdscn::Tri, jdscn::Color, win::Canvas &);
 
+	/**
+	 * @brief Draws a line without gaps by changing the scanline axis
+	 *
+	 * @param jdscn::Position2D start point
+	 * @param jdscn::Position2D end point
+	 * @param jdscn::Color line color
+	 */
 	void prettyLine(jdscn::Position2D, jdscn::Position2D, jdscn::Color);
 
 };
