@@ -1,5 +1,6 @@
 #include "win.h"
 #include "scene.h"
+#include "calc.h"
 
 #include <algorithm>
 #include <chrono>
@@ -44,7 +45,8 @@ Canvas::Canvas(int width, int height, const char *title)
 	xcb_change_property(connection, XCB_PROP_MODE_REPLACE, window, XCB_ATOM_WM_NAME,
 						XCB_ATOM_STRING, 8, strlen(title), title);
 
-	frame = xcb_image_create_native(connection, this->width, this->height, XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL);
+	frame = xcb_image_create_native(connection, this->width, this->height,
+			XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL);
 
 	xcb_map_window(connection, window);
 
@@ -58,10 +60,8 @@ Canvas::Canvas(int width, int height, const char *title)
 	}
 }
 
-// Draws a pixel at given x and y coordinates in the color that is specified in c
-void Canvas::draw(int x, int y, jdscn::Color c)
-{
-	if (x > this->width || x < 0 || y > this->height || y < 0)
+void Canvas::drawAbsolute(int x, int y, jdscn::Color c) {
+	if (x > this->width - 1 || x < 0 || y > this->height - 1 || y < 0)
 		return;
 
 	int32_t rgb =
@@ -69,7 +69,13 @@ void Canvas::draw(int x, int y, jdscn::Color c)
 	xcb_image_put_pixel(frame, x, y, rgb);
 }
 
-// Sends the stored frame to the x server
+void Canvas::draw(int x, int y, jdscn::Color c)
+{
+	x = this->width / 2 - x;
+	y = this->height / 2 + y;
+	drawAbsolute(x, y, c);
+}
+
 void Canvas::flush()
 {
 	xcb_image_put(connection, window, gc, frame, 0, 0, 0);
@@ -78,8 +84,40 @@ void Canvas::flush()
 
 void Canvas::clear()
 {
-	/* frame = xcb_image_create_native(connection, this->width, this->height, XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL); */
 	memset(frame->data, 0, frame->size);
+}
+
+void Canvas::line(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color c)
+{
+	std::vector<jdscn::Position2D> points =
+		calc::interpolateBetweenPoints( jdscn::Position2D({ int(start[0]), int(start[1]) }),
+				jdscn::Position2D({ int(end[0]), int(end[1]) }));
+	for(jdscn::Position2D p : points)
+		draw(p[0], p[1], c);
+}
+
+void Canvas::drawTriangle(jdscn::Tri tri,
+				  jdscn::Color c, win::Canvas &canvas)
+{
+	for(int i = 0; i < tri.size(); i++) {
+		int i_1 = (i+1)%tri.size();
+		line({int(tri[i][0]), int(tri[i][1])},
+				 {int(tri[i_1][0]), int(tri[i_1][1])},
+				 c);
+	}
+}
+
+void Canvas::prettyLine(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color color)
+{
+	int diffX = abs(start[0] - end[0]);
+	int diffY = abs(start[1] - end[1]);
+	bool scan = diffX > diffY;
+
+	std::vector<jdscn::Position2D> points =
+		calc::interpolateBetweenPoints( jdscn::Position2D({ int(start[scan]), int(start[!scan]) }),
+				jdscn::Position2D({ int(end[scan]), int(end[!scan]) }));
+	for(jdscn::Position2D p : points)
+		draw(p[scan], p[!scan], color);
 }
 
 }; // namespace win

@@ -3,6 +3,7 @@
 #include "config.h"
 #include "draw.h"
 #include <array>
+#include <math.h>
 #include <chrono>
 #include <iostream>
 #include <thread>
@@ -71,11 +72,14 @@ void CameraController::startInputLoop()
 	}).detach();
 }
 
-jdscn::Orientation CameraController::cameraRotation()
+jdscn::Orientation CameraController::cameraRotation(int maxY, int minY)
 {
 	config::camera_controls camera_controls;
 	if (!capturingCursor)
 		return this->originalRotation;
+
+	pointer[1] = pointer[1] > maxY ? maxY : pointer[1] < minY ? minY : pointer[1];
+
 	return jdscn::Orientation(
 		{this->originalRotation[0] + float(pointer[1]) / camera_controls.sensitivity_y,
 		 this->originalRotation[1],

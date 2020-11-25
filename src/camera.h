@@ -43,7 +43,7 @@ class CameraController
 	 */
 	void moveCursor(float rotation);
 	/** @brief Moves the cursor accoring to the keys currently held */
-	jdscn::Orientation cameraRotation();
+	jdscn::Orientation cameraRotation(int, int);
 };
 
 } // namespace controls

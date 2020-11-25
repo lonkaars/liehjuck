@@ -4,6 +4,7 @@
 #include "config.h"
 #include "scene.h"
 #include "win.h"
+#include "debug.h"
 
 #include <chrono>
 #include <iostream>
@@ -26,12 +27,15 @@ void Drawloop::startLoop()
 		int frame = 0;
 		config::camera_controls camera_controls;
 		config::keymap keymap;
+		config::debug_cursor debug_cursor;
 		controls::CameraController controller(canvas.connection, &canvas.window);
 		controller.startInputLoop();
 		controller.cursor = scene.camera.position;
 		controller.originalRotation = scene.camera.orientation;
 		controller.width = this->canvas.width;
 		controller.height = this->canvas.height;
+		int maxY = (M_PI - this->scene.camera.orientation[0]) * camera_controls.sensitivity_y;
+		int minY = (-this->scene.camera.orientation[0]) * camera_controls.sensitivity_y;
 		while (true) {
 			if (controller.keysPressed[keymap.exit])
 				exit(0);
@@ -48,9 +52,11 @@ void Drawloop::startLoop()
 			scene.camera.position[2] +=
 				(controller.cursor[2] - scene.camera.position[2]) / camera_controls.easing;
 
-			scene.camera.orientation = controller.cameraRotation();
+			scene.camera.orientation = controller.cameraRotation(maxY, minY);
 
 			scene.draw(canvas, frame);
+
+			if (debug_cursor.on) debug::draw_debug_axes(this->scene.camera, this->canvas);
 
 			std::this_thread::sleep_until(nextFrameTime);
 			frame++;
