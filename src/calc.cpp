@@ -53,16 +53,36 @@ jdscn::FloatXYZ project(jdscn::Position a, jdscn::Camera camera)
 	return {(e[2] / d[2]) * d[0] + e[0], (e[2] / d[2]) * d[1] + e[1], d[2]};
 }
 
-std::vector<jdscn::Position2D> interpolateBetweenPoints(jdscn::Position2D start, jdscn::Position2D end)
+std::vector<jdscn::Position> interpolateBetweenPoints(jdscn::Position start, jdscn::Position end)
 {
-	std::vector<jdscn::Position2D> out;
+	std::vector<jdscn::Position> out;
 	int step = start[1] > end[1] ? -1 : 1;
-	float change = float(end[0] - start[0]) / float(end[1] - start[1]);
-	for(int y = start[1]; y != end[1] + step; y += step)
-		out.push_back({ int(start[0] + (y - start[1]) * change),
-						int(start[1] + (y - start[1])) });
+	int lineEnd = end[1] + step;
+	float Xchange = float(end[0] - start[0]) / float(end[1] - start[1]);
+	float Zchange = float(end[2] - start[2]) / float(end[1] - start[1]);
+	for(int y = start[1]; y != lineEnd; y += step)
+		out.push_back({ start[0] + (y - start[1]) * Xchange,
+						start[1] + (y - start[1]),
+						start[2] + (y - start[1]) * Zchange});
 	return out;
 }
+
+/*std::vector<jdscn::Position2D> fillBetweenPoints(jdscn::Position2D start, jdscn:Position2D end)
+{
+	std::vector<jdscn:Position2D> out;
+	for(int x = start[0] + 1, x < end[0] - 1; x++)
+	{
+		out.push_back({int(start[0] + x), int(start[1])});
+	}
+
+	return out;
+}
+
+std::vector<jdscn::Position2D> filledTriangleBetweenPoints(jdscn::Tri tri)
+{
+	
+
+}*/
 
 }; // namespace calc
 

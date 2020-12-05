@@ -47,6 +47,6 @@ jdscn::FloatXYZ project(jdscn::Position, jdscn::Camera);
  *
  * @return std::vector<Position2D> with all the points in between start and end
  */
-std::vector<jdscn::Position2D> interpolateBetweenPoints(jdscn::Position2D, jdscn::Position2D);
+std::vector<jdscn::Position> interpolateBetweenPoints(jdscn::Position, jdscn::Position);
 
 }; // namespace calc

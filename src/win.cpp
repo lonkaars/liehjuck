@@ -48,6 +48,10 @@ Canvas::Canvas(int width, int height, const char *title)
 	frame = xcb_image_create_native(connection, this->width, this->height,
 			XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL);
 
+	depthframe =  xcb_image_create_native(connection, this->width, this->height,
+			XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL);
+
+
 	xcb_map_window(connection, window);
 
 	xcb_flush(connection);
@@ -69,10 +73,12 @@ void Canvas::drawAbsolute(int x, int y, jdscn::Color c) {
 	xcb_image_put_pixel(frame, x, y, rgb);
 }
 
-void Canvas::draw(int x, int y, jdscn::Color c)
+void Canvas::draw(jdscn::Position position, jdscn::Color c)
 {
-	x = this->width / 2 - x;
-	y = this->height / 2 + y;
+	int x = this->width / 2 - int(position[0]);
+	int y = this->height / 2 + int(position[1]);
+
+		
 	drawAbsolute(x, y, c);
 }
 
@@ -87,13 +93,13 @@ void Canvas::clear()
 	memset(frame->data, 0, frame->size);
 }
 
-void Canvas::line(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color c)
+void Canvas::line(jdscn::Position start, jdscn::Position end, jdscn::Color c)
 {
-	std::vector<jdscn::Position2D> points =
-		calc::interpolateBetweenPoints( jdscn::Position2D({ int(start[0]), int(start[1]) }),
-				jdscn::Position2D({ int(end[0]), int(end[1]) }));
-	for(jdscn::Position2D p : points)
-		draw(p[0], p[1], c);
+	std::vector<jdscn::Position> points =
+		calc::interpolateBetweenPoints( jdscn::Position({ start[0], start[1], start[2]}),
+				jdscn::Position({ end[0], end[1], end[2] }));
+	for(jdscn::Position p : points)
+		draw(p, c);
 }
 
 void Canvas::drawTriangle(jdscn::Tri tri,

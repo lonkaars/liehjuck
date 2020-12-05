@@ -34,6 +34,8 @@ class Canvas
 	xcb_gcontext_t gc;
 	/** @brief bitmap for drawing */
 	xcb_image_t *frame;
+	/** @brief bitmap for pixel depth */
+	xcb_image_t *depthframe;
 	uint32_t mask;
 
 	/**
@@ -51,7 +53,7 @@ class Canvas
 	 * @param int y coordinate
 	 * @param jdscn::Color color
 	 */
-	void draw(int, int, jdscn::Color);
+	void draw(jdscn::Position, jdscn::Color);
 	/**
 	 * @brief Draws from the top-left (absolute coordinates)
 	 *
@@ -73,7 +75,7 @@ class Canvas
 	 * @param jdscn::Color Color for line
 	 * @param win::Canvas& Canvas to draw the line on
 	 */
-	void line(jdscn::Position2D, jdscn::Position2D, jdscn::Color);
+	void line(jdscn::Position, jdscn::Position, jdscn::Color);
 	/**
 	 * @brief Draws a triangle between 3 points
 	 *
