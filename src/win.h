@@ -34,8 +34,9 @@ class Canvas
 	xcb_gcontext_t gc;
 	/** @brief bitmap for drawing */
 	xcb_image_t *frame;
-	/** @brief bitmap for pixel depth */
-	xcb_image_t *depthframe;
+	
+	std::vector<float> depthframe;
+
 	uint32_t mask;
 
 	/**

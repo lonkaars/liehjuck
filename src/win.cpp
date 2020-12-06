@@ -48,9 +48,7 @@ Canvas::Canvas(int width, int height, const char *title)
 	frame = xcb_image_create_native(connection, this->width, this->height,
 			XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL);
 
-	depthframe =  xcb_image_create_native(connection, this->width, this->height,
-			XCB_IMAGE_FORMAT_Z_PIXMAP, 24, NULL, this->width*this->height*4, NULL);
-
+	depthframe = std::vector<float>(width * height, 0.0f);
 
 	xcb_map_window(connection, window);
 
@@ -78,8 +76,10 @@ void Canvas::draw(jdscn::Position position, jdscn::Color c)
 	int x = this->width / 2 - int(position[0]);
 	int y = this->height / 2 + int(position[1]);
 
-		
-	drawAbsolute(x, y, c);
+	if(position[2] > 0 && position[2] > depthframe[height * y + x])
+	{
+		drawAbsolute(x, y, c);
+	}
 }
 
 void Canvas::flush()
@@ -107,15 +107,13 @@ void Canvas::drawTriangle(jdscn::Tri tri,
 {
 	for(int i = 0; i < tri.size(); i++) {
 		int i_1 = (i+1)%tri.size();
-		line({int(tri[i][0]), int(tri[i][1])},
-				 {int(tri[i_1][0]), int(tri[i_1][1])},
-				 c);
+		line(tri[i], tri[i_1], c);
 	}
 }
 
 void Canvas::prettyLine(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color color)
 {
-	int diffX = abs(start[0] - end[0]);
+	/*int diffX = abs(start[0] - end[0]);
 	int diffY = abs(start[1] - end[1]);
 	bool scan = diffX > diffY;
 
@@ -123,7 +121,7 @@ void Canvas::prettyLine(jdscn::Position2D start, jdscn::Position2D end, jdscn::C
 		calc::interpolateBetweenPoints( jdscn::Position2D({ int(start[scan]), int(start[!scan]) }),
 				jdscn::Position2D({ int(end[scan]), int(end[!scan]) }));
 	for(jdscn::Position2D p : points)
-		draw(p[scan], p[!scan], color);
+		draw({p[0], p[1]}, color);*/
 }
 
 }; // namespace win
