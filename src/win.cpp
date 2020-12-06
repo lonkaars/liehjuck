@@ -76,9 +76,13 @@ void Canvas::draw(jdscn::Position position, jdscn::Color c)
 	int x = this->width / 2 - int(position[0]);
 	int y = this->height / 2 + int(position[1]);
 
-	if(position[2] > 0 && position[2] > depthframe[height * y + x])
+	if(y >= 0 && y < height && x >= 0 && x < width)
 	{
-		drawAbsolute(x, y, c);
+		if(-position[2] > 0 && -position[2] > depthframe[height * y + x])
+		{
+			depthframe[height * y + x] = position[2];
+			drawAbsolute(x, y, c);
+		}
 	}
 }
 
@@ -91,13 +95,14 @@ void Canvas::flush()
 void Canvas::clear()
 {
 	memset(frame->data, 0, frame->size);
+	memset(depthframe.data(), 0, depthframe.size());
 }
 
 void Canvas::line(jdscn::Position start, jdscn::Position end, jdscn::Color c)
 {
 	std::vector<jdscn::Position> points =
-		calc::interpolateBetweenPoints( jdscn::Position({ start[0], start[1], start[2]}),
-				jdscn::Position({ end[0], end[1], end[2] }));
+		calc::interpolateBetweenPoints( start,
+				end);
 	for(jdscn::Position p : points)
 		draw(p, c);
 }
