@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <sys/utsname.h>
 #include <thread>
 #include <xcb/xcb.h>
@@ -112,7 +113,7 @@ void Canvas::drawTriangle(jdscn::Tri tri,
 {
 	for(int i = 0; i < tri.size(); i++) {
 		int i_1 = (i+1)%tri.size();
-		line(tri[i], tri[i_1], c);
+		line({std::floor(tri[i][0]), floor(tri[i][1]), tri[i][2]}, {std::floor(tri[i_1][0]), floor(tri[i_1][1]), tri[i_1][2]}, c);
 	}
 }
 
