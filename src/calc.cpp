@@ -67,22 +67,76 @@ std::vector<jdscn::Position> interpolateBetweenPoints(jdscn::Position start, jds
 	return out;
 }
 
-/*std::vector<jdscn::Position2D> fillBetweenPoints(jdscn::Position2D start, jdscn:Position2D end)
+std::vector<jdscn::Position> fillBetweenPoints(jdscn::Position start, jdscn::Position end)
 {
-	std::vector<jdscn:Position2D> out;
-	for(int x = start[0] + 1, x < end[0] - 1; x++)
+	std::vector<jdscn::Position> out;
+	int step = start[0] > end[0] ? -1 : 1;
+	int lineEnd = end[0];
+	float Zchange = float(end[2] - start[2]) / float(end[0] - start[0]);
+	for(int x = start[0]; x != lineEnd; x += step)
 	{
-		out.push_back({int(start[0] + x), int(start[1])});
+		out.push_back({float(x), start[1], start[2] + (x - start[0]) * Zchange});
 	}
 
 	return out;
 }
 
-std::vector<jdscn::Position2D> filledTriangleBetweenPoints(jdscn::Tri tri)
+void swap(jdscn::Tri &tri, int a, int b)
 {
+	jdscn::Position temp = tri[a];
+	tri[a] = tri[b];
+	tri[b] = temp;
+}
+
+jdscn::Tri sortTriangleY(jdscn::Tri tri) // Sorry for bad code, I don't really know if this would be better with some built-in sort
+{
+	int smallest = 0;
+	for(int i = 1; i < tri.size(); i++)
+		if(tri[i][1] < tri[smallest][1])
+			smallest = i;
+	swap(tri, 0, smallest);
+
+	int biggest = 0;
+	for(int i = 1; i < tri.size(); i++)
+		if(tri[i][1] > tri[biggest][1])
+			biggest = i;
+	swap(tri, 2, biggest);
+
+	return tri;
+}
+
+std::vector<jdscn::Position> filledTriangle(jdscn::Tri tri)
+{
+	tri = sortTriangleY(tri);
+	std::vector<jdscn::Position> out;
+		
+	float slope01 = float(tri[0][0] - tri[1][0]) / float(tri[0][1] - tri[1][1]);
+	float slope02 = float(tri[0][0] - tri[2][0]) / float(tri[0][1] - tri[2][1]);
+	float slope12 = float(tri[1][0] - tri[2][0]) / float(tri[1][1] - tri[2][1]);
+	float Zslope01 = float(tri[0][2] - tri[1][2]) / float(tri[0][1] - tri[1][1]);
+	float Zslope02 = float(tri[0][2] - tri[2][2]) / float(tri[0][1] - tri[2][1]);
+	float Zslope12 = float(tri[1][2] - tri[2][2]) / float(tri[1][1] - tri[2][1]);
 	
+	jdscn::Position point1 = tri[0];
+	jdscn::Position point2 = tri[0];
 
-}*/
+	for(int y = tri[0][1]; y < tri[1][1]; y++)
+	{
+		std::vector<jdscn::Position> widthline = fillBetweenPoints(point1, point2);
+		out.insert(out.end(), widthline.begin(), widthline.end());
+		point1 = {point1[0] + slope01, point1[1] + 1, point1[2] + Zslope01};
+		point2 = {point2[0] + slope02, point2[1] + 1, point2[2] + Zslope02};
+	}
 
-}; // namespace calc
+	for(int y = tri[1][1]; y < tri[2][1]; y++)
+	{
+
+		std::vector<jdscn::Position> widthline = fillBetweenPoints(point1, point2);
+		out.insert(out.end(), widthline.begin(), widthline.end());
+		point1 = {point1[0] + slope12, point1[1] + 1, point1[2] + Zslope12};
+		point2 = {point2[0] + slope02, point2[1] + 1, point2[2] + Zslope02};
+	}
+
+	return out;
+}}; // namespace calc
 

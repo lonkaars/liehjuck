@@ -49,4 +49,12 @@ jdscn::FloatXYZ project(jdscn::Position, jdscn::Camera);
  */
 std::vector<jdscn::Position> interpolateBetweenPoints(jdscn::Position, jdscn::Position);
 
+std::vector<jdscn::Position> fillBetweenPoints(jdscn::Position, jdscn::Position);
+
+void swap(jdscn::Tri&, int, int);
+
+jdscn::Tri sortTriangleY(jdscn::Tri);
+
+std::vector<jdscn::Position> filledTriangle(jdscn::Tri);
+
 }; // namespace calc

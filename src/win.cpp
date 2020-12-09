@@ -74,8 +74,8 @@ void Canvas::drawAbsolute(int x, int y, jdscn::Color c) {
 
 void Canvas::draw(jdscn::Position position, jdscn::Color c)
 {
-	int x = this->width / 2 - int(position[0]);
-	int y = this->height / 2 + int(position[1]);
+	int x = this->width/2 - int(position[0]);
+	int y = this->height/2 + int(position[1]);
 
 	if(y >= 0 && y < height && x >= 0 && x < width)
 	{
@@ -109,11 +109,21 @@ void Canvas::line(jdscn::Position start, jdscn::Position end, jdscn::Color c)
 }
 
 void Canvas::drawTriangle(jdscn::Tri tri,
-				  jdscn::Color c, win::Canvas &canvas)
+				  jdscn::Color c)
 {
 	for(int i = 0; i < tri.size(); i++) {
 		int i_1 = (i+1)%tri.size();
 		line({std::floor(tri[i][0]), floor(tri[i][1]), tri[i][2]}, {std::floor(tri[i_1][0]), floor(tri[i_1][1]), tri[i_1][2]}, c);
+	}
+}
+
+void Canvas::drawFilledTriangle(jdscn::Tri tri, jdscn::Color c)
+{
+	std::vector<jdscn::Position> points = calc::filledTriangle(tri);
+
+	for(jdscn::Position p : points)
+	{
+		draw(p, c);
 	}
 }
 

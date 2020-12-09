@@ -16,7 +16,9 @@ void jdscn::Scene::draw(win::Canvas canvas, int frame = 0)
 		object.transformTranslate(object.position, false);
 		jdscn::Vertices projection = object.projectVertices(this->camera);
 		for (jdscn::Tri tri : projection)
-			canvas.drawTriangle(tri, object.material.color, canvas);
+		{
+			canvas.drawFilledTriangle(tri, object.material.color);
+		}
 	}
 	canvas.flush();
 	canvas.clear();
