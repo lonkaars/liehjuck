@@ -119,18 +119,19 @@ std::vector<jdscn::Position> filledTriangle(jdscn::Tri tri)
 	
 	jdscn::Position point1 = tri[0];
 	jdscn::Position point2 = tri[0];
-
-	for(int y = tri[0][1]; y < tri[1][1]; y++)
+	//std::cout << "New triangle: " << tri[0][0] << ", " << tri[0][1] << " and " << tri[1][0] << ", " << tri[1][1] << " and " << tri[2][0] << ", " << tri[2][1] << std::endl;
+	for(int y = tri[0][1]; y < int(tri[1][1]); y++)
 	{
+		//std::cout << "between: " << point1[0] << ", " << point1[1] << " and " << point2[0] << ", " << point2[1] << std::endl;
 		std::vector<jdscn::Position> widthline = fillBetweenPoints(point1, point2);
 		out.insert(out.end(), widthline.begin(), widthline.end());
 		point1 = {point1[0] + slope01, point1[1] + 1, point1[2] + Zslope01};
 		point2 = {point2[0] + slope02, point2[1] + 1, point2[2] + Zslope02};
 	}
 
-	for(int y = tri[1][1]; y < tri[2][1]; y++)
+	for(int y = tri[1][1]; y < int(tri[2][1]); y++)
 	{
-
+		//std::cout << "between: " << point1[0] << ", " << point1[1] << " and " << point2[0] << ", " << point2[1] << std::endl;
 		std::vector<jdscn::Position> widthline = fillBetweenPoints(point1, point2);
 		out.insert(out.end(), widthline.begin(), widthline.end());
 		point1 = {point1[0] + slope12, point1[1] + 1, point1[2] + Zslope12};
