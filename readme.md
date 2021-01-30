@@ -1,7 +1,5 @@
 # PWS Engine
 
-This is the repository for the engine itself.
-
 ![](experiments/render-tests/multiple_objects.png)
 
 ## Dependencies
