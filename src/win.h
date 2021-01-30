@@ -77,13 +77,11 @@ class Canvas
 	/**
 	 * @brief Draws a triangle between 3 points
 	 *
-	 * @param jdscn::FloatXY Point of triangle
-	 * @param jdscn::FloatXY Point of triangle
-	 * @param jdscn::FloatXY Point of triangle
+	 * @param jdscn::TriXY Triangle to draw
 	 * @param jdscn::Color Color of triangle
-	 * @param win::Canvas& Canvas to draw triangle on
 	 */
-	void drawTriangle(jdscn::Tri, jdscn::Color, win::Canvas &);
+	void drawTriangle(jdscn::TriXY, jdscn::Color);
+	void filledTriangle(jdscn::TriXY, jdscn::Color);
 
 	/**
 	 * @brief Draws a line without gaps by changing the scanline axis

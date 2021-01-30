@@ -8,6 +8,15 @@
 #include <thread>
 #include <vector>
 
+jdscn::TriXY garbageFunctionRemoveThis(jdscn::Tri triangle_with_z_buffer_garbage){
+	// HOT GARBAGE REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+	return jdscn::TriXY({
+			jdscn::FloatXY({triangle_with_z_buffer_garbage[0][0], triangle_with_z_buffer_garbage[0][1]}),
+			jdscn::FloatXY({triangle_with_z_buffer_garbage[1][0], triangle_with_z_buffer_garbage[1][1]}),
+			jdscn::FloatXY({triangle_with_z_buffer_garbage[2][0], triangle_with_z_buffer_garbage[2][1]})
+			});
+}
+
 void jdscn::Scene::draw(win::Canvas canvas, int frame = 0)
 {
 	for (jdscn::Object object : this->objects) {
@@ -15,9 +24,8 @@ void jdscn::Scene::draw(win::Canvas canvas, int frame = 0)
 		object.transformRotate(object.orientation, false);
 		object.transformTranslate(object.position, false);
 		jdscn::Vertices projection = object.projectVertices(this->camera);
-		for (jdscn::Tri tri : projection)
-			canvas.drawTriangle(tri, object.material.color,
-							   canvas); // More elegant conversion to FloatXY would be neat
+		for (jdscn::Tri tri : projection) // Tri for z-buffer
+			canvas.filledTriangle(garbageFunctionRemoveThis(tri), object.material.color); // More elegant conversion to FloatXY would be neat
 	}
 	canvas.flush();
 	canvas.clear();

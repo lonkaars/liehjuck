@@ -96,14 +96,84 @@ void Canvas::line(jdscn::Position2D start, jdscn::Position2D end, jdscn::Color c
 		draw(p[0], p[1], c);
 }
 
-void Canvas::drawTriangle(jdscn::Tri tri,
-				  jdscn::Color c, win::Canvas &canvas)
+void Canvas::drawTriangle(jdscn::TriXY tri,
+				  jdscn::Color c)
 {
 	for(int i = 0; i < tri.size(); i++) {
 		int i_1 = (i+1)%tri.size();
 		line({int(tri[i][0]), int(tri[i][1])},
 				 {int(tri[i_1][0]), int(tri[i_1][1])},
 				 c);
+	}
+}
+
+// le trash propriatary binary search
+int binarySearch(std::vector<jdscn::Position2D> input, int searchValue, std::array<int, 2> range) {
+	int midpoint = (range[0] + range[1]) / 2;
+	// reverse == 1 => klein -> groot
+	// reverse == 0 => groot -> klein
+	bool reverse = input.front()[1] > input.back()[1];
+
+	if(searchValue == input[midpoint][1]) return midpoint;
+	if(range[0] + 1 == range[1]) return midpoint;
+	/* if(range[0] + 1 == range[1]) return midpoint; */
+	// searchValue < input[.....] == true als midpoint rechts van searchValue zit (bij reverse == 0)
+	/* std::cout << "s = " << searchValue << */
+	/* 	"   p = " << input[midpoint][1] << */
+	/* 	"   r = [" << range[0] << ", " << range[1] << "]" << */
+	/* 	"   rev = " << reverse << */
+	/* 	"   searchValue < input[midpoint][1] = " << int(searchValue < input[midpoint][1]) << */
+	/* 	"   range[" << int(searchValue < input[midpoint][1] != reverse) << "]" << */
+	/* 	std::endl; */
+	/* std::this_thread::sleep_for(std::chrono::seconds(1)); */
+	range[int(searchValue < input[midpoint][1] != reverse)] = midpoint;
+
+	return binarySearch(input, searchValue, range);
+}
+int binarySearch(std::vector<jdscn::Position2D> input, int searchValue) {
+	return binarySearch(input, searchValue, {0, int(input.size()-1)});
+}
+
+void Canvas::filledTriangle(jdscn::TriXY tri, jdscn::Color c)
+{
+	drawTriangle(tri, c);
+
+	// pak die driehoek (rasterizeer)
+	std::array<std::vector<jdscn::Position2D>, 3> triangle;
+	for(int i = 0; i < 3; i++){
+		int i_1 = (i+1)%tri.size();
+		std::vector<jdscn::Position2D> points = calc::interpolateBetweenPoints(
+				jdscn::Position2D({ int(tri[i][0]), int(tri[i][1]) }),
+				jdscn::Position2D({ int(tri[i_1][0]), int(tri[i_1][1]) }));
+		triangle[i] = points;
+	}
+
+	// bepaal langste zijde
+	int largestY = tri[0][1], smallestY = largestY,
+		resolvedSide = 0;
+
+	for (int i = 0; i < 3; i++) {
+		largestY = std::max(largestY, int(tri[i][1]));
+		smallestY = std::min(smallestY, int(tri[i][1]));
+	}
+
+	for (int i = 0; i < 3; i++) {
+		if ((triangle[i].front()[1] == largestY && triangle[i].back()[1] == smallestY) ||
+			(triangle[i].front()[1] == smallestY && triangle[i].back()[1] == largestY)) {
+			resolvedSide = i;
+		}
+	}
+
+	std::array<std::vector<jdscn::Position2D>, 2> diangle;
+	diangle[0] = triangle[resolvedSide];
+	diangle[1].insert(diangle[1].end(), triangle[(resolvedSide+1)%3].begin(), triangle[(resolvedSide+1)%3].end());
+	diangle[1].insert(diangle[1].end(), triangle[(resolvedSide+2)%3].begin(), triangle[(resolvedSide+2)%3].end());
+
+	/* std::cout << "long: " << nlohmann::json(diangle[0]) << std::endl << */
+	/* 	"two: " << nlohmann::json(diangle[1]) << std::endl; */
+	for(jdscn::Position2D end : diangle[0]) {
+		jdscn::Position2D begin = diangle[1][binarySearch(diangle[1], end[1])];
+		prettyLine(begin, end, c);
 	}
 }
 
