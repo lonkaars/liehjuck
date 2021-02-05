@@ -8,7 +8,7 @@
 #include <thread>
 #include <vector>
 
-jdscn::TriXY garbageFunctionRemoveThis(jdscn::Tri triangle_with_z_buffer_garbage){
+jdscn::TriXY garbageFunctionRemoveThis(jdscn::Tri triangle_with_z_buffer_garbage){ // deze functie verwijdert de z-buffer van de jdscn::Tri die wordt gebruikt als jdscn::TriXY (maak een nieuwe alias hier voor in jdscn_types.h)
 	// HOT GARBAGE REEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 	return jdscn::TriXY({
 			jdscn::FloatXY({triangle_with_z_buffer_garbage[0][0], triangle_with_z_buffer_garbage[0][1]}),
@@ -24,7 +24,7 @@ void jdscn::Scene::draw(win::Canvas canvas, int frame = 0)
 		object.transformRotate(object.orientation, false);
 		object.transformTranslate(object.position, false);
 		jdscn::Vertices projection = object.projectVertices(this->camera);
-		for (jdscn::Tri tri : projection) // Tri for z-buffer
+		for (jdscn::Tri tri : projection) //FIXME: Tri for z-buffer
 			canvas.filledTriangle(garbageFunctionRemoveThis(tri), object.material.color); // More elegant conversion to FloatXY would be neat
 	}
 	canvas.flush();
