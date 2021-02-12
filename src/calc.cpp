@@ -56,6 +56,12 @@ jdscn::FloatXYZ project(jdscn::Position a, jdscn::Camera camera)
 std::vector<jdscn::Position2D> interpolateBetweenPoints(jdscn::Position2D start, jdscn::Position2D end)
 {
 	std::vector<jdscn::Position2D> out;
+	// ugly if statement, find better solution
+	if(float(end[1] - start[1]) == 0)
+	{
+		out.push_back(start);
+		return out;
+	}
 	int step = start[1] > end[1] ? -1 : 1;
 	float change = float(end[0] - start[0]) / float(end[1] - start[1]);
 	for(int y = start[1]; y != end[1] + step; y += step)

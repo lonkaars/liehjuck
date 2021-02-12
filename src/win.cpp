@@ -143,6 +143,7 @@ void swap(jdscn::TriXY& tri, int a, int b)
 
 void Canvas::filledTriangle(jdscn::TriXY tri, jdscn::Color c)
 {
+	//std::cout << "start, ";
 	drawTriangle(tri, c);
 
 	int largestYI = 0, smallestYI = 0;
@@ -150,18 +151,16 @@ void Canvas::filledTriangle(jdscn::TriXY tri, jdscn::Color c)
 	for(int i = 0; i < 3; i++)
 	{
 		if(tri[i][1] < tri[smallestYI][1])
-		{
 			smallestYI = i;
-		}
 		if(tri[i][1] > tri[largestYI][1])
-		{
 			largestYI = i;
-		}
 	}
 
 	swap(tri, largestYI, 2);
 	swap(tri, smallestYI, 0);
-
+	
+	//std::cout << "sorted tri, ";
+	
 	// pak die driehoek (rasterizeer)
 	std::array<std::vector<jdscn::Position2D>, 3> triangle;
 
@@ -174,65 +173,23 @@ void Canvas::filledTriangle(jdscn::TriXY tri, jdscn::Color c)
 	triangle[2] = calc::interpolateBetweenPoints(
 			jdscn::Position2D({int(tri[1][0]), int(tri[1][1])}),
 			jdscn::Position2D({int(tri[2][0]), int(tri[2][1])}));
-	
-	/*for(int i = 0; i < 3; i++){
-		int i_1 = (i+1)%tri.size();
-		std::vector<jdscn::Position2D> points = calc::interpolateBetweenPoints(
-				jdscn::Position2D({ int(tri[i][0]), int(tri[i][1]) }),
-				jdscn::Position2D({ int(tri[i_1][0]), int(tri[i_1][1]) }));
-		triangle[i] = points;
-	}*/
 
-	// bepaal langste zijde
-	/*int largestY = tri[0][1], smallestY = largestY,
-		resolvedSide = 0;
-
-	for (int i = 0; i < 3; i++) {:wq
-		largestY = std::max(largestY, int(tri[i][1]));
-		smallestY = std::min(smallestY, int(tri[i][1]));
-	}
-
-	for (int i = 0; i < 3; i++) {
-		if ((triangle[i].front()[1] == largestY && triangle[i].back()[1] == smallestY) ||
-			(triangle[i].front()[1] == smallestY && triangle[i].back()[1] == largestY)) {
-			resolvedSide = i;
-		}
-	}*/
-	
-	/*std::cout << "1 side: " << std::endl;
-	for(jdscn::Position2D pos : triangle[0])
-	{
-		std::cout << pos[0] << ", " << pos[1] << std::endl;
-	}
-
-	std::cout << "2 side: " << std::endl;
-	for(jdscn::Position2D pos : triangle[1])
-	{
-		std::cout << pos[0] << ", " << pos[1] << std::endl;
-	}
-	
-	std::cout << "3 side: " << std::endl;
+	/*std::cout << "triangle[1]" << std::endl;
 	for(jdscn::Position2D pos : triangle[2])
 	{
 		std::cout << pos[0] << ", " << pos[1] << std::endl;
-	}*/
-
-
+	}
+	std::cout << "made lines, ";*/
 	std::array<std::vector<jdscn::Position2D>, 2> diangle;
 	diangle[0] = triangle[1];
 	diangle[1].insert(diangle[1].end(), triangle[0].begin(), triangle[0].end());
 	diangle[1].pop_back();
 	diangle[1].insert(diangle[1].end(), triangle[2].begin(), triangle[2].end());
-	
-	/*std::cout << "Double side: " << std::endl;
-	for(int i = 0; i < diangle[0].size(); i++)
-	{
-		std::cout << diangle[0][i][0] << ", " << diangle[0][i][1] << "; " << diangle[1][i][0] << ", " << diangle[1][i][1] << std::endl;
-	}*/
 
-	/* std::cout << "long: " << nlohmann::json(diangle[0]) << std::endl << */
-	/* 	"two: " << nlohmann::json(diangle[1]) << std::endl; */
+	// std::cout << "made diangle, ";
+	
 	for(int i = 0; i < diangle[0].size(); i++) {
+		// std::cout << diangle[0][i][0] << ", " << diangle[0][i][1] << "en " << diangle[1][i][0] << ", " << diangle[1][i][1] << std::endl;
 		prettyLine(diangle[0][i], diangle[1][i], c);
 	}
 }
