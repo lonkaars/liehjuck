@@ -144,23 +144,27 @@ void swap(jdscn::TriXY& tri, int a, int b)
 void Canvas::filledTriangle(jdscn::TriXY tri, jdscn::Color c)
 {
 	//std::cout << "start, ";
+	//std::cout << "Drawing triangle: " << tri[0][0] << ", " << tri[0][1] << "; " << tri[1][0] << ", " << tri[1][1] << "; " << tri[2][0] << ", " << tri[2][1] << "; " << "with color " << c[2] << std::endl;
+
 	drawTriangle(tri, c);
 
-	int largestYI = 0, smallestYI = 0;
+	int largestYI = 0;
 
 	for(int i = 0; i < 3; i++)
 	{
-		if(tri[i][1] < tri[smallestYI][1])
-			smallestYI = i;
-		if(tri[i][1] > tri[largestYI][1])
+		if(tri[i][1] >= tri[largestYI][1])
 			largestYI = i;
-	}
 
+	}
+	
 	swap(tri, largestYI, 2);
-	swap(tri, smallestYI, 0);
 	
+	if(tri[1][1] < tri[0][1])
+		swap(tri, 0, 1);
+
 	//std::cout << "sorted tri, ";
-	
+
+	//std::cout << "Sorted triangle: " << tri[0][0] << ", " << tri[0][1] << "; " << tri[1][0] << ", " << tri[1][1] << "; " << tri[2][0] << ", " << tri[2][1] << "; " << "with color " << c[2] << std::endl;
 	// pak die driehoek (rasterizeer)
 	std::array<std::vector<jdscn::Position2D>, 3> triangle;
 
@@ -189,7 +193,6 @@ void Canvas::filledTriangle(jdscn::TriXY tri, jdscn::Color c)
 	// std::cout << "made diangle, ";
 	
 	for(int i = 0; i < diangle[0].size(); i++) {
-		// std::cout << diangle[0][i][0] << ", " << diangle[0][i][1] << "en " << diangle[1][i][0] << ", " << diangle[1][i][1] << std::endl;
 		prettyLine(diangle[0][i], diangle[1][i], c);
 	}
 }

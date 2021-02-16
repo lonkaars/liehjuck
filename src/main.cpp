@@ -44,7 +44,8 @@ int main(int argc, char *argv[])
 	config::renderSettings render;
 	win::Canvas canvas(render.width, render.height, render.title);
 	canvas.clear();
-
+	//jdscn::TriXY tri = {{{-463.19, 297.97}, {-452.456, 271.796}, {-426.407, 294.559}}};  
+	//canvas.filledTriangle(tri, {255, 255, 255});
 	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
 	drawloop.startLoop();
 
