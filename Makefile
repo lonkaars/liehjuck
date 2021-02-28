@@ -1,4 +1,4 @@
-BIN := pws-engine
+BIN := liehjuck
 
 SOURCE_DIR = src
 TESTS_DIR  = tests
