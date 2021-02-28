@@ -75,7 +75,7 @@ $(BIN)-test: $(OBJECTS) $(TESTS)
 check: CXXFLAGS += -D UNIT_TEST_BINARY
 check: LDLIBS += -lgtest
 check: $(OBJECTS) $(TEST_OBJECTS) $(BIN)-test
-	./pws-engine-test --gtest_color=no
+	./$(BIN)-test --gtest_color=no
 
 compile_commands: clean
 	bear -- make
