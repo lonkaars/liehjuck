@@ -15,11 +15,13 @@ class Drawloop
 	/** @brief The canvas to draw to */
 	win::Canvas &canvas;
 	/** @brief The scene to render */
-	jdscn::Scene &scene;
+	jdscn::Scene scene;
+
+	jdscn::Scene startScene;
 	/** @brief The framerate to render at */
 	float interval;
 
-	Drawloop(win::Canvas &canvas, jdscn::Scene &scene, float framerate);
+	Drawloop(win::Canvas &canvas, jdscn::Scene scene, jdscn::Scene startscene, float framerate);
 	/** @brief Start the drawloop */
 	void startLoop();
 };

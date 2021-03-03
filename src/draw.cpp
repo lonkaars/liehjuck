@@ -9,16 +9,18 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include <math.h>
 
 namespace draw
 {
 
-Drawloop::Drawloop(win::Canvas &canvas, jdscn::Scene &scene, float framerate)
+Drawloop::Drawloop(win::Canvas &canvas, jdscn::Scene scene,  jdscn::Scene startscene, float framerate)
 	: canvas(canvas), scene(scene)
 {
 	interval = 1000 / framerate;
 	this->canvas = canvas;
 	this->scene = scene;
+	this->startScene = startscene;
 }
 
 void Drawloop::startLoop()
@@ -36,6 +38,7 @@ void Drawloop::startLoop()
 		controller.height = this->canvas.height;
 		int maxY = (M_PI - this->scene.camera.orientation[0]) * camera_controls.sensitivity_y;
 		int minY = (-this->scene.camera.orientation[0]) * camera_controls.sensitivity_y;
+		int currentScene = 0;
 		while (true) {
 			if (controller.keysPressed[keymap.exit])
 				exit(0);
@@ -53,6 +56,41 @@ void Drawloop::startLoop()
 				(controller.cursor[2] - scene.camera.position[2]) / camera_controls.easing;
 
 			scene.camera.orientation = controller.cameraRotation(maxY, minY);
+		
+			// Animation instructions
+			if(scene.meta.generator == "presentation")
+			{
+				
+				if(frame < 300)
+				{
+					if(currentScene == 0)
+					{
+						scene = startScene;
+						scene.objects.erase(scene.objects.begin()+1, scene.objects.end());	
+						currentScene++;
+					}
+					scene.objects[0].position[0] = startScene.objects[0].position[0] + 3.0f * cos(float(frame)/20.0f);
+					scene.objects[0].position[1] = startScene.objects[0].position[1] + 3.0f * sin(float(frame)/20.0f);
+					
+				}
+				else if(frame < 600)
+				{
+					if(currentScene == 1)
+					{
+						scene = startScene;
+						//scene.objects.erase(scene.objects.begin()+3, scene.objects.end());
+						currentScene++;
+					}
+
+					scene.objects[0].scale[0] = 0.5;
+					scene.objects[0].scale[1] = 0.5;
+					scene.objects[0].scale[2] = 0.5;
+					scene.objects[0].orientation[2] += 0.2;
+					
+					scene.objects[0].position[0] = startScene.objects[0].position[0] + 6.0f * cos(float(frame)/20.0f);
+					scene.objects[0].position[1] = startScene.objects[0].position[1] + 3.0f * sin(float(frame)/10.0f);
+				}
+			}
 
 			scene.draw(canvas, frame);
 

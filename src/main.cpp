@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	win::Canvas canvas(render.width, render.height, render.title);
 	canvas.clear();
 
-	draw::Drawloop drawloop(canvas, scene_jdscn, render.framerate);
+	draw::Drawloop drawloop(canvas, scene_jdscn, scene_jdscn, render.framerate);
 	drawloop.startLoop();
 
 	while (1) {
