@@ -44,12 +44,26 @@ I'm too lazy to make a code of conduct so here are some rules:
 
 ## Building
 
-```
+```sh
 make
-./pws-engine
+./liehjuck
 ```
 
 ## Documentation
 
-All documentation is handled by doxygen. There is currently a pws-documentation repository, but I (Loek) will attempt to move all documentation to this repo. The doc/ folder is, and always will be in .gitignore to keep repository size down.
+```sh
+make docs
+```
+
+## Unit tests
+
+```sh
+make check
+```
+
+## Code formatting
+
+```sh
+make format
+```
 
