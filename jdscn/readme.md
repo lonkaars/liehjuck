@@ -1,0 +1,3 @@
+This stuff used to be in a seperate repository but it isn't anymore...
+
+You can add plugin.py to Blender as a plugin and export scenes as .jdscn
