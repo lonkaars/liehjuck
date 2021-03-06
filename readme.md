@@ -1,6 +1,6 @@
 # Liehjuck
 
-This is the repository for the engine itself.
+This is a simple software rasterizer written in C++ as part of a school project.
 
 ![](experiments/render-tests/multiple_objects.png)
 
